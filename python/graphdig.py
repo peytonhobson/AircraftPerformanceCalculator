@@ -61,7 +61,7 @@ plt.ylim(0,28)
 plt.show()
 
 curve_names = ["../data/wind0", "../data/wind1", "../data/wind2", "../data/wind3", "../data/wind4","../data/wind5","../data/wind6" ,"../data/wind7"]
-plot_styles = { "../data/wind0" : 'b-', "../data/wind1" : 'b-', "../data/wind2" : 'b-', "../data/wind3" : 'b-', "../data/wind4" : 'b-',"../data/wind5" : 'b-',"../data/drag6" : 'b-',"../data/wind7" : 'b-'}
+plot_styles = { "../data/wind0" : 'b-', "../data/wind1" : 'b-', "../data/wind2" : 'b-', "../data/wind3" : 'b-', "../data/wind4" : 'b-',"../data/wind5" : 'b-',"../data/wind6" : 'b-',"../data/wind7" : 'b-'}
 
 data = {}
 for name in curve_names:
@@ -76,6 +76,25 @@ for name in curve_names:
     plt.plot(x,ynew)
 
 plt.xlim(-10, 10)
+plt.ylim(0,28)
+plt.show()
+
+curve_names = ["../data/slope0", "../data/slope1", "../data/slope2", "../data/slope3", "../data/slope4","../data/slope5","../data/slope6" ,"../data/slope7"]
+plot_styles = { "../data/slope0" : 'b-', "../data/slope1" : 'b-', "../data/slope2" : 'b-', "../data/slope3" : 'b-', "../data/slope4" : 'b-',"../data/slope5" : 'b-',"../data/slope6" : 'b-',"../data/slope7" : 'b-'}
+
+data = {}
+for name in curve_names:
+    data = np.loadtxt("{}.csv".format(name), delimiter=',')
+
+
+    x = data[:,0]
+    y = data[:,1]
+
+    p = np.polyfit(x,y,3)
+    ynew=np.polyval(p,x)
+    plt.plot(x,ynew)
+
+plt.xlim(-2, 2)
 plt.ylim(0,28)
 plt.show()
 
