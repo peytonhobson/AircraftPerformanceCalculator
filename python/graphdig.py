@@ -12,13 +12,70 @@ for name in curve_names:
 
     x = data[:,0]
     y = data[:,1]
-    xnew = np.linspace(-40, 40, 100)
+
+    p = np.polyfit(x,y,3)
+    ynew=np.polyval(p,x)
+
+    plt.plot(x,ynew)
+
+plt.xlim((-40, 40))
+plt.ylim(0,28)
+plt.show()
+
+curve_names = ["../data/mass0", "../data/mass1", "../data/mass2", "../data/mass3", "../data/mass4","../data/mass5","../data/mass6","../data/mass7"]
+plot_styles = { "../data/mass0" : 'b-', "../data/mass1" : 'b-', "../data/mass2" : 'b-', "../data/mass3" : 'b-', "../data/mass4" : 'b-',"../data/mass5" : 'b-',"../data/mass6" : 'b-',"../data/mass7" : 'b-'}
+
+data = {}
+for name in curve_names:
+    data = np.loadtxt("{}.csv".format(name), delimiter=',')
+
+
+    x = data[:,0]
+    y = data[:,1]
 
     p = np.polyfit(x,y,3)
     ynew=np.polyval(p,x)
     plt.plot(x,ynew)
 
-plt.xlim((-40, 40))
+plt.xlim((3800, 5600))
+plt.ylim(0,28)
+plt.show()
+
+curve_names = ["../data/drag0", "../data/drag1", "../data/drag2", "../data/drag3", "../data/drag4","../data/drag5","../data/drag6" ,"../data/drag7"]
+plot_styles = { "../data/drag0" : 'b-', "../data/drag1" : 'b-', "../data/drag2" : 'b-', "../data/drag3" : 'b-', "../data/drag4" : 'b-',"../data/drag5" : 'b-',"../data/drag6" : 'b-',"../data/drag7" : 'b-'}
+
+data = {}
+for name in curve_names:
+    data = np.loadtxt("{}.csv".format(name), delimiter=',')
+
+
+    x = data[:,0]
+    y = data[:,1]
+
+    p = np.polyfit(x,y,1)
+    ynew=np.polyval(p,x)
+    plt.plot(x,ynew)
+
+plt.xlim(0, 0.02)
+plt.ylim(0,28)
+plt.show()
+
+curve_names = ["../data/wind0", "../data/wind1", "../data/wind2", "../data/wind3", "../data/wind4","../data/wind5","../data/wind6" ,"../data/wind7"]
+plot_styles = { "../data/wind0" : 'b-', "../data/wind1" : 'b-', "../data/wind2" : 'b-', "../data/wind3" : 'b-', "../data/wind4" : 'b-',"../data/wind5" : 'b-',"../data/drag6" : 'b-',"../data/wind7" : 'b-'}
+
+data = {}
+for name in curve_names:
+    data = np.loadtxt("{}.csv".format(name), delimiter=',')
+
+
+    x = data[:,0]
+    y = data[:,1]
+
+    p = np.polyfit(x,y,3)
+    ynew=np.polyval(p,x)
+    plt.plot(x,ynew)
+
+plt.xlim(-10, 10)
 plt.ylim(0,28)
 plt.show()
 
