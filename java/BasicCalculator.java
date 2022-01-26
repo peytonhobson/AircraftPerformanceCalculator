@@ -9,6 +9,31 @@ public class BasicCalculator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("psi: ");
+        double psi=Double.parseDouble(in.next());
+
+        System.out.println("temp: ");
+        double temp=Double.parseDouble(in.next());
+
+        System.out.println("mass: ");
+        double mass=Double.parseDouble(in.next());
+
+        System.out.println("drag: ");
+        double drag=Double.parseDouble(in.next());
+
+        System.out.println("wind: ");
+        double wind=Double.parseDouble(in.next());
+
+        System.out.println("slope: ");
+        double slope=Double.parseDouble(in.next());
+
+        System.out.println("friction: ");
+        double friction=Double.parseDouble(in.next());
+
+
         String[] files = {"temp", "mass", "drag", "wind", "slopes", "friction"};
         List<List<List<Double>>> polyList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
@@ -44,12 +69,10 @@ public class BasicCalculator {
         }
 
 //        TODO: Make psi so it cant be 0 or higher than 2000?
-        double psi = 900;
         int graph = 0;
         double min = Integer.MAX_VALUE;
         List<List<Double>> tempLists = polyList.get(0);
         boolean higher = true;
-        double ratio = 0;
 
         for(int i = 0; i < 5; i++) {
             if(Math.abs(psi-i*500) < min) {
@@ -64,7 +87,6 @@ public class BasicCalculator {
             }
         }
 
-        double temp = 20;
         double tempOutput;
         double actualGraph = tempLists.get(graph).get(0) * (Math.pow(temp, 3)) + tempLists.get(graph).get(1) * (Math.pow(temp, 2))
                 + tempLists.get(graph).get(2) * temp + tempLists.get(graph).get(3);
@@ -81,7 +103,6 @@ public class BasicCalculator {
             tempOutput = actualGraph;
         }
 
-        double mass = 4300;
         List<List<Double>> massLists = polyList.get(1);
         double curY;
         List<Double> curList;
@@ -102,7 +123,6 @@ public class BasicCalculator {
         double massOutput= massLists.get(graph).get(0) * (Math.pow(mass, 3)) + massLists.get(graph).get(1) * (Math.pow(mass, 2))
                 + massLists.get(graph).get(2) * mass + massLists.get(graph).get(3) + yDifference;
 
-        double drag = 0.015;
         List<List<Double>> dragLists = polyList.get(2);
         min = Integer.MAX_VALUE;
 
@@ -121,7 +141,6 @@ public class BasicCalculator {
                 + dragLists.get(graph).get(2) * drag + dragLists.get(graph).get(3) + yDifference;
 
 
-        double wind = 3;
         List<List<Double>> windLists = polyList.get(3);
         min = Integer.MAX_VALUE;
 
@@ -139,7 +158,6 @@ public class BasicCalculator {
         double windOutput = windLists.get(graph).get(0) * (Math.pow(wind, 3)) + windLists.get(graph).get(1) * (Math.pow(wind, 2))
                 + windLists.get(graph).get(2) * wind + windLists.get(graph).get(3) + yDifference;
 
-        double slope = 1;
         List<List<Double>> slopeLists = polyList.get(4);
         min = Integer.MAX_VALUE;
 
@@ -157,7 +175,6 @@ public class BasicCalculator {
         double slopeOutput = slopeLists.get(graph).get(0) * (Math.pow(slope, 3)) + slopeLists.get(graph).get(1) * (Math.pow(slope, 2))
                 + slopeLists.get(graph).get(2) * slope + slopeLists.get(graph).get(3) + yDifference;
 
-        double friction = 0.1;
         List<List<Double>> fricLists = polyList.get(5);
         min = Integer.MAX_VALUE;
 
