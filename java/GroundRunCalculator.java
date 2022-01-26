@@ -48,7 +48,7 @@ public class GroundRunCalculator {
         // in polyList as described above
         for(String file : files) {
             polyList.add(new ArrayList<>());
-            Scanner sc = new Scanner(new File("./python/output/" + file + ".csv"));
+            Scanner sc = new Scanner(new File("./python/GroundRun_Output/" + file + ".csv"));
             sc.useDelimiter(",");   //sets the delimiter pattern
             fileCount++;
             String val = null;
