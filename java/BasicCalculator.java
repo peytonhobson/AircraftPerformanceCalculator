@@ -9,7 +9,7 @@ public class BasicCalculator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-
+        // This part just takes user input from the console
         Scanner in = new Scanner(System.in);
 
         System.out.println("psi: ");
@@ -33,12 +33,19 @@ public class BasicCalculator {
         System.out.println("friction: ");
         double friction=Double.parseDouble(in.next());
 
-
+        // Names of the csv file names the contain the coefficients
         String[] files = {"temp", "mass", "drag", "wind", "slopes", "friction"};
+
+        // This list stores lists for each files.
+        // Each list within it contains a list for each row of a file.
+        // The final list contains each coefficient
         List<List<List<Double>>> polyList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
+
         int fileCount = -1;
 
+        // This loop iterates through the array of files and puts all the values
+        // in polyList as described above
         for(String file : files) {
             polyList.add(new ArrayList<>());
             Scanner sc = new Scanner(new File("./python/output/" + file + ".csv"));
@@ -68,12 +75,16 @@ public class BasicCalculator {
             }
         }
 
+        // graph keeps track of which equation is closest to the value
 //        TODO: Make psi so it cant be 0 or higher than 2000?
         int graph = 0;
         double min = Integer.MAX_VALUE;
         List<List<Double>> tempLists = polyList.get(0);
+
+        // Used to determine if psi is higher or lower than closest equation
         boolean higher = true;
 
+        // Finds which equation is closest to selected psi
         for(int i = 0; i < 5; i++) {
             if(Math.abs(psi-i*500) < min) {
                 min = Math.abs(psi-i*500);
@@ -88,9 +99,12 @@ public class BasicCalculator {
         }
 
         double tempOutput;
+
+        // Finds value for psi and temperature if you followed the closest graph
         double actualGraph = tempLists.get(graph).get(0) * (Math.pow(temp, 3)) + tempLists.get(graph).get(1) * (Math.pow(temp, 2))
                 + tempLists.get(graph).get(2) * temp + tempLists.get(graph).get(3);
 
+        // This if sequence translates the graph to match psi if it isn't perfectly divisible by 500
         if(higher && graph != 4) {
             tempOutput = (tempLists.get(graph+1).get(0) * (Math.pow(temp, 3)) + tempLists.get(graph+1).get(1) * (Math.pow(temp, 2))
                     + tempLists.get(graph+1).get(2) * temp + tempLists.get(graph+1).get(3) - actualGraph)*(min/500) + actualGraph;
@@ -103,12 +117,16 @@ public class BasicCalculator {
             tempOutput = actualGraph;
         }
 
+        // massLists is the entire file for mass
         List<List<Double>> massLists = polyList.get(1);
         double curY;
         List<Double> curList;
+
+        // Difference between actual y from temp and y output from closest equation
         double yDifference = 0;
         min = Integer.MAX_VALUE;
 
+        // Finds closest equation by finding minimum distance, this whole process just repeats for the rest of the graphs below
         for(int i = 0; i < 7; i++) {
             curList = massLists.get(i);
             curY = curList.get(0) * (Math.pow(mass, 3)) + curList.get(1) * (Math.pow(mass, 2))
