@@ -64,7 +64,7 @@ for name in curve_names:
     x = data[:,0]
     y = data[:,1]
 
-    p = np.polyfit(x,y,1)
+    p = np.polyfit(x,y,3)
     drag.append(p)
 
     ynew=np.polyval(p,x)
