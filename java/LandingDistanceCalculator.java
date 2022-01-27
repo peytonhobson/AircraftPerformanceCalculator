@@ -9,26 +9,26 @@ public class LandingDistanceCalculator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
+        // This part just takes user input from the console
         Scanner in = new Scanner(System.in);
 
-        System.out.println("Takeoff Mass: ");
+        System.out.println("mass: ");
         double mass = Double.parseDouble(in.next());
 
-        System.out.println("Runway Type: ");
-        String runwayType = in.next();
+        System.out.println("aircraft type: ");
+        String aircraftType = in.next();
+
+        System.out.println("friction coefficient (0.2 or 0.25)");
+        double friction = Double.parseDouble(in.next());
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
-        int fileCount = -1;
-
-        // This loop iterates through the array of files and puts all the values
-        // in polyList as described above
         Scanner sc = new Scanner(new File("./python/Landing_Distance_Output/landingdist.csv"));
-        sc.useDelimiter(",");
+        sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
         while (sc.hasNext()) {
-            if (numList.size() > 3) {
+            if (numList.size() > 1) {
                 lineList.add(numList);
                 numList = new ArrayList<>();
             }
@@ -36,29 +36,40 @@ public class LandingDistanceCalculator {
             try {
                 val = sc.next();
                 numList.add(new BigDecimal(val).doubleValue());
-            } catch (NumberFormatException exception) {
+            }
+            catch (NumberFormatException exception) {
                 assert val != null;
                 try {
                     numList.add(Double.parseDouble(val));
-                } catch (NumberFormatException exception2) {
+                }
+                catch (NumberFormatException exception2) {
                 }
             }
         }
 
-        getLandingDistance(mass, runwayType, lineList);
+        getAirspeed(mass, aircraftType, friction, lineList);
+
     }
 
-    public static void getLandingDistance(double mass, String runwayType, List<List<Double>> lineList) {
+    public static void getAirspeed(double mass, String aircraftType, double friction, List<List<Double>> lineList) {
 
         System.out.print("Landing Distance: ");
 
-        if (runwayType.equalsIgnoreCase("concrete")) {
-            System.out.println(lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
-                    lineList.get(0).get(2)*mass + lineList.get(0).get(3));
+        if(aircraftType.equalsIgnoreCase("clean")) {
+            if(friction == 0.25) {
+                System.out.println(lineList.get(0).get(0)*mass + lineList.get(0).get(1));
+            }
+            else {
+                System.out.println(lineList.get(1).get(0)*mass + lineList.get(1).get(1));
+            }
         }
         else {
-            System.out.println(lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
-                    lineList.get(1).get(2)*mass + lineList.get(1).get(3));
+            if(friction == 0.25) {
+                System.out.println(lineList.get(2).get(0)*mass + lineList.get(2).get(1));
+            }
+            else {
+                System.out.println(lineList.get(3).get(0)*mass + lineList.get(3).get(1));
+            }
         }
     }
 }

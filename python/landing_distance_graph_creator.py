@@ -1,10 +1,9 @@
-#!/usr/bin/python
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
 
-curve_names = ["../data/Landing_Distance_Input/landingdist0", "../data/Landing_Distance_Input/landingdist1"]
-plot_styles = { "../data/Landing_Distance_Input/landingdist0" : 'b-', "../data/Landing_Distance_Input/landingdist1" : 'b-'}
+curve_names = ["../data/Landing_Distance_Input/landingdist-clean0", "../data/Landing_Distance_Input/landingdist-clean1", "../data/Landing_Distance_Input/landingdist-combat0", "../data/Landing_Distance_Input/landingdist-combat1"]
+plot_styles = { "../data/Landing_Distance_Input/landingdist-clean0" : 'b-', "../data/Landing_Distance_Input/landingdist-clean1" : 'b-', "../data/Landing_Distance_Input/landingdist-combat0" : 'b-',  "../data/Landing_Distance_Input/landingdist-combat1" : 'b-'}
 
 data = {}
 dist = []
@@ -15,7 +14,7 @@ for name in curve_names:
     x = data[:,0]
     y = data[:,1]
 
-    p = np.polyfit(x,y,3)
+    p = np.polyfit(x,y,1)
     dist.append(p)
 
     ynew=np.polyval(p,x)
@@ -24,7 +23,6 @@ for name in curve_names:
 
 np.savetxt('Landing_Distance_Output/landingdist.csv', dist, delimiter=',')
 
-plt.xlim(4000, 6000)
-plt.ylim(400,1600)
+plt.xlim((3000, 5600))
+plt.ylim(700,1300)
 plt.show()
-

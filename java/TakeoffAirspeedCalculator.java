@@ -63,6 +63,5 @@ public class TakeoffAirspeedCalculator {
         System.out.print("Stall Speed: ");
         System.out.println(lineList.get(0).get(0)*mass + lineList.get(0).get(1));
 
-
     }
 }
