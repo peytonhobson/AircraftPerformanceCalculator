@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class AirspeedCalculator {
+public class TakeoffAirspeedCalculator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -13,7 +13,7 @@ public class AirspeedCalculator {
         Scanner in = new Scanner(System.in);
 
         System.out.println("mass: ");
-        double airspeed = Double.parseDouble(in.next());
+        double mass = Double.parseDouble(in.next());
 
         // This list stores lists for each files.
         // Each list within it contains a list for each row of a file.
@@ -25,7 +25,7 @@ public class AirspeedCalculator {
 
         // This loop iterates through the array of files and puts all the values
         // in polyList as described above
-        Scanner sc = new Scanner(new File("./python/Airspeed_Output/airspeed.csv"));
+        Scanner sc = new Scanner(new File("./python/Takeoff_Airspeed_Output/takeoffairspeed.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
         while (sc.hasNext()) {
@@ -48,20 +48,20 @@ public class AirspeedCalculator {
             }
         }
 
-        getAirspeed(airspeed, lineList);
+        getAirspeed(mass, lineList);
 
     }
 
-    public static void getAirspeed(double airspeed, List<List<Double>> lineList) {
+    public static void getAirspeed(double mass, List<List<Double>> lineList) {
         //Output is in km/h
         System.out.print("Speed over obstacle: ");
-        System.out.println(lineList.get(2).get(0)*airspeed + lineList.get(2).get(1));
+        System.out.println(lineList.get(2).get(0)*mass + lineList.get(2).get(1));
 
         System.out.print("Takeoff Speed: ");
-        System.out.println(lineList.get(1).get(0)*airspeed + lineList.get(1).get(1));
+        System.out.println(lineList.get(1).get(0)*mass + lineList.get(1).get(1));
 
         System.out.print("Stall Speed: ");
-        System.out.println(lineList.get(0).get(0)*airspeed + lineList.get(0).get(1));
+        System.out.println(lineList.get(0).get(0)*mass + lineList.get(0).get(1));
 
 
     }
