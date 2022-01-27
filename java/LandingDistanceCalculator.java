@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class AccelStopCalculator {
+public class LandingDistanceCalculator {
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -24,7 +24,7 @@ public class AccelStopCalculator {
 
         // This loop iterates through the array of files and puts all the values
         // in polyList as described above
-        Scanner sc = new Scanner(new File("./python/Accel-Stop_Output/accel-stop.csv"));
+        Scanner sc = new Scanner(new File("./python/Landing_Distance_Output/landingdist.csv"));
         sc.useDelimiter(",");
         String val = null;
         while (sc.hasNext()) {
@@ -45,16 +45,16 @@ public class AccelStopCalculator {
             }
         }
 
-        getAccelStop(mass, runwayType, lineList);
+        getLandingDistance(mass, runwayType, lineList);
     }
 
-    public static void getAccelStop(double mass, String runwayType, List<List<Double>> lineList) {
+    public static void getLandingDistance(double mass, String runwayType, List<List<Double>> lineList) {
 
-        System.out.print("Accel-Stop Distance: ");
+        System.out.print("Landing Distance: ");
 
         if (runwayType.equalsIgnoreCase("concrete")) {
             System.out.println(lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
-                lineList.get(0).get(2)*mass + lineList.get(0).get(3));
+                    lineList.get(0).get(2)*mass + lineList.get(0).get(3));
         }
         else {
             System.out.println(lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
