@@ -53,7 +53,7 @@ public class AirspeedCalculator {
     }
 
     public static void getAirspeed(double airspeed, List<List<Double>> lineList) {
-
+        //Output is in km/h
         System.out.print("Speed over obstacle: ");
         System.out.println(lineList.get(2).get(0)*airspeed + lineList.get(2).get(1));
 
