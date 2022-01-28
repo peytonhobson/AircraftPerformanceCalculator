@@ -1,3 +1,5 @@
+package com.opl.aircraftperformancecalculator.calculators;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -24,7 +26,7 @@ public class AccelStopCalculator {
 
         // This loop iterates through the array of files and puts all the values
         // in polyList as described above
-        Scanner sc = new Scanner(new File("./python/Accel-Stop_Output/accel-stop.csv"));
+        Scanner sc = new Scanner(new File("python/Accel-Stop_Output/accel-stop.csv"));
         sc.useDelimiter(",");
         String val = null;
         while (sc.hasNext()) {
