@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.opl.aircraftperformancecalculator.calculators.*;
 
 /**
  * Class acts as Controller for Rest API
@@ -19,14 +20,15 @@ public class InputController {
      * Takes post request, mapped to '/inputData', performs classification
      * and returns response entity containing response with new output.
      *
-     * @param response
+     * @param input
      * @return
      * @throws Exception
      */
     @PostMapping(path = "/inputData")
-    public ResponseEntity<Input> classify(@RequestBody Input response) throws Exception {
+    public ResponseEntity<Input> classify(@RequestBody Input input) throws Exception {
 
-
-        return new ResponseEntity<Input>(response, HttpStatus.OK);
+        // TODO: This is only temporary. Set actual API values.
+        input.setOutput(OverallCalculator.getData(input));
+        return new ResponseEntity<>(input, HttpStatus.OK);
     }
 }

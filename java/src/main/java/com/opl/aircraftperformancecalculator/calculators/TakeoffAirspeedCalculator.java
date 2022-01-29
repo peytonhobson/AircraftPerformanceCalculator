@@ -9,25 +9,14 @@ import java.util.Scanner;
 
 public class TakeoffAirspeedCalculator {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static String getTakeoffAirspeed(String mass1) throws FileNotFoundException {
 
-        // This part just takes user input from the console
-        Scanner in = new Scanner(System.in);
+        double mass = Double.parseDouble(mass1);
 
-        System.out.println("mass: ");
-        double mass = Double.parseDouble(in.next());
-
-        // This list stores lists for each files.
-        // Each list within it contains a list for each row of a file.
-        // The final list contains each coefficient
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
-        int fileCount = -1;
-
-        // This loop iterates through the array of files and puts all the values
-        // in polyList as described above
-        Scanner sc = new Scanner(new File("./python/Takeoff_Airspeed_Output/takeoffairspeed.csv"));
+        Scanner sc = new Scanner(new File("src/main/resources/python/Takeoff_Airspeed_Output/takeoffairspeed.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
         while (sc.hasNext()) {
@@ -50,20 +39,8 @@ public class TakeoffAirspeedCalculator {
             }
         }
 
-        getAirspeed(mass, lineList);
-
-    }
-
-    public static void getAirspeed(double mass, List<List<Double>> lineList) {
-        //Output is in km/h
-        System.out.print("Speed over obstacle: ");
-        System.out.println(lineList.get(2).get(0)*mass + lineList.get(2).get(1));
-
-        System.out.print("Takeoff Speed: ");
-        System.out.println(lineList.get(1).get(0)*mass + lineList.get(1).get(1));
-
-        System.out.print("Stall Speed: ");
-        System.out.println(lineList.get(0).get(0)*mass + lineList.get(0).get(1));
-
+        return "Speed over obstacle: " + (lineList.get(2).get(0)*mass + lineList.get(2).get(1)) + "<br/>" +
+            "Takeoff Speed: " + (lineList.get(1).get(0)*mass + lineList.get(1).get(1)) + "<br/>" +
+            "Stall Speed: " + lineList.get(0).get(0)*mass + lineList.get(0).get(1) + "<br/>";
     }
 }

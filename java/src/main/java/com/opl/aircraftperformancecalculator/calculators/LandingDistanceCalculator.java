@@ -9,24 +9,15 @@ import java.util.Scanner;
 
 public class LandingDistanceCalculator {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static String getLandingDistance(String mass1, String aircraftType, String friction1) throws FileNotFoundException {
 
-        // This part just takes user input from the console
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("mass: ");
-        double mass = Double.parseDouble(in.next());
-
-        System.out.println("aircraft type: ");
-        String aircraftType = in.next();
-
-        System.out.println("friction coefficient (0.2 or 0.25)");
-        double friction = Double.parseDouble(in.next());
+        double mass = Double.parseDouble(mass1);
+        double friction = Double.parseDouble(friction1);
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
-        Scanner sc = new Scanner(new File("./python/Landing_Distance_Output/landingdist.csv"));
+        Scanner sc = new Scanner(new File("src/main/resources/python/Landing_Distance_Output/landingdist.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
         while (sc.hasNext()) {
@@ -49,29 +40,25 @@ public class LandingDistanceCalculator {
             }
         }
 
-        getAirspeed(mass, aircraftType, friction, lineList);
-
-    }
-
-    public static void getAirspeed(double mass, String aircraftType, double friction, List<List<Double>> lineList) {
-
-        System.out.print("Landing Distance: ");
+        double landingDist;
 
         if(aircraftType.equalsIgnoreCase("clean")) {
             if(friction == 0.25) {
-                System.out.println(lineList.get(0).get(0)*mass + lineList.get(0).get(1));
+                landingDist = lineList.get(0).get(0)*mass + lineList.get(0).get(1);
             }
             else {
-                System.out.println(lineList.get(1).get(0)*mass + lineList.get(1).get(1));
+                landingDist = lineList.get(1).get(0)*mass + lineList.get(1).get(1);
             }
         }
         else {
             if(friction == 0.25) {
-                System.out.println(lineList.get(2).get(0)*mass + lineList.get(2).get(1));
+                landingDist = lineList.get(2).get(0)*mass + lineList.get(2).get(1);
             }
             else {
-                System.out.println(lineList.get(3).get(0)*mass + lineList.get(3).get(1));
+                landingDist = lineList.get(3).get(0)*mass + lineList.get(3).get(1);
             }
         }
+
+        return "Landing Distance: " + landingDist +"<br/>";
     }
 }

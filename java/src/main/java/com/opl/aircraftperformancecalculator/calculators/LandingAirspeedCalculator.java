@@ -9,17 +9,14 @@ import java.util.Scanner;
 
 public class LandingAirspeedCalculator {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static String getLandingirspeed(String mass1) throws FileNotFoundException {
 
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("mass: ");
-        double mass = Double.parseDouble(in.next());
+        double mass = Double.parseDouble(mass1);
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
-        Scanner sc = new Scanner(new File("./python/Landing_Airspeed_Output/landingairspeed.csv"));
+        Scanner sc = new Scanner(new File("src/main/resources/python/Landing_Airspeed_Output/landingairspeed.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
         while (sc.hasNext()) {
@@ -41,28 +38,17 @@ public class LandingAirspeedCalculator {
                 }
             }
         }
-
-        getAirspeed(mass, lineList);
-
-    }
-
-    public static void getAirspeed(double mass, List<List<Double>> lineList) {
         //Output is in km/h
-        System.out.print("Approach Speed: ");
-        System.out.println(lineList.get(3).get(0)*Math.pow(mass,3) + lineList.get(3).get(1)*Math.pow(mass,2) +
-                lineList.get(3).get(2)*mass + lineList.get(3).get(3));
-
-        System.out.print("Touch-Down Speed: ");
-        System.out.println(lineList.get(2).get(0)*Math.pow(mass,3) + lineList.get(2).get(1)*Math.pow(mass,2) +
-                lineList.get(2).get(2)*mass + lineList.get(2).get(3));
-
-        System.out.print("Stall Speed (Gear Down): ");
-        System.out.println(lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
-                lineList.get(1).get(2)*mass + lineList.get(1).get(3));
-
-        System.out.print("Stall Speed (Gear Up): ");
-        System.out.println(lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
-                lineList.get(0).get(2)*mass + lineList.get(0).get(3));
+        return "Approach Speed: " +
+                (lineList.get(3).get(0)*Math.pow(mass,3) + lineList.get(3).get(1)*Math.pow(mass,2) +
+                lineList.get(3).get(2)*mass + lineList.get(3).get(3)) + "<br/>" +
+                "Touch-Down Speed: " +
+                (lineList.get(2).get(0)*Math.pow(mass,3) + lineList.get(2).get(1)*Math.pow(mass,2) +
+                lineList.get(2).get(2)*mass + lineList.get(2).get(3)) + "<br/>" +
+                "Stall Speed (Gear Down): " + (lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
+                lineList.get(1).get(2)*mass + lineList.get(1).get(3)) + "<br/>" +
+                "Stall Speed (Gear Up): " + (lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
+                lineList.get(0).get(2)*mass + lineList.get(0).get(3)) + "<br/>";
 
 
     }

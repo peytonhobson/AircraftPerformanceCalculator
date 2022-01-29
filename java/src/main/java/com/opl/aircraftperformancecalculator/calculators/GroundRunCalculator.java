@@ -9,31 +9,15 @@ import java.util.Scanner;
 
 public class GroundRunCalculator {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static String getGroundRun(String psi1, String temp1, String mass1, String drag1, String wind1, String slope1, String friction1) throws FileNotFoundException {
 
-        // This part just takes user input from the console
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("psi: ");
-        double psi=Double.parseDouble(in.next());
-
-        System.out.println("temp: ");
-        double temp=Double.parseDouble(in.next());
-
-        System.out.println("mass: ");
-        double mass=Double.parseDouble(in.next());
-
-        System.out.println("drag: ");
-        double drag=Double.parseDouble(in.next());
-
-        System.out.println("wind: ");
-        double wind=Double.parseDouble(in.next());
-
-        System.out.println("slope: ");
-        double slope=Double.parseDouble(in.next());
-
-        System.out.println("friction: ");
-        double friction=Double.parseDouble(in.next());
+        double psi = Double.parseDouble(psi1);
+        double temp = Double.parseDouble(temp1);
+        double mass = Double.parseDouble(mass1);
+        double drag = Double.parseDouble(drag1);
+        double wind = Double.parseDouble(wind1);
+        double slope = Double.parseDouble(slope1);
+        double friction = Double.parseDouble(friction1);
 
         // Names of the csv file names the contain the coefficients
         String[] files = {"temp", "mass", "drag", "wind", "slopes", "friction"};
@@ -50,7 +34,7 @@ public class GroundRunCalculator {
         // in polyList as described above
         for(String file : files) {
             polyList.add(new ArrayList<>());
-            Scanner sc = new Scanner(new File("./python/GroundRun_Output/" + file + ".csv"));
+            Scanner sc = new Scanner(new File("src/main/resources/python/GroundRun_Output/" + file + ".csv"));
             sc.useDelimiter(",");   //sets the delimiter pattern
             fileCount++;
             String val = null;
@@ -212,8 +196,6 @@ public class GroundRunCalculator {
         double fricOutput = fricLists.get(graph).get(0) * (Math.pow(friction, 3)) + fricLists.get(graph).get(1) * (Math.pow(friction, 2))
                 + fricLists.get(graph).get(2) * friction + fricLists.get(graph).get(3) + yDifference;
 
-        System.out.println(fricOutput);
-
-
+        return "Ground Run Distance: " + fricOutput +"<br/>";
     }
 }

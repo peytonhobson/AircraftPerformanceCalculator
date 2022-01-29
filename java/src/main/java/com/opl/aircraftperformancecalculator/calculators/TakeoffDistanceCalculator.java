@@ -9,24 +9,14 @@ import java.util.Scanner;
 
 public class TakeoffDistanceCalculator {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static String getTakeoffDistance(String mass1, String runwayType) throws FileNotFoundException {
 
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("Takeoff Mass: ");
-        double mass = Double.parseDouble(in.next());
-
-        System.out.println("Runway Type: ");
-        String runwayType = in.next();
+        double mass = Double.parseDouble(mass1);
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
-        int fileCount = -1;
-
-        // This loop iterates through the array of files and puts all the values
-        // in polyList as described above
-        Scanner sc = new Scanner(new File("./python/Takeoff_Distance_Output/takeoffdist.csv"));
+        Scanner sc = new Scanner(new File("src/main/resources/python/Takeoff_Distance_Output/takeoffdist.csv"));
         sc.useDelimiter(",");
         String val = null;
         while (sc.hasNext()) {
@@ -47,20 +37,17 @@ public class TakeoffDistanceCalculator {
             }
         }
 
-        getLandingDistance(mass, runwayType, lineList);
-    }
-
-    public static void getLandingDistance(double mass, String runwayType, List<List<Double>> lineList) {
-
-        System.out.print("Takeoff Distance: ");
+        double takeoffDist;
 
         if (runwayType.equalsIgnoreCase("concrete")) {
-            System.out.println(lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
-                    lineList.get(0).get(2)*mass + lineList.get(0).get(3));
+            takeoffDist = lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
+                    lineList.get(0).get(2)*mass + lineList.get(0).get(3);
         }
         else {
-            System.out.println(lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
-                    lineList.get(1).get(2)*mass + lineList.get(1).get(3));
+            takeoffDist = lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
+                    lineList.get(1).get(2)*mass + lineList.get(1).get(3);
         }
+
+        return "Takeoff Distance:" + takeoffDist + "<br/>";
     }
 }
