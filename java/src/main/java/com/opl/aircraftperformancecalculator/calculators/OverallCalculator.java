@@ -1,12 +1,12 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
-import com.opl.aircraftperformancecalculator.models.Input;
+import com.opl.aircraftperformancecalculator.models.Loadout;
 
 import java.io.FileNotFoundException;
 
 public class OverallCalculator {
 
-    public static String getData(Input input) throws FileNotFoundException {
+    public static String getData(Loadout input) throws FileNotFoundException {
 
         String takeoffMass = input.getTakeoffMass();
         String landingMass = input.getLandingMass();

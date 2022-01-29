@@ -14,7 +14,7 @@ export class ClassifierService {
    classify(takeoffMass: string, landingMass: string, temp: string, drag: string, slope: string, friction: string, runwayType: string, 
     psi: string, wind: string, aircraftType: string): Observable<Input> {
 
-        return this.apiService.post('inputData', { "takeoffMass": takeoffMass, "landingMass": landingMass, "temp" : temp, "drag": drag, "slope": slope, 
+        return this.apiService.post('calculator', { "takeoffMass": takeoffMass, "landingMass": landingMass, "temp" : temp, "drag": drag, "slope": slope, 
         "friction": friction, "runwayType": runwayType, "psi": psi, "wind": wind, "aircraftType": aircraftType, "output": ""});
 
     }
