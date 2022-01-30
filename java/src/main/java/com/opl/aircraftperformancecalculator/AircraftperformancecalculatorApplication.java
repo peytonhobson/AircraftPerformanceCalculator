@@ -11,7 +11,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.opl.aircraftperformancecalculator.controllers"})
+@ComponentScan(basePackages={"com.opl.aircraftperformancecalculator.resource"})
 public class AircraftPerformanceCalculatorApplication {
 
 	public static void main(String[] args) {
