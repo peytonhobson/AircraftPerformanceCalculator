@@ -1,7 +1,11 @@
 /**
  * Class used to represent response, where output is initialized to empty
  */
- export class Input{
+ export class Loadout{
+    
+    public id : string;
+    public userID : string;
+    public loadoutName: string;
     public takeoffMass: string;
     public landingMass: string;
     public temp: string;
@@ -14,8 +18,11 @@
     public aircraftType: string;
     public output: string;
 
-    constructor(takeoffMass: string, landingMass: string, temp: string, drag: string, slope: string, friction: string, runwayType: string, psi: string, wind: string, 
+    constructor(userID: string, loadoutName: string, takeoffMass: string, landingMass: string, temp: string, drag: string, slope: string, friction: string, runwayType: string, psi: string, wind: string, 
         aircraftType: string){
+        this.id = userID + "_" + loadoutName;
+        this.userID = userID;
+        this.loadoutName = loadoutName;
         this.takeoffMass = takeoffMass;
         this.landingMass = landingMass;
         this.temp = temp;

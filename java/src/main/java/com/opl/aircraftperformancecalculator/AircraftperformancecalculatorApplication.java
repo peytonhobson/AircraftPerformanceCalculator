@@ -1,5 +1,8 @@
 package com.opl.aircraftperformancecalculator;
 
+import com.opl.aircraftperformancecalculator.models.Loadout;
+import com.opl.aircraftperformancecalculator.repo.LoadoutRepo;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,14 +11,22 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.net.InetAddress;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.opl.aircraftperformancecalculator.resource"})
 public class AircraftPerformanceCalculatorApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AircraftPerformanceCalculatorApplication.class, args);
+	}
+
+	@Bean
+	CommandLineRunner run(LoadoutRepo loadoutRepo) {
+		return args -> {
+			loadoutRepo.save(new Loadout("Peyton", "Test", "5000", "5000",
+					"20", "1", "5", "0.2", "concrete", "1000", "10", "combat"));
+		};
 	}
 
 	@Bean

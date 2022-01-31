@@ -37,11 +37,17 @@ public class LoadoutResource {
         );
     }
 
-    @GetMapping(path = "/loadout")
-    public ResponseEntity<Loadout> returnLoadout(@RequestBody Loadout input) throws Exception {
+    @GetMapping(path = "/loadouts")
+    public ResponseEntity<Response> returnLoadout(@RequestBody Loadout loadout) throws Exception {
 
-        // TODO: This is only temporary. Set actual API values.
-        input.setOutput(OverallCalculator.getData(input));
-        return new ResponseEntity<>(input, HttpStatus.OK);
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("loadout", loadoutService.list(5)))
+                        .message("Loadouts retrieved")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
     }
 }

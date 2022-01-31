@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Input } from '../model/input.model';
+import { Loadout } from '../model/loadout.model';
 
 
 const httpOptions = {
@@ -25,7 +25,12 @@ export class ApiService {
    * @param body 
    * @returns 
    */
-  post(path: String, body: Object = {}): Observable<Input> {
-    return this.http.post<Input>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions);
+  post(path: String, body: Object = {}): Observable<Loadout> {
+    return this.http.post<Loadout>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions);
+  }
+
+  get(path: String, value: string): Observable<Loadout> {
+    console.log("executing get method : " + path + " val : " + value);
+    return this.http.get<Loadout>(`${environment.apiUrl}${path}/${value}`, httpOptions);
   }
 }

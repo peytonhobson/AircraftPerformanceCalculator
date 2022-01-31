@@ -11,7 +11,13 @@ export class AppComponent implements OnInit {
   title = 'FrontEnd';
 
   ngOnInit() {
-    
+    this.restClassifier.returnLoadouts().subscribe(
+      res => {
+        var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
+        for(var i = 0; i < loadoutBox.length; i++) {
+          loadoutBox.add(new Option(res.))
+        }
+      });
   }
 
   /**
@@ -40,11 +46,13 @@ export class AppComponent implements OnInit {
     var wind= document.getElementById('wind') as HTMLInputElement
     var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
-    this.restClassifier.classify(takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    this.restClassifier.calculate(takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
       runwayType.value, psi.value, wind.value, aircraftType.value).subscribe(
       res => {
-        var out = res.output.replace(/\n/g, "<br/>");
+        res.output.replace(/\n/g, "<br/>");
         document.getElementById('outputContainer').innerHTML = res.output;
       });
   }
+
+
 }
