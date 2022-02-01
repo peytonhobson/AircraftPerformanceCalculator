@@ -1,6 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { ClassifierService } from './service/classifier.service';
 import { templateSourceUrl } from '@angular/compiler';
+import { CustomResponse } from './model/response';
+import { Loadout } from './model/loadout.model';
 
 @Component({
   selector: 'app-root',
@@ -18,28 +20,64 @@ export class AppComponent implements OnInit {
   constructor(private restClassifier: ClassifierService) {}
 
   ngOnInit() {
+    var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
+
+    var loadouts  = new Map<string, Loadout>();
+
     this.restClassifier.returnLoadouts().subscribe(
       res => {
-        var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
-        console.log(res.data.loadout);
         if(res.data.loadouts !== undefined) {
           res.data.loadouts.forEach(element => {
-            loadoutBox.add(new Option(element.loadoutName), undefined)
+            loadouts.set(element.loadoutName,element)
+            loadoutBox.add(new Option(element.loadoutName,element.loadoutName), undefined)
           });
         }
+        else if(res.data.loadout !== undefined){
+          loadouts.set(res.data.loadout[0].loadoutName,res.data.loadout[0])
+            loadoutBox.add(new Option(res.data.loadout[0].loadoutName,res.data.loadout.loadoutName), undefined)
+        }
+      });
+
+      loadoutBox.addEventListener('change', e => {
+        
+        var takeoffMass = document.getElementById('tmass') as HTMLInputElement
+        var landingMass = document.getElementById('lmass') as HTMLInputElement
+        var temp = document.getElementById('temp') as HTMLInputElement
+        var drag = document.getElementById('drag') as HTMLInputElement
+        var slope = document.getElementById('slope') as HTMLInputElement
+        var friction = document.getElementById('friction') as HTMLInputElement
+        var runwayType = document.getElementById('runwayType') as HTMLInputElement
+        var psi = document.getElementById('psi') as HTMLInputElement
+        var wind= document.getElementById('wind') as HTMLInputElement
+        var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
+
+        if(loadoutBox.value !== 'None') {
+          takeoffMass.value = loadouts.get(loadoutBox.value).takeoffMass;
+          landingMass.value = loadouts.get(loadoutBox.value).landingMass;
+          temp.value = loadouts.get(loadoutBox.value).temp;
+          drag.value = loadouts.get(loadoutBox.value).drag;
+          slope.value = loadouts.get(loadoutBox.value).slope;
+          friction.value = loadouts.get(loadoutBox.value).friction;
+          runwayType.value = loadouts.get(loadoutBox.value).runwayType;
+          psi.value = loadouts.get(loadoutBox.value).psi;
+          wind.value = loadouts.get(loadoutBox.value).wind;
+          aircraftType.value = loadouts.get(loadoutBox.value).aircraftType;
+        }
         else {
-          loadoutBox.add(new Option(res.data.loadout[0].loadoutName,res.data.loadout.loadoutName), undefined)
+          takeoffMass.value = "";
+          landingMass.value = "";
+          temp.value = "";
+          drag.value = "";
+          slope.value = "";
+          friction.value = "";
+          runwayType.value = "";
+          psi.value = "";
+          wind.value = "";
+          aircraftType.value = "";
         }
       });
   }
 
-  /**
-   * Activated upon clicking one of the datset buttons.
-   * Sets current button to active and removes active from
-   * all other buttons. Also changes file to be embedded in
-   * the file preview box.
-   * @param id 
-   */
    submit() {
 
     var takeoffMass = document.getElementById('tmass') as HTMLInputElement
@@ -60,6 +98,7 @@ export class AppComponent implements OnInit {
         document.getElementById('outputContainer').innerHTML = res.data.loadout?.output;
       });
   }
+
 
 
 }
