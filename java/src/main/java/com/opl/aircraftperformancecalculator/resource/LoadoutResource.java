@@ -38,7 +38,7 @@ public class LoadoutResource {
     }
 
     @GetMapping(path = "/loadouts")
-    public ResponseEntity<Response> returnLoadout(@RequestBody Loadout loadout) throws Exception {
+    public ResponseEntity<Response> returnLoadout() {
 
         return ResponseEntity.ok(
                 Response.builder()

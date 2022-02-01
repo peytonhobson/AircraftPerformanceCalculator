@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Loadout } from '../model/loadout.model';
+import { CustomResponse } from '../model/response';
+import { tap, catchError } from 'rxjs/operators';
 
 
 const httpOptions = {
@@ -25,12 +26,21 @@ export class ApiService {
    * @param body 
    * @returns 
    */
-  post(path: String, body: Object = {}): Observable<Loadout> {
-    return this.http.post<Loadout>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions);
+  post(path: String, body: Object = {}): Observable<CustomResponse> {
+    return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions);
   }
 
-  get(path: String, value: string): Observable<Loadout> {
-    console.log("executing get method : " + path + " val : " + value);
-    return this.http.get<Loadout>(`${environment.apiUrl}${path}/${value}`, httpOptions);
+  get(path: String): Observable<CustomResponse> {
+    console.log("executing get method : " + path);
+    return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`)
+    .pipe(
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
+
+  handleError(error: HttpErrorResponse): Observable<never> {
+    console.log(error)
+    return throwError(`An error occurred - Error code: ${error.status}` );
+  } 
 }

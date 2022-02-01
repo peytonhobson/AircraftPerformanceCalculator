@@ -10,21 +10,28 @@ import { templateSourceUrl } from '@angular/compiler';
 export class AppComponent implements OnInit {
   title = 'FrontEnd';
 
-  ngOnInit() {
-    this.restClassifier.returnLoadouts().subscribe(
-      res => {
-        var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
-        for(var i = 0; i < loadoutBox.length; i++) {
-          loadoutBox.add(new Option(res.))
-        }
-      });
-  }
 
   /**
    * Classifier service used for calling classify method
    * upon start button click
    */
   constructor(private restClassifier: ClassifierService) {}
+
+  ngOnInit() {
+    this.restClassifier.returnLoadouts().subscribe(
+      res => {
+        var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
+        console.log(res.data.loadout);
+        if(res.data.loadouts !== undefined) {
+          res.data.loadouts.forEach(element => {
+            loadoutBox.add(new Option(element.loadoutName), undefined)
+          });
+        }
+        else {
+          loadoutBox.add(new Option(res.data.loadout[0].loadoutName,res.data.loadout.loadoutName), undefined)
+        }
+      });
+  }
 
   /**
    * Activated upon clicking one of the datset buttons.
@@ -49,8 +56,8 @@ export class AppComponent implements OnInit {
     this.restClassifier.calculate(takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
       runwayType.value, psi.value, wind.value, aircraftType.value).subscribe(
       res => {
-        res.output.replace(/\n/g, "<br/>");
-        document.getElementById('outputContainer').innerHTML = res.output;
+        res.data.loadout?.output.replace(/\n/g, "<br/>");
+        document.getElementById('outputContainer').innerHTML = res.data.loadout?.output;
       });
   }
 

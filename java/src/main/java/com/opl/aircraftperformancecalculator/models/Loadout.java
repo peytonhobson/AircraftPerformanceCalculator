@@ -1,18 +1,22 @@
 package com.opl.aircraftperformancecalculator.models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Loadout {
+
     @Id
-    @Column(name = "id", nullable = false)
     private String id;
 
     private String userID;
@@ -48,4 +52,17 @@ public class Loadout {
         this.output = output;
     }
 //TODO: Figure out if you can use doubles instead of parsing strings
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Loadout loadout = (Loadout) o;
+        return id != null && Objects.equals(id, loadout.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
