@@ -24,8 +24,8 @@ public class AircraftPerformanceCalculatorApplication {
 	@Bean
 	CommandLineRunner run(LoadoutRepo loadoutRepo) {
 		return args -> {
-			loadoutRepo.save(new Loadout("Peyton", "Test", "5000", "5000",
-					"20", "1", "5", "0.2", "concrete", "1000", "10", "combat"));
+			loadoutRepo.save(new Loadout("Peyton_Test","Peyton", "Test", "5000", "5000",
+					"20", "1", "5", "0.2", "concrete", "1000", "10", "combat", ""));
 		};
 	}
 

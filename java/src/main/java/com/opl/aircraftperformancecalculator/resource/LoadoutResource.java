@@ -29,7 +29,7 @@ public class LoadoutResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadout", loadoutService.calculate(loadout)))
+                        .data(of("output", loadoutService.calculate(loadout)))
                         .message("Output returned")
                         .status(OK)
                         .statusCode(OK.value())
@@ -39,12 +39,24 @@ public class LoadoutResource {
 
     @GetMapping(path = "/loadouts")
     public ResponseEntity<Response> returnLoadout() {
-
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
                         .data(of("loadout", loadoutService.list(5)))
                         .message("Loadouts retrieved")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
+    @PostMapping(path = "/save")
+    public ResponseEntity<Response> save(@RequestBody Loadout loadout) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("loadout", loadoutService.save(loadout)))
+                        .message("Loadout saved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

@@ -25,11 +25,13 @@
   <input type="text" id="aircraftType" name="aircraftType" value=""><br>
 </form> 
 
-<select name="loadouts" id="loadouts">
+<select class = "btn btn-outline-dark active" name="loadouts" id="loadouts">
   <option text="None" value="None">None</option>
 </select>
 
-<button class = "datasetButton btn btn-outline-dark active" (click)="submit()" id="Weather">Submit</button>
+<button class = "btn btn-outline-dark active" (click)="submit()" id="submit">Submit</button>
+
+<button class = "btn btn-outline-dark active" (click)="save()" id="save">Save</button>
             
 <div id="output" class="card"> <!-- Contains card for classification output-->
   <span  class="border" id="outputContainer"></span>

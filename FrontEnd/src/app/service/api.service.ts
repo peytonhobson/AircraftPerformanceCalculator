@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { CustomResponse } from '../model/response';
+import { CalculatorResponse, CustomResponse } from '../model/response';
 import { tap, catchError } from 'rxjs/operators';
+import { Loadout } from '../model/loadout.model'
 
 
 const httpOptions = {
@@ -17,7 +18,7 @@ const httpOptions = {
  */
 @Injectable()
 export class ApiService {
-  constructor(private http: HttpClient) { console.log("here");}
+  constructor(private http: HttpClient) {}
 
   /**
    * Method for making post request to back end 
@@ -26,8 +27,22 @@ export class ApiService {
    * @param body 
    * @returns 
    */
-  post(path: String, body: Object = {}): Observable<CustomResponse> {
-    return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions);
+  post(path: String, body: Object): Observable<CustomResponse> {
+    console.log(body);
+    return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
+    .pipe(
+      tap(console.log),
+      catchError(this.handleError)
+    );
+  }
+
+  calculatePost(path: String, body: Object): Observable<CalculatorResponse> {
+    console.log(body);
+    return this.http.post<CalculatorResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
+    .pipe(
+      tap(console.log),
+      catchError(this.handleError)
+    );
   }
 
   get(path: String): Observable<CustomResponse> {

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { ClassifierService } from './service/classifier.service';
 import { ApiService } from './service/api.service';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -15,7 +16,8 @@ import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http'
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [ClassifierService, ApiService, HttpClient],
   bootstrap: [AppComponent]

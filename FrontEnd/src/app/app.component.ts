@@ -1,22 +1,22 @@
 import { Component, OnInit} from '@angular/core';
 import { ClassifierService } from './service/classifier.service';
 import { templateSourceUrl } from '@angular/compiler';
-import { CustomResponse } from './model/response';
+import { CustomResponse, CalculatorResponse } from './model/response';
 import { Loadout } from './model/loadout.model';
+import { Injectable } from '@angular/core';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [
+    HTMLInputElement // added class in the providers
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'FrontEnd';
 
-
-  /**
-   * Classifier service used for calling classify method
-   * upon start button click
-   */
   constructor(private restClassifier: ClassifierService) {}
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
         var friction = document.getElementById('friction') as HTMLInputElement
         var runwayType = document.getElementById('runwayType') as HTMLInputElement
         var psi = document.getElementById('psi') as HTMLInputElement
-        var wind= document.getElementById('wind') as HTMLInputElement
+        var wind = document.getElementById('wind') as HTMLInputElement
         var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
         if(loadoutBox.value !== 'None') {
@@ -88,17 +88,36 @@ export class AppComponent implements OnInit {
     var friction = document.getElementById('friction') as HTMLInputElement
     var runwayType = document.getElementById('runwayType') as HTMLInputElement
     var psi = document.getElementById('psi') as HTMLInputElement
-    var wind= document.getElementById('wind') as HTMLInputElement
+    var wind = document.getElementById('wind') as HTMLInputElement
     var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
-    this.restClassifier.calculate(takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
-      runwayType.value, psi.value, wind.value, aircraftType.value).subscribe(
+    var loadout = new Loadout('userID', 'loadoutName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    runwayType.value, psi.value, wind.value, aircraftType.value);
+
+    this.restClassifier.calculate(loadout).subscribe(
       res => {
-        res.data.loadout?.output.replace(/\n/g, "<br/>");
-        document.getElementById('outputContainer').innerHTML = res.data.loadout?.output;
+        console.log(res.data.output);
+        res.data.output.replace(/\n/g, "<br/>");
+        document.getElementById('outputContainer').innerHTML = res.data.output;
       });
   }
 
+  save() {
 
+    var takeoffMass = document.getElementById('tmass') as HTMLInputElement
+    var landingMass = document.getElementById('lmass') as HTMLInputElement
+    var temp = document.getElementById('temp') as HTMLInputElement
+    var drag = document.getElementById('drag') as HTMLInputElement
+    var slope = document.getElementById('slope') as HTMLInputElement
+    var friction = document.getElementById('friction') as HTMLInputElement
+    var runwayType = document.getElementById('runwayType') as HTMLInputElement
+    var psi = document.getElementById('psi') as HTMLInputElement
+    var wind = document.getElementById('wind') as HTMLInputElement
+    var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
+    var loadout = new Loadout('userID', 'loadoutName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    runwayType.value, psi.value, wind.value, aircraftType.value);
+
+    this.restClassifier.save(loadout).subscribe();
+  }
 }

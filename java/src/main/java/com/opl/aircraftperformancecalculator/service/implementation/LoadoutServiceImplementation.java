@@ -28,9 +28,8 @@ public class LoadoutServiceImplementation implements LoadoutService {
     private final LoadoutRepo loadoutRepo;
 
     @Override
-    public Loadout create(Loadout loadout) {
+    public Loadout save(Loadout loadout) {
         log.info("Saving new loadout: {}", loadout.getLoadoutName());
-
         return loadoutRepo.save(loadout); //saves server to serverRepo
     }
 
@@ -60,9 +59,9 @@ public class LoadoutServiceImplementation implements LoadoutService {
     }
 
     @Override
-    public Loadout calculate(Loadout loadout) throws FileNotFoundException {
+    public String calculate(Loadout loadout) throws FileNotFoundException {
         log.info("Calculating output of loadout");
         loadout.setOutput(OverallCalculator.getData(loadout));
-        return loadoutRepo.save(loadout);
+        return OverallCalculator.getData(loadout);
     }
 }
