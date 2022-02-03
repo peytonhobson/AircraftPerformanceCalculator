@@ -7,7 +7,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {loadouts?: Loadout[], loadout?: Loadout};
+    data: {loadouts?: Loadout[]};
 }
 
 export interface CalculatorResponse {

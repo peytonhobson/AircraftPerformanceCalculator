@@ -42,7 +42,7 @@ public class LoadoutResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadout", loadoutService.list(5)))
+                        .data(of("loadouts", loadoutService.list(5)))
                         .message("Loadouts retrieved")
                         .status(OK)
                         .statusCode(OK.value())

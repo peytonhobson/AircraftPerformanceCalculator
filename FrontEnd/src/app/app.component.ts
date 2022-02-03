@@ -26,16 +26,21 @@ export class AppComponent implements OnInit {
 
     this.restClassifier.returnLoadouts().subscribe(
       res => {
+        console.log(res.data.loadouts)
         if(res.data.loadouts !== undefined) {
+          console.log("here1");
           res.data.loadouts.forEach(element => {
             loadouts.set(element.loadoutName,element)
             loadoutBox.add(new Option(element.loadoutName,element.loadoutName), undefined)
           });
         }
-        else if(res.data.loadout !== undefined){
-          loadouts.set(res.data.loadout[0].loadoutName,res.data.loadout[0])
-            loadoutBox.add(new Option(res.data.loadout[0].loadoutName,res.data.loadout.loadoutName), undefined)
-        }
+        // else if(res.data.loadout !== undefined){
+        //   console.log(res.data.loadout[0]);
+        //   for(var i = 0; i < res.data.loadout.length; i++)
+        //     loadouts.set(element.loadoutName,element)
+        //     loadoutBox.add(new Option(element.loadoutName,element.loadoutName), undefined)
+        //   });
+        // }
       });
 
       loadoutBox.addEventListener('change', e => {

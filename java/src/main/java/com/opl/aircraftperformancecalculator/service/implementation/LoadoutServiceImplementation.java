@@ -41,7 +41,7 @@ public class LoadoutServiceImplementation implements LoadoutService {
 
     @Override
     public Collection<Loadout> list(int limit) {
-        log.info("Fetching all loadouts");
+        log.info("Fetching all loadouts" + loadoutRepo.findAll(of(0, limit)).toList());
         return loadoutRepo.findAll(of(0, limit)).toList();
     }
 
