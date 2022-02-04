@@ -8,7 +8,7 @@ import { Loadout } from '../model/loadout.model'
  * Service for response model
  */
 @Injectable()
-export class ClassifierService {
+export class AppService {
 
    constructor(private apiService: ApiService) { }
 
@@ -24,4 +24,5 @@ export class ClassifierService {
     save(loadout : Loadout): Observable<CustomResponse> {
             return this.apiService.post('save', loadout);
     }
+    
 }

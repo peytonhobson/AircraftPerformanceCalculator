@@ -20,6 +20,8 @@ const httpOptions = {
 export class ApiService {
   constructor(private http: HttpClient) {}
 
+  authenticated = false;
+
   /**
    * Method for making post request to back end 
    * and returning observable response.
@@ -53,6 +55,25 @@ export class ApiService {
       catchError(this.handleError)
     );
   }
+
+  authenticate(credentials, callback) {
+
+    const headers = new HttpHeaders(credentials ? {
+        authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+    } : {});
+
+    this.http.get(`${environment.apiUrl}user`, {headers: headers}).subscribe(response => {
+        if (response['name']) {
+          console.log('here')
+            this.authenticated = true;
+        } else {
+          console.log('here')
+            this.authenticated = false;
+        }
+        return callback && callback();
+    });
+
+}
 
   handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error)
