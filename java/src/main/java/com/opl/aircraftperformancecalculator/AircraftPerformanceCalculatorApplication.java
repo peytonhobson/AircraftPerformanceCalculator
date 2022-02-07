@@ -1,7 +1,7 @@
 package com.opl.aircraftperformancecalculator;
 
-import com.opl.aircraftperformancecalculator.models.Loadout;
-import com.opl.aircraftperformancecalculator.repo.LoadoutRepo;
+import com.opl.aircraftperformancecalculator.models.Profile;
+import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.boot.SpringApplication;
@@ -21,9 +21,9 @@ public class AircraftPerformanceCalculatorApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(LoadoutRepo loadoutRepo) {
+	CommandLineRunner run(ProfileRepo loadoutRepo) {
 		return args -> {
-			loadoutRepo.save(new Loadout("Peyton_Test","Peyton", "Test", "5000", "5000",
+			loadoutRepo.save(new Profile("Peyton_Test","Peyton", "Test", "5000", "5000",
 					"20", "1", "5", "0.2", "concrete", "1000", "10", "combat", ""));
 		};
 	}

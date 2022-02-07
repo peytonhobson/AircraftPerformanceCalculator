@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   authenticated() { return this.api.authenticated; }
 
   ngOnInit() {
+    console.log("here232");
     var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
 
     var loadouts  = new Map<string, Loadout>();

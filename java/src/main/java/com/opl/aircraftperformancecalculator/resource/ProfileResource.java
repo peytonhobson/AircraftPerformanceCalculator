@@ -1,17 +1,13 @@
 package com.opl.aircraftperformancecalculator.resource;
 
 import com.opl.aircraftperformancecalculator.models.*;
-import com.opl.aircraftperformancecalculator.service.implementation.LoadoutServiceImplementation;
+import com.opl.aircraftperformancecalculator.service.implementation.ProfileServiceImplementation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.*;
-import com.opl.aircraftperformancecalculator.calculators.*;
 
 import java.security.Principal;
 
@@ -25,18 +21,18 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/profiles")
 @RequiredArgsConstructor
-public class LoadoutResource {
+public class ProfileResource {
 
-    private final LoadoutServiceImplementation loadoutService;
+    private final ProfileServiceImplementation profileService;
 
     @PostMapping(path = "/calculator")
-    public ResponseEntity<Response> calculate(@RequestBody Loadout loadout) throws Exception {
+    public ResponseEntity<Response> calculate(@RequestBody Profile profile) throws Exception {
 
         // TODO: This is only temporary. Set actual API values.
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("output", loadoutService.calculate(loadout)))
+                        .data(of("output", profileService.calculate(profile)))
                         .message("Output returned")
                         .status(OK)
                         .statusCode(OK.value())
@@ -44,12 +40,12 @@ public class LoadoutResource {
         );
     }
 
-    @GetMapping(path = "/loadouts")
+    @GetMapping(path = "/all")
     public ResponseEntity<Response> returnLoadout() {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadouts", loadoutService.list(5)))
+                        .data(of("loadouts", profileService.list(5)))
                         .message("Loadouts retrieved")
                         .status(OK)
                         .statusCode(OK.value())
@@ -58,11 +54,11 @@ public class LoadoutResource {
     }
 
     @PostMapping(path = "/save")
-    public ResponseEntity<Response> save(@RequestBody Loadout loadout) {
+    public ResponseEntity<Response> save(@RequestBody Profile profile) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadout", loadoutService.save(loadout)))
+                        .data(of("loadout", profileService.save(profile)))
                         .message("Loadout saved")
                         .status(OK)
                         .statusCode(OK.value())

@@ -36,7 +36,7 @@ export class XhrInterceptor implements HttpInterceptor {
     NgbModule,
     FormsModule
   ],
-  providers: [ApiService, { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }],
+  providers: [ApiService, AppService, { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

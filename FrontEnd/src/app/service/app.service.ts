@@ -17,12 +17,10 @@ export class AppService {
     }
 
     returnLoadouts(): Observable<CustomResponse> {
-        console.log(this.apiService.get('loadouts'));
-        return this.apiService.get('loadouts');
+        return this.apiService.get('all');
     }
 
     save(loadout : Loadout): Observable<CustomResponse> {
             return this.apiService.post('save', loadout);
     }
-    
 }

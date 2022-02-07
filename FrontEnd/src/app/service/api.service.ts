@@ -64,16 +64,13 @@ export class ApiService {
 
     this.http.get(`${environment.apiUrl}user`, {headers: headers}).subscribe(response => {
         if (response['name']) {
-          console.log('here')
             this.authenticated = true;
         } else {
-          console.log('here')
             this.authenticated = false;
         }
         return callback && callback();
     });
-
-}
+  } 
 
   handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error)

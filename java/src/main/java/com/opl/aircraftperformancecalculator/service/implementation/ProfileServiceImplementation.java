@@ -1,20 +1,16 @@
 package com.opl.aircraftperformancecalculator.service.implementation;
 
 import com.opl.aircraftperformancecalculator.calculators.OverallCalculator;
-import com.opl.aircraftperformancecalculator.models.Loadout;
-import com.opl.aircraftperformancecalculator.repo.LoadoutRepo;
-import com.opl.aircraftperformancecalculator.service.LoadoutService;
+import com.opl.aircraftperformancecalculator.models.Profile;
+import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
+import com.opl.aircraftperformancecalculator.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Collection;
-import java.util.Random;
 
 import static java.lang.Boolean.TRUE;
 import static org.springframework.data.domain.PageRequest.of;
@@ -23,32 +19,32 @@ import static org.springframework.data.domain.PageRequest.of;
 @Service
 @Transactional
 @Slf4j
-public class LoadoutServiceImplementation implements LoadoutService {
+public class ProfileServiceImplementation implements ProfileService {
 
-    private final LoadoutRepo loadoutRepo;
+    private final ProfileRepo loadoutRepo;
 
     @Override
-    public Loadout save(Loadout loadout) {
-        log.info("Saving new loadout: {}", loadout.getLoadoutName());
-        return loadoutRepo.save(loadout); //saves server to serverRepo
+    public Profile save(Profile profile) {
+        log.info("Saving new loadout: {}", profile.getProfileName());
+        return loadoutRepo.save(profile); //saves server to serverRepo
     }
 
     @Override
-    public Loadout get(Long id) {
+    public Profile get(Long id) {
         log.info("Fetching server by id: {}", id);
         return loadoutRepo.findById(id).get();
     }
 
     @Override
-    public Collection<Loadout> list(int limit) {
+    public Collection<Profile> list(int limit) {
         log.info("Fetching all loadouts" + loadoutRepo.findAll(of(0, limit)).toList());
         return loadoutRepo.findAll(of(0, limit)).toList();
     }
 
     @Override
-    public Loadout update(Loadout loadout) {
-        log.info("Updating Loadout: {}", loadout.getLoadoutName());
-        return loadoutRepo.save(loadout);
+    public Profile update(Profile profile) {
+        log.info("Updating Loadout: {}", profile.getProfileName());
+        return loadoutRepo.save(profile);
     }
 
     @Override
@@ -59,9 +55,9 @@ public class LoadoutServiceImplementation implements LoadoutService {
     }
 
     @Override
-    public String calculate(Loadout loadout) throws FileNotFoundException {
+    public String calculate(Profile profile) throws FileNotFoundException {
         log.info("Calculating output of loadout");
-        loadout.setOutput(OverallCalculator.getData(loadout));
-        return OverallCalculator.getData(loadout);
+        profile.setOutput(OverallCalculator.getData(profile));
+        return OverallCalculator.getData(profile);
     }
 }
