@@ -1,22 +1,23 @@
-import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from '../modules/login/components/login.component';
-import { HomeComponent } from '../modules/home/components/home.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { Routes, RouterModule } from '@angular/router';
+
+import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './helpers/auth.guard';
+
+const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
+const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home'},
-  { path: 'home', component: HomeComponent},
-  { path: 'login', component: LoginComponent,}
-      ];
+    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
+    { path: 'account', loadChildren: accountModule },
+
+    // otherwise redirect to home
+    { path: '**', redirectTo: '' }
+];
+
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-    BrowserModule,
-    HttpClientModule,
-    FormsModule],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

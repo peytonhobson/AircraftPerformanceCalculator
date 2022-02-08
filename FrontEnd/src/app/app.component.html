@@ -1,10 +1,14 @@
-<div class="container">
-  <ul class="nav nav-pills">
-    <li><a routerLinkActive="active" routerLink="/home">Home</a></li>
-    <li><a routerLinkActive="active" routerLink="/login">Login</a></li>
-    <li><a (click)="logout()">Logout</a></li>
-  </ul>
-</div>
-<div class="container">
+<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+  <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+      <a class="nav-item nav-link" (click)="logout()">Logout</a>
+  </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+  <alert></alert>
   <router-outlet></router-outlet>
 </div>
