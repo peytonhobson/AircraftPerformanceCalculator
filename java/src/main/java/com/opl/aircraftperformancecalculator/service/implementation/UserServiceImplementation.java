@@ -58,6 +58,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public List<User> getUsers() {
+        System.out.println("here");
         log.info("Getting all users from database");
         return userRepo.findAll();
     }
