@@ -1,4 +1,4 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.service;
+package com.opl.aircraftperformancecalculator.service;
 
 import com.opl.aircraftperformancecalculator.models.Profile;
 

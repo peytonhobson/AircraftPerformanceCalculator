@@ -24,7 +24,7 @@ export class AccountService {
         return this.userSubject.value;
     }
 
-    login(username, password) {
+    login(username, password): Observable<User> {
         return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
             .pipe(map(user => {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -54,11 +54,11 @@ export class AccountService {
         return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
     }
 
-    update(id, params) {
-        return this.http.put(`${environment.apiUrl}/users/${id}`, params)
+    update(username, params) {
+        return this.http.put(`${environment.apiUrl}/users/${username}`, params)
             .pipe(map(x => {
                 // update stored user if the logged in user updated their own record
-                if (id == this.userValue.id) {
+                if (username == this.userValue.username) {
                     // update local storage
                     const user = { ...this.userValue, ...params };
                     localStorage.setItem('user', JSON.stringify(user));
@@ -70,11 +70,11 @@ export class AccountService {
             }));
     }
 
-    delete(id: string) {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`)
+    delete(username: string) {
+        return this.http.delete(`${environment.apiUrl}/users/${username}`)
             .pipe(map(x => {
                 // auto logout if the logged in user deleted their own record
-                if (id == this.userValue.id) {
+                if (username == this.userValue.username) {
                     this.logout();
                 }
                 return x;

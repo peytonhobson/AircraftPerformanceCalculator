@@ -26,5 +26,4 @@ public class Profile {
     private String wind;
     private String aircraftType;
     private String output;
-
 }

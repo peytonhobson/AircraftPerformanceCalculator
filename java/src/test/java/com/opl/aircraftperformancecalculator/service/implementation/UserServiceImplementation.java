@@ -1,4 +1,4 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.service.implementation;
+package com.opl.aircraftperformancecalculator.service.implementation;
 
 import com.opl.aircraftperformancecalculator.service.UserService;
 import lombok.RequiredArgsConstructor;

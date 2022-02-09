@@ -1,4 +1,4 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.models;
+package com.opl.aircraftperformancecalculator.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data; // Look deeper into Lombok

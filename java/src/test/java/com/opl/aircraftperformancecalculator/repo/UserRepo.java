@@ -1,4 +1,4 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.repo;
+package com.opl.aircraftperformancecalculator.repo;
 
 import com.opl.aircraftperformancecalculator.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

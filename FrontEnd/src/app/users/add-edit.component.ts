@@ -9,7 +9,7 @@ import { AlertService } from '../services/alert.service'
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
     form: FormGroup;
-    id: string;
+    username: string;
     isAddMode: boolean;
     loading = false;
     submitted = false;
@@ -23,8 +23,8 @@ export class AddEditComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.id = this.route.snapshot.params['id'];
-        this.isAddMode = !this.id;
+        this.username = this.route.snapshot.params['username'];
+        this.isAddMode = !this.username;
         
         // password not required in edit mode
         const passwordValidators = [Validators.minLength(6)];
@@ -40,7 +40,7 @@ export class AddEditComponent implements OnInit {
         });
 
         if (!this.isAddMode) {
-            this.accountService.getById(this.id)
+            this.accountService.getById(this.username)
                 .pipe(first())
                 .subscribe(x => {
                     this.f['firstName'].setValue(x.firstName);
@@ -87,7 +87,7 @@ export class AddEditComponent implements OnInit {
     }
 
     private updateUser() {
-        this.accountService.update(this.id, this.form.value)
+        this.accountService.update(this.username, this.form.value)
             .pipe(first())
             .subscribe(
                 data => {

@@ -1,6 +1,5 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.calculators;
+package com.opl.aircraftperformancecalculator.calculators;
 
-import com.opl.aircraftperformancecalculator.calculators.*;
 import com.opl.aircraftperformancecalculator.models.Profile;
 
 import java.io.FileNotFoundException;

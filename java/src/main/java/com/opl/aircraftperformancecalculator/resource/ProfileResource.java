@@ -65,30 +65,4 @@ public class ProfileResource {
                         .build()
         );
     }
-
-    /**
-     *  If the "/user" resource is reachable then it will return the currently
-     *  authenticated user (an Authentication), and otherwise Spring Security will
-     *  intercept the request and send a 401 response through an AuthenticationEntryPoint.
-     * @param user
-     * @return
-     */
-    @GetMapping("/user")
-    public Principal user(Principal user) {
-        return user;
-    }
-
-    //TODO: Understand this piece better
-    @Configuration
-    protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-            .httpBasic()
-            .and()
-            .authorizeRequests()
-            .antMatchers("/index.html", "/", "/home", "/login").permitAll()
-            .anyRequest().authenticated();
-        }
-    } 
 }

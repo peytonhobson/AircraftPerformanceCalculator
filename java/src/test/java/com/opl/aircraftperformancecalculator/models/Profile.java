@@ -1,4 +1,4 @@
-package com.opl.java.com.opl.aircraftperformancecalculator.models;
+package com.opl.aircraftperformancecalculator.models;
 
 import lombok.*;
 import javax.persistence.Entity;
