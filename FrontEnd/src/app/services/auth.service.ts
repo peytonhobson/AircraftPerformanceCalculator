@@ -12,20 +12,22 @@ export class AuthenticationService {
 
   public username: String;
   public password: String;
+  public accessToken : String
 
   constructor(private http: HttpClient) {}
+  
 
   authenticationService(username: String, password: String) {
-    return this.http.get(`http://localhost:8080/profiles/all`,
-      { headers: { authorization: this.createBasicAuthToken(username, password) } }).pipe(map((res) => {
+    return this.http.get(`http://localhost:8080/users/${username}`,
+      { headers: { authorization: this.createAuthToken(this.accessToken) } }).pipe(map((res) => {
         this.username = username;
         this.password = password;
         this.registerSuccessfulLogin(username, password);
       }));
   }
 
-  createBasicAuthToken(username: String, password: String) {
-    return 'Basic ' + window.btoa(username + ":" + password)
+  createAuthToken(accessToken: String) {
+    return 'Bearer ' + accessToken
   }
 
   registerSuccessfulLogin(username, password) {
@@ -33,21 +35,17 @@ export class AuthenticationService {
   }
 
   logout() {
-    sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
+    this.accessToken = null;
     this.username = null;
     this.password = null;
   }
 
   isUserLoggedIn() {
-    let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME)
-    console.log(user);
-    if (user === null) return false
+    if (this.accessToken === null) return false
     return true
   }
 
   getLoggedInUserName() {
-    let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME)
-    if (user === null) return ''
-    return user
+    return this.username;
   }
 }

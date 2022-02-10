@@ -32,11 +32,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
             log.error("User not found in database");
             throw new UsernameNotFoundException("User not found in database");
         }
-        else {
-            log.error("User not found in database: {}", username);
-        }
 
-        System.out.println("here");
         Collection<SimpleGrantedAuthority> authorities  = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
@@ -58,7 +54,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public List<User> getUsers() {
-        System.out.println("here");
         log.info("Getting all users from database");
         return userRepo.findAll();
     }

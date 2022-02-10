@@ -16,7 +16,7 @@ export class AppComponent {
   user: User;
 
   constructor(private app: ApiService, private http: HttpClient, private accountService: AccountService) {
-    this.accountService.user.subscribe(x => this.user = x); 
+    
   }
 
   logout() {

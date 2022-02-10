@@ -1,36 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/models/user';
+import { AuthenticationService } from './auth.service';
+import { Token } from '../models/token';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
-    public user: Observable<User>;
+    public user: User;
 
     constructor(
         private router: Router,
-        private http: HttpClient
+        private http: HttpClient,
+        private authenticationService: AuthenticationService
     ) {
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-        this.user = this.userSubject.asObservable();
     }
 
     public get userValue(): User {
         return this.userSubject.value;
     }
 
-    login(username, password): Observable<User> {
-        return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
-            .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
-                return user;
+    login(username: string, password: string): Observable<Token> {
+        let params = new HttpParams()
+            .set('username', username)
+            .set('password', password)
+        return this.http.post<Token>(`${environment.apiUrl}users/login`, params)
+            .pipe(map(token => {
+                this.user = new User(username, password);
+                this.authenticationService.accessToken = token.access_token;
+                return token;
             }));
     }
 
@@ -45,8 +49,9 @@ export class AccountService {
         return this.http.post(`${environment.apiUrl}/users/register`, user);
     }
 
+    // TODO: May need to make this more secure
     getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/users`);
+        return this.http.get<User[]>(`${environment.apiUrl}/users/all`);
     }
 
     // TODO: May need to make this more secure

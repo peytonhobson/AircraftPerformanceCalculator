@@ -3,6 +3,10 @@ export class User {
     password: string;
     firstName: string;
     lastName: string;
-    token: string;
+
+    constructor(username : string, password: string) {
+        this.username = username;
+        this.password = password;
+    }
 }
 

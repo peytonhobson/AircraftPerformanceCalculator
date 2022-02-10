@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/app/services/account.service';
 import { AlertService } from '../services/alert.service';
+import { AuthenticationService } from '../services/auth.service';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private authenticationService: AuthenticationService
     ) { }
 
     ngOnInit() {
@@ -44,6 +46,7 @@ export class LoginComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
+
 
         this.loading = true;
         this.accountService.login(this.f['username'].value, this.f['password'].value)

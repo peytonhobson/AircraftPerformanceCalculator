@@ -31,6 +31,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        final String origin = "http://localhost:4200";
+
+        response.addHeader("Access-Control-Allow-Origin", origin);
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, authorization");
+
         if(request.getServletPath().equals("/users/login") || request.getServletPath().equals("/users/token/refresh")) {
             filterChain.doFilter(request,response);
         }
@@ -64,7 +72,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-
             }
             else {
                 filterChain.doFilter(request, response);
