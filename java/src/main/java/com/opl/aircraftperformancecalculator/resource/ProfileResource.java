@@ -45,8 +45,8 @@ public class ProfileResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadouts", profileService.list(5)))
-                        .message("Loadouts retrieved")
+                        .data(of("profiles", profileService.list(5)))
+                        .message("Profiles retrieved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

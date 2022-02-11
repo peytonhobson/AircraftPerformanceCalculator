@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { AppService } from 'src/app/services/app.service';
 import { AccountService } from '../services/account.service';
-import { Loadout } from 'src/app/models/loadout.model';
+import { Profile } from 'src/app/models/profile.model';
 import { User } from '../models/user';
 
 
@@ -22,30 +22,29 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    var loadoutBox = document.getElementById('loadouts') as HTMLSelectElement
+    var profileBox = document.getElementById('profiles') as HTMLSelectElement
 
-    var loadouts  = new Map<string, Loadout>();
+    var profiles  = new Map<string, Profile>();
 
-    this.restClassifier.returnLoadouts().subscribe(
+    this.restClassifier.returnProfiles().subscribe(
       res => {
-        console.log(res.data.loadouts)
-        if(res.data.loadouts !== undefined) {
+        if(res.data.profiles !== undefined) {
           console.log("here1");
-          res.data.loadouts.forEach(element => {
-            loadouts.set(element.loadoutName,element)
-            loadoutBox.add(new Option(element.loadoutName,element.loadoutName), undefined)
+          res.data.profiles.forEach(element => {
+            profiles.set(element.profileName,element)
+            profileBox.add(new Option(element.profileName,element.profileName), undefined)
           });
         }
-        // else if(res.data.loadout !== undefined){
-        //   console.log(res.data.loadout[0]);
-        //   for(var i = 0; i < res.data.loadout.length; i++)
-        //     loadouts.set(element.loadoutName,element)
-        //     loadoutBox.add(new Option(element.loadoutName,element.loadoutName), undefined)
+        // else if(res.data.Profile !== undefined){
+        //   console.log(res.data.Profile[0]);
+        //   for(var i = 0; i < res.data.Profile.length; i++)
+        //     Profiles.set(element.ProfileName,element)
+        //     ProfileBox.add(new Option(element.ProfileName,element.ProfileName), undefined)
         //   });
         // }
       });
 
-      loadoutBox.addEventListener('change', e => {
+      profileBox.addEventListener('change', e => {
         
         var takeoffMass = document.getElementById('tmass') as HTMLInputElement
         var landingMass = document.getElementById('lmass') as HTMLInputElement
@@ -58,17 +57,17 @@ export class HomeComponent implements OnInit {
         var wind = document.getElementById('wind') as HTMLInputElement
         var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
-        if(loadoutBox.value !== 'None') {
-          takeoffMass.value = loadouts.get(loadoutBox.value).takeoffMass;
-          landingMass.value = loadouts.get(loadoutBox.value).landingMass;
-          temp.value = loadouts.get(loadoutBox.value).temp;
-          drag.value = loadouts.get(loadoutBox.value).drag;
-          slope.value = loadouts.get(loadoutBox.value).slope;
-          friction.value = loadouts.get(loadoutBox.value).friction;
-          runwayType.value = loadouts.get(loadoutBox.value).runwayType;
-          psi.value = loadouts.get(loadoutBox.value).psi;
-          wind.value = loadouts.get(loadoutBox.value).wind;
-          aircraftType.value = loadouts.get(loadoutBox.value).aircraftType;
+        if(profileBox.value !== 'None') {
+          takeoffMass.value = profiles.get(profileBox.value).takeoffMass;
+          landingMass.value = profiles.get(profileBox.value).landingMass;
+          temp.value = profiles.get(profileBox.value).temp;
+          drag.value = profiles.get(profileBox.value).drag;
+          slope.value = profiles.get(profileBox.value).slope;
+          friction.value = profiles.get(profileBox.value).friction;
+          runwayType.value = profiles.get(profileBox.value).runwayType;
+          psi.value = profiles.get(profileBox.value).psi;
+          wind.value = profiles.get(profileBox.value).wind;
+          aircraftType.value = profiles.get(profileBox.value).aircraftType;
         }
         else {
           takeoffMass.value = "";
@@ -98,10 +97,10 @@ export class HomeComponent implements OnInit {
     var wind = document.getElementById('wind') as HTMLInputElement
     var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
-    var loadout = new Loadout('userID', 'loadoutName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    var Profile = new Profile('userID', 'ProfileName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
     runwayType.value, psi.value, wind.value, aircraftType.value);
 
-    this.restClassifier.calculate(loadout).subscribe(
+    this.restClassifier.calculate(Profile).subscribe(
       res => {
         console.log(res.data.output);
         res.data.output.replace(/\n/g, "<br/>");
@@ -122,10 +121,10 @@ export class HomeComponent implements OnInit {
     var wind = document.getElementById('wind') as HTMLInputElement
     var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
 
-    var loadout = new Loadout('userID', 'loadoutName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    var Profile = new Profile('userID', 'ProfileName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
     runwayType.value, psi.value, wind.value, aircraftType.value);
 
-    this.restClassifier.save(loadout).subscribe();
+    this.restClassifier.save(Profile).subscribe();
   }
 }
 

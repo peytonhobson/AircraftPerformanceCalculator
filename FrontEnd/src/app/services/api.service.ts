@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 import { CalculatorResponse, CustomResponse } from '../models/response';
 import { tap, catchError } from 'rxjs/operators';
-import { Loadout } from '../models/loadout.model'
+import { Profile } from '../models/profile.model'
 
 
 const httpOptions = {

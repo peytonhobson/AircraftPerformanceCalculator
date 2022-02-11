@@ -1,4 +1,4 @@
-import {Loadout} from "./loadout.model";
+import { Profile } from "./profile.model";
 
 export interface CustomResponse {
     timeStamp: Date;
@@ -7,7 +7,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {loadouts?: Loadout[]};
+    data: {profiles?: Profile[]};
 }
 
 export interface CalculatorResponse {

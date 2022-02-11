@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 import { CustomResponse, CalculatorResponse } from '../models/response';
-import { Loadout } from '../models/loadout.model'
+import { Profile } from '../models/profile.model'
 
 /**
  * Service for response model
@@ -12,15 +12,15 @@ export class AppService {
 
    constructor(private apiService: ApiService) { }
 
-    calculate(loadout: Loadout): Observable<CalculatorResponse> {
-        return this.apiService.calculatePost('profiles/calculator', loadout);
+    calculate(Profile: Profile): Observable<CalculatorResponse> {
+        return this.apiService.calculatePost('profiles/calculator', Profile);
     }
 
-    returnLoadouts(): Observable<CustomResponse> {
+    returnProfiles(): Observable<CustomResponse> {
         return this.apiService.get('profiles/all');
     }
 
-    save(loadout : Loadout): Observable<CustomResponse> {
-            return this.apiService.post('profiles/save', loadout);
+    save(Profile : Profile): Observable<CustomResponse> {
+            return this.apiService.post('profiles/save', Profile);
     }
 }
