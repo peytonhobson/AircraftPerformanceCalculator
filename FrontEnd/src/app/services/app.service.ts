@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Observable } from 'rxjs';
+import { Observable, first, pipe } from 'rxjs';
 import { CustomResponse, CalculatorResponse } from '../models/response';
 import { Profile } from '../models/profile.model'
 
@@ -21,6 +21,6 @@ export class AppService {
     }
 
     save(Profile : Profile): Observable<CustomResponse> {
-            return this.apiService.post('profiles/save', Profile);
+        return this.apiService.post('profiles/save', Profile);
     }
 }

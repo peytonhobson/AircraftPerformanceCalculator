@@ -4,6 +4,7 @@ import { AppService } from 'src/app/services/app.service';
 import { AccountService } from '../services/account.service';
 import { Profile } from 'src/app/models/profile.model';
 import { User } from '../models/user';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -14,11 +15,8 @@ import { User } from '../models/user';
 export class HomeComponent implements OnInit {
   title = 'FrontEnd';
 
-  user : User;
 
-  constructor(private restClassifier: AppService, private api : ApiService, private accountService: AccountService) {
-    this.user = this.accountService.userValue;
-  }
+  constructor(private restClassifier: AppService, private api : ApiService, private accountService: AccountService) {}
 
   ngOnInit() {
 
@@ -120,11 +118,26 @@ export class HomeComponent implements OnInit {
     var psi = document.getElementById('psi') as HTMLInputElement
     var wind = document.getElementById('wind') as HTMLInputElement
     var aircraftType = document.getElementById('aircraftType') as HTMLInputElement
+    var profileName = document.getElementById('profileName') as HTMLInputElement
 
-    var Profile = new Profile('userID', 'ProfileName', takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
+    var profile = new Profile(sessionStorage.getItem('username'), profileName.value, takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
     runwayType.value, psi.value, wind.value, aircraftType.value);
 
-    this.restClassifier.save(Profile).subscribe();
+    this.restClassifier.save(profile).subscribe();
+  }
+
+  displaySaveStyle = "none";
+  
+  openSaveModal() {
+    this.displaySaveStyle = "block";
+  }
+
+  closeSaveModal(save: boolean) {
+    this.displaySaveStyle = "none";
+
+    if(save) {
+      this.save();
+    }
   }
 }
 

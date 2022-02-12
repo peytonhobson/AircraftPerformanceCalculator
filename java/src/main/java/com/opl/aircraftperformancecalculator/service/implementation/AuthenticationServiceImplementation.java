@@ -1,0 +1,35 @@
+package com.opl.aircraftperformancecalculator.service.implementation;
+
+import com.opl.aircraftperformancecalculator.models.AuthenticationCode;
+import com.opl.aircraftperformancecalculator.models.User;
+import com.opl.aircraftperformancecalculator.repo.AuthenticationRepo;
+import com.opl.aircraftperformancecalculator.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+import static java.lang.Boolean.TRUE;
+
+@RequiredArgsConstructor
+@Service
+@Transactional
+@Slf4j
+public class AuthenticationServiceImplementation implements AuthenticationService {
+
+    private final AuthenticationRepo authenticationRepo;
+
+    @Override
+    public Boolean deleteAuthenticationCode(AuthenticationCode code) {
+        log.info("Deleting Authentication Code {} ", code.getCode());
+        authenticationRepo.deleteByCode(code.getCode());
+        return TRUE;
+    }
+
+    @Override
+    public AuthenticationCode saveCode(AuthenticationCode code) {
+        log.info("Saving Authentication Code {} ", code.getCode());
+        return authenticationRepo.save(code);
+    }
+}

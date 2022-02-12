@@ -53,50 +53,51 @@ export class AddEditComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 
-    onSubmit() {
-        this.submitted = true;
+    // onSubmit() {
+    //     this.submitted = true;
 
-        // reset alerts on submit
-        this.alertService.clear();
+    //     // reset alerts on submit
+    //     this.alertService.clear();
 
-        // stop here if form is invalid
-        if (this.form.invalid) {
-            return;
-        }
+    //     // stop here if form is invalid
+    //     if (this.form.invalid) {
+    //         return;
+    //     }
 
-        this.loading = true;
-        if (this.isAddMode) {
-            this.createUser();
-        } else {
-            this.updateUser();
-        }
-    }
+    //     this.loading = true;
+    //     if (this.isAddMode) {
+    //         this.createUser();
+    //     }
+    //     // } else {
+    //     //     this.updateUser();
+    //     // }
+    // }
 
-    private createUser() {
-        this.accountService.register(this.form.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.alertService.success('User added successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['.', { relativeTo: this.route }]);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
+    // private createUser() {
+    //     this.accountService.register(this.form.value)
+    //         .pipe(first())
+    //         .subscribe(
+    //             data => {
+    //                 this.alertService.success('User added successfully', { keepAfterRouteChange: true });
+    //                 this.router.navigate(['.', { relativeTo: this.route }]);
+    //             },
+    //             error => {
+    //                 this.alertService.error(error);
+    //                 this.loading = false;
+    //             });
+    // }
 
-    private updateUser() {
-        this.accountService.update(this.username, this.form.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['..', { relativeTo: this.route }]);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
+    // private updateUser() {
+    //     this.accountService.update(this.username, this.form.value)
+    //         .pipe(first())
+    //         .subscribe(
+    //             data => {
+    //                 this.alertService.success('Update successful', { keepAfterRouteChange: true });
+    //                 this.router.navigate(['..', { relativeTo: this.route }]);
+    //             },
+    //             error => {
+    //                 this.alertService.error(error);
+    //                 this.loading = false;
+    //             });
+    // }
 }

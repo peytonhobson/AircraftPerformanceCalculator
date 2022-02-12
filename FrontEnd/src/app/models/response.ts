@@ -19,3 +19,13 @@ export interface CalculatorResponse {
     developerMessage: string;
     data: {output: string};
 }
+
+export interface AuthenticationResponse {
+    timeStamp: Date;
+    statusCode: number;
+    status: string;
+    reason: string;
+    message: string;
+    developerMessage: string;
+    data: {authentication: boolean};
+}

@@ -37,9 +37,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         response.addHeader("Access-Control-Allow-Origin", origin);
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, authorization");
+        response.setHeader("Access-Control-Allow-Headers", "*");
 
-        if(request.getServletPath().equals("/users/login") || request.getServletPath().equals("/users/token/refresh")) {
+        if(request.getServletPath().equals("/users/login") || request.getServletPath().equals("/users/token/refresh")
+        || request.getServletPath().equals("/register/authentication") || request.getServletPath().equals("/register/token")) {
             filterChain.doFilter(request,response);
         }
         else {

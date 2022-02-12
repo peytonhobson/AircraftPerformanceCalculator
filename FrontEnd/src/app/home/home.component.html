@@ -30,10 +30,29 @@
     
     <button class = "btn btn-outline-dark active" (click)="submit()" id="submit">Submit</button>
     
-    <button class = "btn btn-outline-dark active" (click)="save()" id="save">Save</button>
+    <button type="button" class="btn btn-outline-dark active" (click)="openSaveModal()" id="save">Save</button>
+
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyle}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">What would you like to name this profile?</h4>
+          </div>
+          <div class="modal-body">
+            <label for="profileName">Profile Name:</label><br>
+            <input type="text" id="profileName" name="profileName" value=""><br> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>
+           <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(true)">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
                 
     <div id="output" class="card">
       <span  class="border" id="outputContainer"></span>
     </div>
+
 </body>
 </html>

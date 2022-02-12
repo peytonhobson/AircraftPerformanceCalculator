@@ -5,6 +5,8 @@ import { first } from 'rxjs/operators';
 
 import { AccountService } from 'src/app/services/account.service';
 import { AlertService } from '../services/alert.service';
+import { User } from '../models/user';
+import { AuthenticationCode } from '../models/authentication.code.model';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
@@ -22,8 +24,6 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
             username: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]],
             authenticationCode: ['', Validators.required]
@@ -39,22 +39,28 @@ export class RegisterComponent implements OnInit {
         // reset alerts on submit
         this.alertService.clear();
 
+
         // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
 
+
+        var user = new User(this.form.get('username').value, this.form.get('password').value);
+        var authenticationCode = new AuthenticationCode(this.form.get('authenticationCode').value);
+
+        var authenticated;
+
         this.loading = true;
-        this.accountService.register(this.form.value)
-            .pipe(first())
-            .subscribe(
-                data => {
-                    this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['../login'], { relativeTo: this.route });
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
+        authenticated = this.accountService.register(user, authenticationCode)
+
+        if(authenticated) {
+            this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+            this.router.navigate(['../login'], { relativeTo: this.route });
+        }
+        else {
+            this.alertService.error(authenticated);
+            this.loading = false;
+        }
     }
 }

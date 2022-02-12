@@ -38,7 +38,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    //TODO: Make return responses instead of users;
     @Override
     public User saveUser(User user) {
         log.info("Saving new user {} to database", user.getUsername());

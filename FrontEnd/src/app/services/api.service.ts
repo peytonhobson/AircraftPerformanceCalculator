@@ -3,14 +3,16 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CalculatorResponse, CustomResponse } from '../models/response';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, first, map } from 'rxjs/operators';
 import { Profile } from '../models/profile.model'
+import { AccountService } from './account.service';
+import { AuthenticationService } from './auth.service';
+import { Router } from '@angular/router';
 
 
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
   })
 };
 
@@ -19,9 +21,10 @@ const httpOptions = {
  */
 @Injectable()
 export class ApiService {
-  constructor(private http: HttpClient) {}
-
-  authenticated = false;
+  constructor(private http: HttpClient,
+    private accountService: AccountService,
+    private authenticationService: AuthenticationService,
+    private router: Router) {}
 
   /**
    * Method for making post request to back end 
@@ -31,12 +34,14 @@ export class ApiService {
    * @returns 
    */
   post(path: String, body: Object): Observable<CustomResponse> {
-    console.log(body);
+    console.log("executing post method : " + path);
     return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
-    .pipe(
-      tap(console.log),
-      catchError(this.handleError)
-    );
+    .pipe(map(res => {
+      if(res.status != "200") {
+        this.handleError(res.status);
+      }
+      return res;
+    }));
   }
 
   calculatePost(path: String, body: Object): Observable<CalculatorResponse> {
@@ -51,32 +56,20 @@ export class ApiService {
   get(path: String): Observable<CustomResponse> {
     console.log("executing get method : " + path);
     return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`)
-    .pipe(
-      tap(console.log),
-      catchError(this.handleError)
-    );
+    .pipe(map(res => {
+      tap(console.log)
+      if(res.status != "200") {
+        this.handleError(res.status);
+      }
+      return res;
+    }));
   }
 
-  // authenticate(credentials, callback) {
-
-  //   const headers = new HttpHeaders(credentials ? {
-  //       authorization : 'Basic' + btoa(credentials.username + ':' + credentials.password)} : {});
-
-
-        
-    
-  //     this.http.get(`${environment.apiUrl}users/current`, {headers: headers} ).subscribe(response => {
-  //         if (response['name']) {
-  //             this.authenticated = true;
-  //         } else {
-  //             this.authenticated = true;
-  //         }
-  //         return callback && callback();
-  //     });
-  // } 
-
-  handleError(error: HttpErrorResponse): Observable<never> {
-    console.log(error)
-    return throwError(`An error occurred - Error code: ${error.status}` );
+  handleError(error: string): Observable<never> {
+    if(error == "403") {
+        this.authenticationService.logout();
+        this.router.navigate(['/account/login']);
+    }
+    return throwError(() =>new Error(`An error occurred - Error code: ${error}`));
   } 
 }

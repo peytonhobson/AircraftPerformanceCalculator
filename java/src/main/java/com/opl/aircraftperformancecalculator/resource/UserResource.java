@@ -53,6 +53,19 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUser(username));
     }
 
+    @GetMapping("/authenticated")
+    public ResponseEntity<String> authenticate() {
+        log.info("authenticating");
+        return ResponseEntity.ok().body("true");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Boolean> register(@RequestBody User user) {
+        log.info("Registering User {}", user.getUsername());
+        userService.saveUser(user);
+        return ResponseEntity.ok().body(true);
+    }
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -67,7 +80,7 @@ public class UserResource {
                 User user = userService.getUser(username);
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", "ROLE_USER")
                         .sign(algorithm);
@@ -91,7 +104,4 @@ public class UserResource {
             throw new RuntimeException("Refresh token is missing");
         }
     }
-
-
-
 }

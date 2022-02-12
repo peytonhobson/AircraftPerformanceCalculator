@@ -1,6 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Token } from '../models/token';
+import { environment } from 'src/environments/environment';
+import { AuthenticationCode } from '../models/authentication.code.model';
+import { AuthenticationResponse } from '../models/response';
+import { User } from '../models/user';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+  })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -12,40 +24,35 @@ export class AuthenticationService {
 
   public username: String;
   public password: String;
-  public accessToken : String
+  public accessToken : string;
 
   constructor(private http: HttpClient) {}
-  
 
-  authenticationService(username: String, password: String) {
-    return this.http.get(`http://localhost:8080/users/${username}`,
-      { headers: { authorization: this.createAuthToken(this.accessToken) } }).pipe(map((res) => {
-        this.username = username;
-        this.password = password;
-        this.registerSuccessfulLogin(username, password);
-      }));
-  }
 
   createAuthToken(accessToken: String) {
     return 'Bearer ' + accessToken
   }
 
-  registerSuccessfulLogin(username, password) {
-    sessionStorage.setItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME, username)
-  }
-
   logout() {
-    this.accessToken = null;
-    this.username = null;
-    this.password = null;
+    localStorage.setItem('token', null); 
+    localStorage.setItem('username', null); 
   }
 
   isUserLoggedIn() {
-    if (this.accessToken === null) return false
+    if (!localStorage.getItem('token')) return false
     return true
   }
 
   getLoggedInUserName() {
-    return this.username;
+    return localStorage.getItem('username');
+  }
+
+  authenticate(authenicationCode: AuthenticationCode, user : User): Observable<AuthenticationResponse>{
+    
+    return this.http.post<AuthenticationResponse>(`${environment.apiUrl}register/authentication`, 
+    JSON.stringify({"code":authenicationCode.code, "username": user.username, "password":user.password}), httpOptions)
+            .pipe(map(decision => {
+                return decision;
+            }));
   }
 }
