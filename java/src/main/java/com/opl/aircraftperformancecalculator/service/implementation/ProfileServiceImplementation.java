@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.List;
 
 import static java.lang.Boolean.TRUE;
 import static org.springframework.data.domain.PageRequest.of;
@@ -35,10 +36,16 @@ public class ProfileServiceImplementation implements ProfileService {
         return loadoutRepo.findById(id).get();
     }
 
+//    @Override
+//    public Collection<Profile> list(int limit) {
+//        log.info("Fetching all loadouts" + loadoutRepo.findAll(of(0, limit)).toList());
+//        return loadoutRepo.findAll(of(0, limit)).toList();
+//    }
+
     @Override
-    public Collection<Profile> list(int limit) {
-        log.info("Fetching all loadouts" + loadoutRepo.findAll(of(0, limit)).toList());
-        return loadoutRepo.findAll(of(0, limit)).toList();
+    public List<Profile> listByUsername(String username) {
+        log.info("Fetching all loadouts" + loadoutRepo.findAllByUserID(username));
+        return loadoutRepo.findAllByUserID(username);
     }
 
     @Override

@@ -24,10 +24,9 @@ export class HomeComponent implements OnInit {
 
     var profiles  = new Map<string, Profile>();
 
-    this.restClassifier.returnProfiles().subscribe(
+    this.restClassifier.returnProfiles(localStorage.getItem('username')).subscribe(
       res => {
         if(res.data.profiles !== undefined) {
-          console.log("here1");
           res.data.profiles.forEach(element => {
             profiles.set(element.profileName,element)
             profileBox.add(new Option(element.profileName,element.profileName), undefined)

@@ -40,14 +40,13 @@ public class ProfileResource {
         );
     }
 
-    @GetMapping(path = "/all")
-    public ResponseEntity<Response> returnLoadout() {
+    @PostMapping(path = "/{username}/all")
+    public ResponseEntity<Response> returnLoadout(@PathVariable("username") String username) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("profiles", profileService.list(5)))
+                        .data(of("profiles", profileService.listByUsername(username)))
                         .message("Profiles retrieved")
-                        .status(OK)
                         .statusCode(OK.value())
                         .build()
         );

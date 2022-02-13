@@ -10,4 +10,5 @@ public interface ProfileRepo extends JpaRepository<Profile, Long> {
 
     List<Profile> findAllByProfileName(String profileName);
     List<Profile> findAllByUserID(String userID);
+    List<Profile> findProfilesByUserID(String userID);
 }
