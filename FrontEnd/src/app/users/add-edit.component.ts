@@ -39,15 +39,15 @@ export class AddEditComponent implements OnInit {
             password: ['', passwordValidators]
         });
 
-        if (!this.isAddMode) {
-            this.accountService.getById(this.username)
-                .pipe(first())
-                .subscribe(x => {
-                    this.f['firstName'].setValue(x.firstName);
-                    this.f['lastName'].setValue(x.lastName);
-                    this.f['username'].setValue(x.username);
-                });
-        }
+        // if (!this.isAddMode) {
+        //     this.accountService.getById(this.username)
+        //         .pipe(first())
+        //         .subscribe(x => {
+        //             this.f['firstName'].setValue(x.firstName);
+        //             this.f['lastName'].setValue(x.lastName);
+        //             this.f['username'].setValue(x.username);
+        //         });
+        // }
     }
 
     // convenience getter for easy access to form fields

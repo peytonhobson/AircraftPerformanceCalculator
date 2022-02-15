@@ -1,6 +1,5 @@
 import { Component, OnInit} from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import { AppService } from 'src/app/services/app.service';
 import { AccountService } from '../services/account.service';
 import { Profile } from 'src/app/models/profile.model';
 import { User } from '../models/user';
@@ -16,7 +15,7 @@ export class HomeComponent implements OnInit {
   title = 'FrontEnd';
 
 
-  constructor(private restClassifier: AppService, private api : ApiService, private accountService: AccountService) {}
+  constructor(private restClassifier : ApiService, private accountService: AccountService) {}
 
   ngOnInit() {
 
@@ -122,7 +121,7 @@ export class HomeComponent implements OnInit {
     var profile = new Profile(sessionStorage.getItem('username'), profileName.value, takeoffMass.value, landingMass.value, temp.value, drag.value, slope.value, friction.value, 
     runwayType.value, psi.value, wind.value, aircraftType.value);
 
-    this.restClassifier.save(profile).subscribe();
+    this.restClassifier.saveProfile(profile).subscribe();
   }
 
   displaySaveStyle = "none";
@@ -137,6 +136,14 @@ export class HomeComponent implements OnInit {
     if(save) {
       this.save();
     }
+  }
+
+  queryWeather() {
+
+  }
+
+  logout() {
+    this.accountService.logout();
   }
 }
 

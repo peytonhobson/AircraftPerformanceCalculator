@@ -10,9 +10,9 @@ export class ListComponent implements OnInit {
     constructor(private accountService: AccountService) {}
 
     ngOnInit() {
-        this.accountService.getAll()
-            .pipe(first())
-            .subscribe(users => this.users = users);
+        // this.accountService.getAll()
+        //     .pipe(first())
+        //     .subscribe(users => this.users = users);
     }
 
     // deleteUser(username: string) {

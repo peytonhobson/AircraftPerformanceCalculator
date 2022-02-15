@@ -33,11 +33,6 @@ export class AuthenticationService {
     return 'Bearer ' + accessToken
   }
 
-  logout() {
-    localStorage.setItem('token', null); 
-    localStorage.setItem('username', null); 
-  }
-
   isUserLoggedIn() {
     if (!localStorage.getItem('token')) return false
     return true

@@ -1,6 +1,48 @@
 <!DOCTYPE html>
 <html>
 <body>
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- Container wrapper -->
+  <div class="container">
+    <!-- Navbar brand -->
+
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarButtonsExample"
+      aria-controls="navbarButtonsExample"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarButtonsExample">
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Aircraft Performance Calculator</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+
+      <div class="d-flex align-items-center">
+        <button type="button"  (click)="logout()" class="btn btn-link">
+          Logout 
+        </button>
+      </div>
+    </div>
+    <!-- Collapsible wrapper -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md">
     <form action="/action_page.php">
       <label for="tmass">Takeoff Mass:</label><br>
       <input type="text" id="tmass" name="tmass" value=""><br>
@@ -53,6 +95,16 @@
     <div id="output" class="card">
       <span  class="border" id="outputContainer"></span>
     </div>
+  </div>
+  <div class="col-md text-center">
+    <form action="/action_page.php">
+      <label for="airportID">Airport ID:</label><br>
+      <input type="text" id="airportID" name="airportID" value=""><br>
+      </form>
+    <button type="button" class="btn btn-outline-dark active text-center" (click)="queryWeather()">Query</button>
+  </div>
+  </div>
+  </div>
 
 </body>
 </html>

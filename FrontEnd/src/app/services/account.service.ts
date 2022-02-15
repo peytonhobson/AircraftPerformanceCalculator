@@ -48,14 +48,14 @@ export class AccountService {
     }
 
     // TODO: May need to make this more secure
-    getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/users/all`);
-    }
+    // getAll() {
+    //     return this.http.get<User[]>(`${environment.apiUrl}/users/all`);
+    // }
 
-    // TODO: May need to make this more secure
-    getById(id: string) {
-        return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
-    }
+    // // TODO: May need to make this more secure
+    // getById(id: string) {
+    //     return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+    // }
 
     // update(username, params) {
     //     return this.http.put(`${environment.apiUrl}/users/${username}`, params)

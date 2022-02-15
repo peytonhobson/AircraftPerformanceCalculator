@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CalculatorResponse, CustomResponse } from '../models/response';
-import { tap, catchError, first, map } from 'rxjs/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 import { Profile } from '../models/profile.model'
 import { AccountService } from './account.service';
 import { AuthenticationService } from './auth.service';
@@ -23,7 +23,6 @@ const httpOptions = {
 export class ApiService {
   constructor(private http: HttpClient,
     private accountService: AccountService,
-    private authenticationService: AuthenticationService,
     private router: Router) {}
 
   /**
@@ -44,15 +43,6 @@ export class ApiService {
     }));
   }
 
-  calculatePost(path: String, body: Object): Observable<CalculatorResponse> {
-    console.log(body);
-    return this.http.post<CalculatorResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
-    .pipe(
-      tap(console.log),
-      catchError(this.handleError)
-    );
-  }
-
   get(path: String): Observable<CustomResponse> {
     console.log("executing get method : " + path);
     return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`)
@@ -65,9 +55,32 @@ export class ApiService {
     }));
   }
 
+  calculate(body: Object): Observable<CalculatorResponse> {
+    console.log(body);
+    return this.http.post<CalculatorResponse>(`${environment.apiUrl}/profiles/calculator`, JSON.stringify(body), httpOptions)
+    .pipe(
+      tap(console.log),
+      catchError(this.handleError)
+    );
+  }
+
+  returnProfiles(username: string): Observable<CustomResponse> {
+    return this.http.post<CustomResponse>(`${environment.apiUrl}profiles/${username}/all`, username, httpOptions)
+        .pipe(map(res => {
+        if(res.status != "200") {
+            this.handleError(res.status);
+        }
+        return res;
+        }));
+  }
+
+  saveProfile(Profile : Profile): Observable<CustomResponse> {
+    return this.post('profiles/save', Profile);
+  }
+
   handleError(error: string): Observable<never> {
     if(error == "403") {
-        this.authenticationService.logout();
+        this.accountService.logout();
         this.router.navigate(['/account/login']);
     }
     return throwError(() =>new Error(`An error occurred - Error code: ${error}`));
