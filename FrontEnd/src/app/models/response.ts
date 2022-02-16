@@ -1,3 +1,4 @@
+import { AirportWeather } from "./airport.weather";
 import { Profile } from "./profile.model";
 
 export interface CustomResponse {
@@ -7,7 +8,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {profiles?: Profile[]};
+    data: {profiles?: Profile[], airportWeather? : AirportWeather};
 }
 
 export interface CalculatorResponse {
@@ -28,4 +29,14 @@ export interface AuthenticationResponse {
     message: string;
     developerMessage: string;
     data: {authentication: boolean};
+}
+
+export interface WeatherResponse {
+    timeStamp: Date;
+    statusCode: number;
+    status: string;
+    reason: string;
+    message: string;
+    developerMessage: string;
+    data: {airportWeather?: AirportWeather};
 }

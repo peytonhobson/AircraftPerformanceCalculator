@@ -43,6 +43,17 @@ export class ApiService {
     }));
   }
 
+  getWeather(path: String, airportID: string): Observable<CustomResponse> {
+    console.log("executing post method : " + path);
+    return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, airportID, httpOptions)
+    .pipe(map(res => {
+      if(res.status != "200") {
+        this.handleError(res.status);
+      }
+      return res;
+    }));
+  }
+
   get(path: String): Observable<CustomResponse> {
     console.log("executing get method : " + path);
     return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`)

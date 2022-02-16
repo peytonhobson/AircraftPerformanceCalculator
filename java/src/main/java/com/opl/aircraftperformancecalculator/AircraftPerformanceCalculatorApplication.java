@@ -27,11 +27,11 @@ public class AircraftPerformanceCalculatorApplication {
 		System.out.println("here");
 		return args -> {
 			profileService.save(new Profile("peytonhobson_Test","peytonhobson", "Test", "5000", "5000",
-					"20", "1", "5", "0.2", "con", "1000", "10", "combat", ""));
+					"0.2", "con", ""));
 			profileService.save(new Profile("peytonhobson_lightweight","peytonhobson", "lightweight", "5000", "5000",
-					"20", "1", "5", "0.2", "con", "1000", "10", "combat", ""));
+					 "0.2", "combat", ""));
 			profileService.save(new Profile("johnsmith_lightweight","johnsmith", "heavy", "5000", "5000",
-					"20", "1", "5", "0.2", "con", "1000", "10", "combat", ""));
+					"0.2", "combat", ""));
 			userService.saveUser(new User("peytonhobson", "password"));
 			userService.saveUser(new User("johnsmith", "password"));
 			userService.saveUser(new User("apple", "password"));

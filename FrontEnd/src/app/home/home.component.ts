@@ -139,7 +139,13 @@ export class HomeComponent implements OnInit {
   }
 
   queryWeather() {
-
+    var airportID = document.getElementById('airportID') as HTMLInputElement;
+    this.restClassifier.getWeather(`weather/${airportID.value}`, airportID.value).subscribe(
+      res => {
+        console.log(res.data.airportWeather);
+        // res.data.airportWeather.replace(/\n/g, "<br/>");
+        document.getElementById('weatherOutputContainer').innerHTML = JSON.stringify(res.data.airportWeather);
+      });
   }
 
   logout() {

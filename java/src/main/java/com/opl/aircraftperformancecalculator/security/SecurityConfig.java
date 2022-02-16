@@ -36,13 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/users/login/**", "/token/refresh/**",
                 "/register/**").permitAll();
-        http.authorizeRequests().antMatchers(GET,"/users/**").permitAll();
-        http.authorizeRequests().antMatchers(OPTIONS,"/users/**").permitAll();
-        http.authorizeRequests().antMatchers(GET,"/profiles/**").permitAll();
+        http.authorizeRequests().antMatchers(GET,"/profiles/**").hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(OPTIONS,"/profiles/**").permitAll();
-        http.authorizeRequests().antMatchers(OPTIONS,"/users/register/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(OPTIONS,"/users/register/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/users/register/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(GET,"**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(OPTIONS,"/weather/**").permitAll();
+        http.authorizeRequests().antMatchers(POST,"/weather/**").hasAnyAuthority("ROLE_USER");
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilterLogin);

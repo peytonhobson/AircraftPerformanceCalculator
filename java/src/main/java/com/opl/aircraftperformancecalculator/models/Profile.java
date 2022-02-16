@@ -17,13 +17,10 @@ public class Profile {
     private String profileName;
     private String takeoffMass;
     private String landingMass;
-    private String temp;
+
+    //TODO: Should drag even be used?
+    // Maybe make optional?
     private String drag;
-    private String slope;
-    private String friction;
-    private String runwayType;
-    private String psi;
-    private String wind;
     private String aircraftType;
     private String output;
 }

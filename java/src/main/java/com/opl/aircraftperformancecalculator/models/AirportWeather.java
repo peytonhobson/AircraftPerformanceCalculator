@@ -16,12 +16,8 @@ public class AirportWeather {
     @Id
     private String airportID;
 
-    private String temp;
-    private String slope;
-
-    //TODO: Need to figure out how to calculate this
-    private String friction;
-    private String runwayType;
-    private String psi;
-    private String wind;
+    private Double temp;
+    private Double pressureAltitude;
+    private Double headWind;
+    private Double precipitation;
 }
