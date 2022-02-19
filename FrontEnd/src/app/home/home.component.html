@@ -43,6 +43,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md">
+
+      
+
     <form action="/action_page.php">
       <label for="tmass">Takeoff Mass:</label><br>
       <input type="text" id="tmass" name="tmass" value=""><br>
@@ -100,8 +103,15 @@
     <form action="/action_page.php">
       <label for="airportID">Airport ID:</label><br>
       <input type="text" id="airportID" name="airportID" value=""><br>
+      <button type="button" class="btn btn-outline-dark active text-center" (click)="findRunways()">Find Runways</button><br><br>
+      <select class = "btn btn-outline-dark active btn-md" name="RunwaySelect" id="RunwaySelect">
+        <option text="Choose a Runway" value="Choose a Runway">Choose a Runway</option>
+      </select><br><br>
+      <select class = "btn btn-outline-dark active" name="RunwaySideSelect" id="RunwaySideSelect">
+        <option text="Choose Runway Takoff Side" value="Choose Runway Takoff Side">Choose Runway Takoff Side</option>
+      </select><br><br>
       </form>
-    <button type="button" class="btn btn-outline-dark active text-center" (click)="queryWeather()">Query</button>
+    <button type="button" class="btn btn-outline-dark active text-center" (click)="queryAirport()">Query</button>
     <div id="weatherOutput" class="card">
       <span  class="border" id="weatherOutputContainer"></span>
     </div>

@@ -8,6 +8,7 @@ import { Profile } from '../models/profile.model'
 import { AccountService } from './account.service';
 import { AuthenticationService } from './auth.service';
 import { Router } from '@angular/router';
+import { AlertService } from './alert.service';
 
 
 const httpOptions = {
@@ -23,7 +24,8 @@ const httpOptions = {
 export class ApiService {
   constructor(private http: HttpClient,
     private accountService: AccountService,
-    private router: Router) {}
+    private router: Router,
+    private alertService: AlertService) {}
 
   /**
    * Method for making post request to back end 
@@ -37,17 +39,9 @@ export class ApiService {
     return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
     .pipe(map(res => {
       if(res.status != "200") {
-        this.handleError(res.status);
-      }
-      return res;
-    }));
-  }
-
-  getWeather(path: String, airportID: string): Observable<CustomResponse> {
-    console.log("executing post method : " + path);
-    return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, airportID, httpOptions)
-    .pipe(map(res => {
-      if(res.status != "200") {
+        if(res.status == "404") {
+          this.alertService.error(res.message);
+        }
         this.handleError(res.status);
       }
       return res;
@@ -56,7 +50,7 @@ export class ApiService {
 
   get(path: String): Observable<CustomResponse> {
     console.log("executing get method : " + path);
-    return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`)
+    return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`, httpOptions)
     .pipe(map(res => {
       tap(console.log)
       if(res.status != "200") {
@@ -93,6 +87,9 @@ export class ApiService {
     if(error == "403") {
         this.accountService.logout();
         this.router.navigate(['/account/login']);
+    }
+    if(error == "404") {
+      this.alertService.error(error);
     }
     return throwError(() =>new Error(`An error occurred - Error code: ${error}`));
   } 

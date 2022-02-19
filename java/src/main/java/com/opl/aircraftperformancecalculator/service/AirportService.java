@@ -1,13 +1,13 @@
 package com.opl.aircraftperformancecalculator.service;
 
-import com.opl.aircraftperformancecalculator.models.AirportWeather;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.List;
 
 public interface AirportService {
 
-    AirportWeather getWeatherCSV(String airportID) throws IOException, ParserConfigurationException, SAXException;
+    String getWeatherXML(String airportID, String runwayNumber) throws IOException, ParserConfigurationException, SAXException;
+    List<String> getRunways(String airportID) throws IOException;
 }

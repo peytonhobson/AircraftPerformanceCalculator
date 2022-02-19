@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AirportWeather {
+public class RunwayConditions {
 
     @Id
     private String airportID;
@@ -20,4 +20,6 @@ public class AirportWeather {
     private Double pressureAltitude;
     private Double headWind;
     private Double precipitation;
+    private Double runwayLength;
+    private String runwayType;
 }
