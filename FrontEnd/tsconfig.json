@@ -7,6 +7,10 @@
     },
     "compileOnSave": false,
     "compilerOptions": {
+        "strictInjectionParameters": false,
+        "strictInputAccessModifiers": false,
+        "strictTemplates": false,
+        "strictNullChecks": false,
         "baseUrl": "src",
         "declaration": false,
         "downlevelIteration": true,
@@ -34,6 +38,9 @@
             ],
             "@testing/*": [
                 "testing/*"
+            ],
+            "@environments/*": [
+                "environments/*"
             ]
         },
         "resolveJsonModule": true,

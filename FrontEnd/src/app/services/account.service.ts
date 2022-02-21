@@ -4,14 +4,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
-import { User } from 'src/app/models/user';
+import { environment } from '@environments/environment';
+import { User } from '../models/user';
 import { AuthenticationService } from './auth.service';
 import { Token } from '../models/token';
 import { AuthenticationCode } from '../models/authentication.code.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
+
+    username
 
     constructor(
         private router: Router,

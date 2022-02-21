@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from 'src/environments/environment';
-import { AccountService } from 'src/app/services/account.service';
+import { environment } from '@environments/environment';
+import { AccountService } from '../services/account.service';
 import { AuthenticationService } from '../services/auth.service';
 
 @Injectable()
