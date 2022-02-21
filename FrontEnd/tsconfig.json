@@ -7,9 +7,6 @@
     },
     "compileOnSave": false,
     "compilerOptions": {
-        "strictInjectionParameters": false,
-        "strictInputAccessModifiers": false,
-        "strictTemplates": false,
         "strictNullChecks": false,
         "baseUrl": "src",
         "declaration": false,
@@ -24,7 +21,7 @@
         ],
         "module": "esnext",
         "moduleResolution": "node",
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "outDir": "./dist/out-tsc",
         "paths": {
             "@app/*": [
@@ -40,7 +37,7 @@
                 "testing/*"
             ],
             "@environments/*": [
-                "environments/*"
+                "environment/*"
             ]
         },
         "resolveJsonModule": true,

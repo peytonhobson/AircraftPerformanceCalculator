@@ -18,8 +18,7 @@ li.nav-item.dropdown.dropdown-user.no-caret(
     )
         h6.dropdown-header
             .dropdown-user-details
-                .dropdown-user-details-name {{ user.firstName }} {{ user.lastName }}
-                .dropdown-user-details-email {{ user.email }}
+                .dropdown-user-details-name {{ user.username }}
         .dropdown-divider
         a.dropdown-item(routerLink='/dashboard')
             | Settings

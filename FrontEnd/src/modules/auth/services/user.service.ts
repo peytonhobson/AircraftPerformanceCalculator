@@ -9,10 +9,7 @@ const userSubject: ReplaySubject<User> = new ReplaySubject(1);
 export class UserService {
     constructor() {
         this.user = {
-            id: '123',
-            firstName: 'Start',
-            lastName: 'Bootstrap',
-            email: 'no-reply@startbootstrap.com',
+            username: localStorage.getItem('username'),
         };
     }
 
