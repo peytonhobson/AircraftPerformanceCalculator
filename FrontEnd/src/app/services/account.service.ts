@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { environment } from '../environments/environment';
+import { environment } from '@environments/environment';
 import { User } from '../models/user';
 import { AuthenticationService } from './auth.service';
 import { Token } from '../models/token';

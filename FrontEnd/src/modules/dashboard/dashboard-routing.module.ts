@@ -15,13 +15,27 @@ import * as dashboardGuards from './guards';
 /* Routes */
 export const ROUTES: Routes = [
     {
-        path: '',
+        path: 'dashboard',
+        pathMatch: 'full',
+        redirectTo: '/calculator',
+    },
+    {
+        path: 'calculator',
         data: {
             title: 'L-39ZA Calculator',
         } as SBRouteData,
         canActivate: [],
-        component: dashboardContainers.DashboardComponent,
+        component: dashboardContainers.CalculatorComponent,
     },
+    {
+        path: 'solver',
+        data: {
+            title: 'L-39ZA Calculator',
+        } as SBRouteData,
+        canActivate: [],
+        component: dashboardContainers.SolverComponent,
+    },
+
     // {
     //     path: 'static',
     //     data: {

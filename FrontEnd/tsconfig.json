@@ -3,7 +3,8 @@
         "enableIvy": false,
         "fullTemplateTypeCheck": true,
         "preserveWhitespaces": false,
-        "strictInjectionParameters": true
+        "strictInjectionParameters": true,
+        "experimentalDecorators": true
     },
     "compileOnSave": false,
     "compilerOptions": {
@@ -37,7 +38,7 @@
                 "testing/*"
             ],
             "@environments/*": [
-                "environment/*"
+                "environments/*"
             ]
         },
         "resolveJsonModule": true,

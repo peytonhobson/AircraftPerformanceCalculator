@@ -3,23 +3,28 @@ import { SideNavItems, SideNavSection } from '@modules/navigation/models';
 export const sideNavSections: SideNavSection[] = [
     {
         text: 'CORE',
-        items: ['dashboard'],
+        items: ['calculator', 'addProfiles'],
     },
     {
         text: 'INTERFACE',
         items: ['pages'],
     },
     {
-        text: 'ADDONS',
+        text: 'ADD-ONS',
         items: ['solver'],
     },
 ];
 
 export const sideNavItems: SideNavItems = {
-    dashboard: {
+    calculator: {
         icon: 'calculator',
         text: 'Calculator',
-        link: '/dashboard',
+        link: '/dashboard/calculator',
+    },
+    addProfiles: {
+        icon: 'plane',
+        text: 'Add Profiles',
+        link: '/dashboard/add-profiles',
     },
     // layouts: {
     //     icon: 'columns',
@@ -76,8 +81,8 @@ export const sideNavItems: SideNavItems = {
         ],
     },
     solver: {
-        icon: 'chart-area',
+        icon: 'question-circle',
         text: 'Solver',
-        link: '/solver',
-    },
+        link: '/dashboard/solver',
+    }
 };
