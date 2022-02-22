@@ -11,30 +11,29 @@ import * as dashboardContainers from './containers';
 
 /* Guards */
 import * as dashboardGuards from './guards';
+import { AppComponent } from '@app/app.component';
 
 /* Routes */
 export const ROUTES: Routes = [
+    
     {
-        path: 'dashboard',
-        pathMatch: 'full',
-        redirectTo: '/calculator',
+        path: '',
+        canActivate: [],
+        component: dashboardContainers.DashboardComponent,
     },
     {
         path: 'calculator',
-        data: {
-            title: 'L-39ZA Calculator',
-        } as SBRouteData,
         canActivate: [],
         component: dashboardContainers.CalculatorComponent,
     },
     {
         path: 'solver',
-        data: {
-            title: 'L-39ZA Calculator',
-        } as SBRouteData,
         canActivate: [],
         component: dashboardContainers.SolverComponent,
     },
+            
+        
+    
 
     // {
     //     path: 'static',
