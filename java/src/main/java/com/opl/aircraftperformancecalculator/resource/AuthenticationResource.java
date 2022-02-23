@@ -6,6 +6,7 @@ import com.opl.aircraftperformancecalculator.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -27,9 +29,9 @@ public class AuthenticationResource {
     @PostMapping(path = "/authentication")
     public ResponseEntity<Response> register(@RequestBody AuthUser user) throws Exception {
 
-
-        authenticationService.deleteAuthenticationCode(new AuthenticationCode(user.getCode()));
-        log.info(user.getPassword());
+        if (authenticationService.deleteAuthenticationCode(new AuthenticationCode(user.getCode())) != 1) {
+            throw new BadCredentialsException("Bad Authentication Code");
+        }
 
         User newUser = new User(user.getUsername(), user.getPassword());
         userService.saveUser(newUser);

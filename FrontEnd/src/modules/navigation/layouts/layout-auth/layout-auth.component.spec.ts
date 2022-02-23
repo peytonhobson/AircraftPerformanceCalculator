@@ -6,10 +6,10 @@ import { LayoutAuthComponent } from './layout-auth.component';
 
 @Component({
     template: `
-        <sbpro-layout-auth
+        <layout-auth
             [someInput]="someInput"
             (someFunction)="someFunction($event)"
-        ></sbpro-layout-auth>
+        ></layout-auth>
     `,
 })
 class TestHostComponent {

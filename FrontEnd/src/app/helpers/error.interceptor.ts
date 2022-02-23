@@ -4,10 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AccountService } from '../services/account.service';
+import { AlertService } from '@app/services/alert.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private accountService: AccountService) {}
+    constructor(private accountService: AccountService,
+        private alertService: AlertService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
@@ -16,8 +18,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.accountService.logout();
             }
             
-            const error = err.error.message || err.statusText;
-            return throwError(() => new Error(err.status));
+            const error = err.message || err.statusText;
+            this.alertService.error(error);
+            return throwError(() => new Error());
         }))
     }
 }

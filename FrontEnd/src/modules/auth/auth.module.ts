@@ -19,6 +19,12 @@ import * as authGuards from './guards';
 
 /* Services */
 import * as authServices from './services';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from '@app/helpers/error.interceptor';
+import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
+import { AlertService } from '@app/services/alert.service';
+import { ApiService } from '@app/services/api.service';
+import { AuthenticationService } from '@app/services/auth.service';
 
 @NgModule({
     imports: [
@@ -29,7 +35,14 @@ import * as authServices from './services';
         AppCommonModule,
         NavigationModule,
     ],
-    providers: [...authServices.services, ...authGuards.guards],
+    providers: [...authServices.services, ...authGuards.guards,
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+            { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    
+            // provider used to create fake backend
+            ApiService,
+            AuthenticationService,
+            AlertService],
     declarations: [...authContainers.containers, ...authComponents.components],
     exports: [...authContainers.containers, ...authComponents.components],
 })

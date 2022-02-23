@@ -17,7 +17,6 @@ describe('UserService', () => {
 
     describe('getUser$', () => {
         it('should return Observable<User>', () => {
-            userService.user = mockUser;
             userService.user$.subscribe(response => {
                 expect(response).toEqual(mockUser);
             });

@@ -1,6 +1,7 @@
 package com.opl.aircraftperformancecalculator.service.implementation;
 
 import com.opl.aircraftperformancecalculator.models.User;
+import com.opl.aircraftperformancecalculator.repo.AuthenticationRepo;
 import com.opl.aircraftperformancecalculator.repo.UserRepo;
 import com.opl.aircraftperformancecalculator.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.util.List;
 public class UserServiceImplementation implements UserService, UserDetailsService {
 
     private final UserRepo userRepo;
+    private final AuthenticationRepo authenticationRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override

@@ -6,7 +6,7 @@ import { LoginComponent } from './login.component';
 
 @Component({
     template: `
-        <sb-login [someInput]="someInput" (someFunction)="someFunction($event)"></sb-login>
+        <login [someInput]="someInput" (someFunction)="someFunction($event)"></login>
     `,
 })
 class TestHostComponent {

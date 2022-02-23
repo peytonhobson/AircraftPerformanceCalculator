@@ -46,6 +46,7 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${environment.apiUrl}register/authentication`, 
     JSON.stringify({"code":authenicationCode.code, "username": user.username, "password":user.password}), httpOptions)
             .pipe(map(decision => {
+              console.log("here")
                 return decision;
             }));
   }

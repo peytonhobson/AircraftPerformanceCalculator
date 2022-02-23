@@ -1,16 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AccountService } from '@app/services/account.service';
-import { AlertService } from '@app/services/alert.service';
 import { first } from 'rxjs/operators';
 
-@Component({
-    selector: 'login',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './login.component.html',
-    styleUrls: ['login.component.scss'],
-})
+import { AccountService } from '@services/account.service';
+import { AlertService } from '@services/alert.service';
+import { AuthenticationService } from '@services/auth.service';
+
+@Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
     form: FormGroup;
     loading = false;
@@ -28,7 +25,7 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.form = this.formBuilder.group({
             username: ['', Validators.required],
-            password: ['', Validators.required],
+            password: ['', Validators.required]
         });
 
 
@@ -59,9 +56,6 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    if(error['status'] == 403) {
-                        this.alertService.error('Invalid username and password combination')
-                    }
                     this.alertService.error(error);
                     this.loading = false;
                 });

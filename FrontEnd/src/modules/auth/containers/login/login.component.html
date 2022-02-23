@@ -1,24 +1,36 @@
-<sb-layout-auth
-    ><div class="container">
+<layout-auth>
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                     <div class="card-body">
-                        <form>
-                            <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Email</label><input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" /></div>
-                            <div class="form-group"><label class="small mb-1" for="inputPassword">Password</label><input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" /></div>
-                            <div class="form-group">
+                        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                            <div class="form-group" [formGroup]="form">
+                                <label for="username">Username</label>
+                                <input type="text" formControlName="username" class="form-control" placeholder="Enter username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" />
+                                <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['username'].errors['required']">Username is required</div>
+                                </div>
+                            </div> 
+                            <div class="form-group" [formGroup]="form">
+                                <label for="password">Password</label>
+                                <input type="password" formControlName="password" class="form-control" placeholder="Enter password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['password'].errors['required']">Password is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group" [formGroup]="form">
                                 <div class="custom-control custom-checkbox"><input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" /><label class="custom-control-label" for="rememberPasswordCheck">Remember password</label></div>
                             </div>
-                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a><a class="btn btn-primary" routerLink="/dashboard">Login</a></div>
+                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a><button class="btn btn-outline-dark" (click)="onSubmit()">Login</button></div>
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        <div class="small"><a routerLink="/auth/register">Need an account? Sign up!</a></div>
+                        <div class="small"><a routerLink="/auth/register">Register</a></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div></sb-layout-auth
->
+    </div>
+</layout-auth>

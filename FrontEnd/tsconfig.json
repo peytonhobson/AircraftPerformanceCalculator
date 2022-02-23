@@ -39,6 +39,9 @@
             ],
             "@environments/*": [
                 "environments/*"
+            ],
+            "@services/*": [
+                "app/services/*"
             ]
         },
         "resolveJsonModule": true,

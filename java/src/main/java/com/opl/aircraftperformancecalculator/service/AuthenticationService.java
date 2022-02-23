@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AuthenticationService {
 
-    Boolean deleteAuthenticationCode(AuthenticationCode code);
+    Integer deleteAuthenticationCode(AuthenticationCode code);
     AuthenticationCode saveCode(AuthenticationCode code);
 }

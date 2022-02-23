@@ -6,7 +6,7 @@ import { RegisterComponent } from './register.component';
 
 @Component({
     template: `
-        <sb-register [someInput]="someInput" (someFunction)="someFunction($event)"></sb-register>
+        <register [someInput]="someInput" (someFunction)="someFunction($event)"></register>
     `,
 })
 class TestHostComponent {

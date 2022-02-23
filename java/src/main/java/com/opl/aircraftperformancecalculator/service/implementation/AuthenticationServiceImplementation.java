@@ -21,10 +21,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final AuthenticationRepo authenticationRepo;
 
     @Override
-    public Boolean deleteAuthenticationCode(AuthenticationCode code) {
+    public Integer deleteAuthenticationCode(AuthenticationCode code) {
         log.info("Deleting Authentication Code {} ", code.getCode());
-        authenticationRepo.deleteByCode(code.getCode());
-        return TRUE;
+        return authenticationRepo.deleteByCode(code.getCode());
     }
 
     @Override

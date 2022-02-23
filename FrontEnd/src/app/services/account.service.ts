@@ -9,6 +9,7 @@ import { User } from '../models/user';
 import { AuthenticationService } from './auth.service';
 import { Token } from '../models/token';
 import { AuthenticationCode } from '../models/authentication.code.model';
+import { CustomResponse } from '@app/models/response';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -37,15 +38,11 @@ export class AccountService {
         // remove user from local storage and set current user to null
         localStorage.removeItem('username');
         localStorage.removeItem('token');
-        this.router.navigate(['/account/login']);
     }
 
-    register(user: User, authenicationCode: AuthenticationCode) {
+    register(user: User, authenicationCode: AuthenticationCode){
 
-        return this.authenticationService.authenticate(authenicationCode, user).subscribe(
-            res => {
-              console.log(res.data.authentication);
-            });
+        return this.authenticationService.authenticate(authenicationCode, user);
     }
 
     // TODO: May need to make this more secure
