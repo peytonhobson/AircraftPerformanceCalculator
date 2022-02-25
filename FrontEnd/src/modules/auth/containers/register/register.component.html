@@ -1,5 +1,4 @@
 <layout-auth>
-    <alert></alert>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
@@ -27,7 +26,7 @@
                                 <input type="password" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" />
                                 <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
                                     <div *ngIf="f['confirmPassword'].errors['required']">Password is required</div>
-                                <div *ngIf="f['confirmPassword'].errors['minlength']">Password must be at least 6 characters</div>
+                                    <div *ngIf="f['confirmPassword'].errors['minlength']">Password must be at least 6 characters</div>
                                 </div>
                             </div>
                             <div class="form-row form-group">
@@ -35,6 +34,7 @@
                                 <input type="text" formControlName="authenticationCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['authenticationCode'].errors }" />
                                 <div *ngIf="submitted && f['authenticationCode'].errors" class="invalid-feedback">
                                     <div *ngIf="f['authenticationCode'].errors['required']">Authentication Code is required</div>
+                                    <div *ngIf="f['confirmPassword'].errors['minlength']">Password must be at least 6 characters</div>
                                 </div>
                             </div>
                             <div class="form-row">

@@ -24,7 +24,6 @@ import { ErrorInterceptor } from '@app/helpers/error.interceptor';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
 import { ApiService } from '@app/services/api.service';
 import { AuthenticationService } from '@app/services/auth.service';
-import { AlertModule } from "@app/alerts/alert.module"
 
 @NgModule({
     imports: [
@@ -33,8 +32,7 @@ import { AlertModule } from "@app/alerts/alert.module"
         ReactiveFormsModule,
         FormsModule,
         AppCommonModule,
-        NavigationModule,
-        AlertModule
+        NavigationModule
     ],
     providers: [...authServices.services, ...authGuards.guards,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

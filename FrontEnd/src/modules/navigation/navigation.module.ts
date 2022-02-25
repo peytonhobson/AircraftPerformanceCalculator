@@ -24,9 +24,10 @@ import { AlertComponent } from '@app/alerts/alert.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@app/helpers/error.interceptor';
+import { AlertModule } from '@app/alerts/alert.module';
 
 @NgModule({
-    imports: [CommonModule, RouterModule, AppCommonModule],
+    imports: [CommonModule, RouterModule, AppCommonModule, AlertModule],
     providers: [ { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         ...navigationServices.services, ...navigationGuards.guards],

@@ -7,7 +7,6 @@ import { first } from 'rxjs/operators';
 
 @Component({
     selector: 'login',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './login.component.html',
     styleUrls: ['login.component.scss'],
 })
@@ -31,7 +30,7 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required],
         });
 
-
+        this.alertService.clear();
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
@@ -50,19 +49,17 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-
         this.loading = true;
+        console.log("here")
         this.accountService.login(this.f['username'].value, this.f['password'].value)
             .pipe(first())
             .subscribe(
                 data => {
+                    this.alertService.success('Registration successful', { keepAfterRouteChange: true });
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
-                    if(error['status'] == 403) {
-                        this.alertService.error('Invalid username and password combination')
-                    }
-                    this.alertService.error(error);
+                    this.alertService.error("Username and Password combination does not exist.")
                     this.loading = false;
                 });
     }

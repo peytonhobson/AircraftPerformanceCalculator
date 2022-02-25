@@ -25,7 +25,6 @@ export class RegisterComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private accountService: AccountService,
         private alertService: AlertService,
         private authService: AuthenticationService,
     ) { }
@@ -33,11 +32,10 @@ export class RegisterComponent implements OnInit {
     ngOnInit() {
         this.form = this.formBuilder.group({
             username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['', [Validators.required, Validators.minLength(8)]],
+            confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
             authenticationCode: ['', Validators.required]
         });
-
     }
 
     // convenience getter for easy access to form fields
@@ -63,10 +61,7 @@ export class RegisterComponent implements OnInit {
         var user = new User(this.form.get('username').value, this.form.get('password').value);
         var authenticationCode = new AuthenticationCode(this.form.get('authenticationCode').value);
 
-        
-
         this.loading = true;
-
         this.authService.authenticate(authenticationCode, user).pipe(first())
         .subscribe(
             data => {
