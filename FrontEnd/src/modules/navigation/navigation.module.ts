@@ -20,7 +20,6 @@ import * as navigationGuards from './guards';
 
 /* Services */
 import * as navigationServices from './services';
-import { AlertComponent } from '@app/alerts/alert.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@app/helpers/error.interceptor';
@@ -39,7 +38,7 @@ import { AlertModule } from '@app/alerts/alert.module';
     exports: [
         ...navigationContainers.containers,
         ...navigationComponents.components,
-        ...appCommonLayouts.layouts,
+        ...appCommonLayouts.layouts
     ],
 })
 export class NavigationModule {}

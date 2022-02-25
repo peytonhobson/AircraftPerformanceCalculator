@@ -1,7 +1,6 @@
 /* tslint:disable: ordered-imports*/
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SBRouteData } from '@modules/navigation/models';
 
 /* Module */
 import { DashboardModule } from './dashboard.module';
@@ -10,26 +9,35 @@ import { DashboardModule } from './dashboard.module';
 import * as dashboardContainers from './containers';
 
 /* Guards */
-import * as dashboardGuards from './guards';
-import { AppComponent } from '@app/app.component';
+import { AuthGuard } from '@app/helpers/auth.guard';
 
 /* Routes */
 export const ROUTES: Routes = [
     
     {
         path: '',
-        canActivate: [],
+        canActivate: [AuthGuard],
         component: dashboardContainers.DashboardComponent,
     },
     {
         path: 'calculator',
-        canActivate: [],
+        canActivate: [AuthGuard],
         component: dashboardContainers.CalculatorComponent,
     },
     {
         path: 'solver',
-        canActivate: [],
+        canActivate: [AuthGuard],
         component: dashboardContainers.SolverComponent,
+    },
+    {
+        path: 'add-profiles',
+        canActivate: [AuthGuard],
+        component: dashboardContainers.AddProfilesComponent,
+    },
+    {
+        path: 'airports',
+        canActivate: [AuthGuard],
+        component: dashboardContainers.QueryAirportComponent,
     },
  
 ];

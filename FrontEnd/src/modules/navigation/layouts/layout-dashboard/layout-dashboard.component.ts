@@ -12,7 +12,7 @@ import { NavigationService } from '@modules/navigation/services';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'sb-layout-dashboard',
+    selector: 'layout-dashboard',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './layout-dashboard.component.html',
     styleUrls: ['layout-dashboard.component.scss'],

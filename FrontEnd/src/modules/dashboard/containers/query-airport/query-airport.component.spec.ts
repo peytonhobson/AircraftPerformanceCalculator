@@ -2,11 +2,11 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ChartsComponent } from './charts.component';
+import { QueryAirportComponent } from './query-airport.component';
 
 @Component({
     template: `
-        <sb-charts [someInput]="someInput" (someFunction)="someFunction($event)"></sb-charts>
+        <query-airport [someInput]="someInput" (someFunction)="someFunction($event)"></query-airport>
     `,
 })
 class TestHostComponent {
@@ -14,19 +14,19 @@ class TestHostComponent {
     // someFunction(event: Event) {}
 }
 
-describe('ChartsComponent', () => {
+describe('QueryAirportComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
     let hostComponentDE: DebugElement;
     let hostComponentNE: Element;
 
-    let component: ChartsComponent;
+    let component: QueryAirportComponent;
     let componentDE: DebugElement;
     let componentNE: Element;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, ChartsComponent],
+            declarations: [TestHostComponent, QueryAirportComponent],
             imports: [NoopAnimationsModule],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
@@ -45,6 +45,6 @@ describe('ChartsComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-charts')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('query-airport')).toEqual(jasmine.anything());
     });
 });

@@ -8,10 +8,10 @@ import { LayoutDashboardComponent } from './layout-dashboard.component';
 
 @Component({
     template: `
-        <sb-layout-dashboard
+        <layout-dashboard
             [someInput]="someInput"
             (someFunction)="someFunction($event)"
-        ></sb-layout-dashboard>
+        ></layout-dashboard>
     `,
 })
 class TestHostComponent {

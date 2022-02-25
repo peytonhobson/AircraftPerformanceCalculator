@@ -2,14 +2,11 @@ import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ChartsPieComponent } from './charts-pie.component';
+import { AddProfilesComponent } from './add-profiles.component';
 
 @Component({
     template: `
-        <sb-charts-pie
-            [someInput]="someInput"
-            (someFunction)="someFunction($event)"
-        ></sb-charts-pie>
+        <add-profiles [someInput]="someInput" (someFunction)="someFunction($event)"></add-profiles>
     `,
 })
 class TestHostComponent {
@@ -17,19 +14,19 @@ class TestHostComponent {
     // someFunction(event: Event) {}
 }
 
-describe('ChartsPieComponent', () => {
+describe('AddProfilesComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
     let hostComponentDE: DebugElement;
     let hostComponentNE: Element;
 
-    let component: ChartsPieComponent;
+    let component: AddProfilesComponent;
     let componentDE: DebugElement;
     let componentNE: Element;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, ChartsPieComponent],
+            declarations: [TestHostComponent, AddProfilesComponent],
             imports: [NoopAnimationsModule],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
@@ -48,6 +45,6 @@ describe('ChartsPieComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-charts-pie')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('add-profiles')).toEqual(jasmine.anything());
     });
 });

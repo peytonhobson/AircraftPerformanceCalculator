@@ -18,7 +18,9 @@ import {
     faUser,
     faCalculator,
     faQuestionCircle,
-    faPlane
+    faPlane,
+    faPlaneDeparture
+
 } from '@fortawesome/free-solid-svg-icons';
 
 export const fontAwesomeSolidIcons = {
@@ -39,5 +41,6 @@ export const fontAwesomeSolidIcons = {
     faCalculator,
     faUser,
     faQuestionCircle,
-    faPlane
+    faPlane,
+    faPlaneDeparture
 };
