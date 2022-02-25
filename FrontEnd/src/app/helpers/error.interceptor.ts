@@ -13,13 +13,12 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            if (err.status === 401 || err.status === 403) {
-                // auto logout if 401 response returned from api
-                this.accountService.logout();
+            if(err.url == "http://localhost:8080/register/authentication" && err.status == 404) {
+                this.alertService.error("Bad Authentication Code")
+                return throwError(() => new Error("Bad Authentication Code"));
             }
-            
             const error = err.message || err.statusText;
-            this.alertService.error(error);
+
             return throwError(() => new Error());
         }))
     }

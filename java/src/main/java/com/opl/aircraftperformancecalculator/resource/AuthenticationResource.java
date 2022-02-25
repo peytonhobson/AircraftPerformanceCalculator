@@ -29,8 +29,28 @@ public class AuthenticationResource {
     @PostMapping(path = "/authentication")
     public ResponseEntity<Response> register(@RequestBody AuthUser user) throws Exception {
 
+        if (userService.getUser(user.getUsername()) != null) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(of("usernameTaken", true))
+                            .message("Username has already been taken")
+                            .status(FORBIDDEN)
+                            .statusCode(FORBIDDEN.value())
+                            .build()
+            );
+        }
+
         if (authenticationService.deleteAuthenticationCode(new AuthenticationCode(user.getCode())) != 1) {
-            throw new BadCredentialsException("Bad Authentication Code");
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(of("invalidAuthenticationCode", true))
+                            .message("Invalid Authentication Code")
+                            .status(FORBIDDEN)
+                            .statusCode(FORBIDDEN.value())
+                            .build()
+            );
         }
 
         User newUser = new User(user.getUsername(), user.getPassword());
@@ -41,7 +61,7 @@ public class AuthenticationResource {
                 Response.builder()
                         .timeStamp(now())
                         .data(of("authentication", true))
-                        .message("Authentication returned")
+                        .message("User Authenticated")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

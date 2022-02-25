@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
-import { AccountService } from './services/account.service';
-import { AlertService } from './services/alert.service';
 import { ApiService } from './services/api.service';
 import { AuthenticationService } from './services/auth.service';
 
@@ -19,8 +17,7 @@ import { AuthenticationService } from './services/auth.service';
 
         // provider used to create fake backend
         ApiService,
-        AuthenticationService,
-        AlertService],
+        AuthenticationService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

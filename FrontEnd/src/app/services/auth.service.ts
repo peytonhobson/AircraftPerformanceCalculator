@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 import { AuthenticationCode } from '../models/authentication.code.model';
 import { AuthenticationResponse } from '../models/response';
 import { User } from '../models/user';
+import { AlertService } from './alert.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -25,7 +26,7 @@ export class AuthenticationService {
   public password: String;
   public accessToken : string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private alertService: AlertService) {}
 
 
   createAuthToken(accessToken: String) {
@@ -46,8 +47,24 @@ export class AuthenticationService {
     return this.http.post<AuthenticationResponse>(`${environment.apiUrl}register/authentication`, 
     JSON.stringify({"code":authenicationCode.code, "username": user.username, "password":user.password}), httpOptions)
             .pipe(map(decision => {
-              console.log("here")
+
+                if(decision.data.invalidAuthenticationCode) {
+                  this.alertService.error(decision.message)
+                }
+
+                if(decision.data.usernameTaken) {
+                  this.alertService.error(decision.message)
+                }
+
                 return decision;
-            }));
+            }),
+            );
   }
+
+  handleError(error: string): Observable<never> {
+    if(error == "404") {
+      this.alertService.error("Incorrect Authentication Code")
+    }
+    return throwError(() =>new Error(`An error occurred: ${error}`));
+  } 
 }

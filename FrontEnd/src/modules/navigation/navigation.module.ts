@@ -20,14 +20,20 @@ import * as navigationGuards from './guards';
 
 /* Services */
 import * as navigationServices from './services';
+import { AlertComponent } from '@app/alerts/alert.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
+import { ErrorInterceptor } from '@app/helpers/error.interceptor';
 
 @NgModule({
     imports: [CommonModule, RouterModule, AppCommonModule],
-    providers: [...navigationServices.services, ...navigationGuards.guards],
+    providers: [ { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        ...navigationServices.services, ...navigationGuards.guards],
     declarations: [
         ...navigationContainers.containers,
         ...navigationComponents.components,
-        ...appCommonLayouts.layouts,
+        ...appCommonLayouts.layouts
     ],
     exports: [
         ...navigationContainers.containers,

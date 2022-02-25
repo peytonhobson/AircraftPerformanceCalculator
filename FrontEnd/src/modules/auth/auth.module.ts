@@ -22,9 +22,9 @@ import * as authServices from './services';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from '@app/helpers/error.interceptor';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
-import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
 import { AuthenticationService } from '@app/services/auth.service';
+import { AlertModule } from "@app/alerts/alert.module"
 
 @NgModule({
     imports: [
@@ -34,15 +34,14 @@ import { AuthenticationService } from '@app/services/auth.service';
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        AlertModule
     ],
     providers: [...authServices.services, ...authGuards.guards,
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
             { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     
-            // provider used to create fake backend
             ApiService,
-            AuthenticationService,
-            AlertService],
+            AuthenticationService],
     declarations: [...authContainers.containers, ...authComponents.components],
     exports: [...authContainers.containers, ...authComponents.components],
 })

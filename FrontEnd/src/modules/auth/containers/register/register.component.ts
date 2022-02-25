@@ -1,16 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AccountService } from '@app/services/account.service';
-import { AlertService } from '@app/services/alert.service';
+import { AlertService } from '@services/alert.service';
 import { User } from '@app/models/user';
 import { AuthenticationCode } from '@app/models/authentication.code.model';
 import { AuthenticationService } from '@app/services/auth.service';
+import { first, map } from 'rxjs/operators';
+import { AlertComponent } from '@app/alerts/alert.component';
+import { NONE_TYPE } from '@angular/compiler';
 
 @Component({
     selector: 'register',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './register.component.html',
     styleUrls: ['register.component.scss'],
 })
@@ -25,7 +27,7 @@ export class RegisterComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
     ) { }
 
     ngOnInit() {
@@ -35,6 +37,7 @@ export class RegisterComponent implements OnInit {
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
             authenticationCode: ['', Validators.required]
         });
+
     }
 
     // convenience getter for easy access to form fields
@@ -60,21 +63,33 @@ export class RegisterComponent implements OnInit {
         var user = new User(this.form.get('username').value, this.form.get('password').value);
         var authenticationCode = new AuthenticationCode(this.form.get('authenticationCode').value);
 
-        var authenticated;
+        
 
         this.loading = true;
-        this.authService.authenticate(authenticationCode, user).subscribe(
-            res => {
-                if(res.status !== '200') {
-                    console.log("here");
-                    this.alertService.error(res.message);
+
+        this.authService.authenticate(authenticationCode, user).pipe(first())
+        .subscribe(
+            data => {
+                try {
+                    if(data.data.authentication !== undefined) {
+                        this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+                        this.router.navigate(['../login'], { relativeTo: this.route });
+                    }
+                }
+                catch {
+                    console.log("Not Authenticated")
+                }
+                finally {
                     this.loading = false;
+                    for(var name in this.form.controls) {
+                        (<FormControl>this.form.controls[name]).setValue('');
+                        this.form.controls[name].setErrors(null);
+                    }
                 }
-                else {
-                    this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['../login'], { relativeTo: this.route });
-                }
-            }
-        )
+            },
+            error => {
+                this.loading = false;
+            });
+        
     }
 }

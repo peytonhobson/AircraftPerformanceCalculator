@@ -28,15 +28,5 @@ export interface AuthenticationResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {authentication: boolean};
-}
-
-export interface WeatherResponse {
-    timeStamp: Date;
-    statusCode: number;
-    status: string;
-    reason: string;
-    message: string;
-    developerMessage: string;
-    data: {airportWeather?: AirportWeather};
+    data: {invalidAuthenticationCode?: boolean, usernameTaken?: boolean, authentication?: boolean};
 }
