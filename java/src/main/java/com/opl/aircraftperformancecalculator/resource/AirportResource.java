@@ -27,12 +27,12 @@ public class AirportResource {
     private final AirportService airportService;
 
 
-    @GetMapping(path = "/runway/{airportID}/{runwayNumber}")
-    public ResponseEntity<Response> getRunwayConditions(@PathVariable final String airportID, @PathVariable final String runwayNumber) throws Exception {
+    @GetMapping(path = "/runway/{airportID}/{runwayNumber}/{runwaySide}")
+    public ResponseEntity<Response> getRunwayConditions(@PathVariable final String airportID, @PathVariable final String runwayNumber, @PathVariable final String runwaySide) throws Exception {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("airportWeather", airportService.getWeatherXML(airportID, runwayNumber)))
+                        .data(of("airportWeather", airportService.getWeatherXML(airportID, runwayNumber, runwaySide)))
                         .message("Airport Runways Returned")
                         .status(OK)
                         .statusCode(OK.value())

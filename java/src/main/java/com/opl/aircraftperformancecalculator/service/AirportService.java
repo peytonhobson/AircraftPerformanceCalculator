@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface AirportService {
 
-    String getWeatherXML(String airportID, String runwayNumber) throws IOException, ParserConfigurationException, SAXException;
+    String getWeatherXML(String airportID, String runwayNumber, String runwaySide) throws IOException, ParserConfigurationException, SAXException;
     List<String> getRunways(String airportID) throws IOException;
 }

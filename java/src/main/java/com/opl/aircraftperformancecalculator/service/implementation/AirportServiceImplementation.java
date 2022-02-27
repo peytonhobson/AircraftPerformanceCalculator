@@ -30,11 +30,11 @@ public class AirportServiceImplementation implements AirportService {
 
     //TODO: Will likely need to make this return AirportWeather instead of string
     @Override
-    public String getWeatherXML(String airportID, String runwayNumber) throws IOException, ParserConfigurationException, SAXException {
+    public String getWeatherXML(String airportID, String runwayNumber, String runwaySide) throws IOException, ParserConfigurationException, SAXException {
 
 
         URL url = new URL("https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource" +
-                "=metars&requestType=retrieve&format=xml&stationString=" + airportID +"&hoursBeforeNow=1" );
+                "=metars&requestType=retrieve&format=xml&stationString=" + airportID +"&hoursBeforeNow=1");
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -48,22 +48,19 @@ public class AirportServiceImplementation implements AirportService {
                 break;
             }
         }
-        Node metar = null;
-        for(int i = 0; i < Objects.requireNonNull(data).getChildNodes().getLength(); i++) {
-            if(data.getChildNodes().item(i).getNodeName().equals("METAR")) {
-                metar = data.getChildNodes().item(i);
-                break;
-            }
-        }
+
+        assert data != null;
+        Node metar = data.getFirstChild();
 
         double temp = 0;
         double hg = 0;
         double elevation = 0;
-        double headWind = 0;
+        double headWind;
         double windDeg = 0;
         double windSpeed = 0;
         double precipitation = 0;
 
+        //TODO: Make it so if metar is null it will return exception
         assert metar != null;
         NodeList metarChildren = metar.getChildNodes();
         for(int i = 0; i < metar.getChildNodes().getLength(); i++) {
@@ -89,7 +86,7 @@ public class AirportServiceImplementation implements AirportService {
 
         headWind = windSpeed * 0.514444 +
                            Math.cos(0.0174533 * windDeg);
-        List<String> list = getRunwayInfo(airportID, runwayNumber);
+        List<String> list = getRunwayInfo(airportID, runwayNumber, runwaySide);
 
 
         return "Temperature = " + temp + " C <br/>" +
@@ -97,10 +94,11 @@ public class AirportServiceImplementation implements AirportService {
                 "Precipitation = " + precipitation + " inches <br/>" +
                 "Head Wind = " + headWind + " m/s <br/>" +
                 "Runway Length = " + list.get(0) + "ft <br/> " +
-                "Runway Type = " + list.get(1) + "<br/>";
+                "Runway Type = " + list.get(1) + "<br/>" +
+                "Slope = " + list.get(2) + "degrees <br/>";
     }
 
-    public static List<String> getRunwayInfo(String airportID, String runwayNumber) throws IOException {
+    public static List<String> getRunwayInfo(String airportID, String runwayNumber, String runwaySide) throws IOException {
 
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
@@ -112,17 +110,72 @@ public class AirportServiceImplementation implements AirportService {
             HtmlPage page = client.getPage(searchUrl);
 
             //TODO: Make sure that user has restrictions on how they enter runwayNumber
+            //TODO: Need to fix so that it matches TDZE
             HtmlElement runway = page.querySelector("div[id=runway_" + runwayNumber + "]");
             HtmlElement table = runway.getFirstByXPath("table");
             HtmlElement tbody = table.getFirstByXPath("tbody");
-            HtmlElement trDim = (HtmlElement) tbody.getChildNodes().item(0);
-            HtmlElement tdDim = (HtmlElement) trDim.getChildNodes().item(1);
-            String[] dimensions = tbody.getChildNodes().item(0).getChildNodes().item(1).getChildNodes()
-                    .item(0).getNodeValue().split(" ");
-            String length = dimensions[0];
-            String runwayType = tbody.getChildNodes().item(1).getChildNodes().item(1).getChildNodes()
-                    .item(0).getNodeValue();
+            String length = null;
+            String runwayType = null;
+            NodeList trNodes = tbody.getChildNodes();
+
+            for(int i = 0; i < trNodes.getLength(); i++) {
+                if(trNodes.item(i).getChildNodes().item(0).getFirstChild().toString().equals("Dimensions")) {
+                    length = trNodes.item(i).getChildNodes().item(1).getFirstChild().toString().split(" ")[0];
+                }
+
+                if(trNodes.item(i).getChildNodes().item(0).getFirstChild().toString().equals("Surface Type")) {
+                    runwayType = trNodes.item(i).getChildNodes().item(1).getFirstChild().toString();
+                }
+            }
+
             list.add(length); list.add(runwayType);
+
+            double runwayStartHeight = 0;
+            double runwayEndHeight = 0;
+            String temp;
+
+            NodeList trNodesRun1 = runway.getChildNodes().item(2).getFirstChild()
+                    .getChildNodes().item(1).getFirstChild().getChildNodes();
+
+            NodeList trNodesRun2 = runway.getChildNodes().item(2).getChildNodes().item(1)
+                    .getChildNodes().item(1).getFirstChild().getChildNodes();
+
+            if(runway.getChildNodes().item(2).getFirstChild().getFirstChild().getFirstChild().toString().contains(runwaySide)) {
+                for(int i = 0; i < trNodesRun1.getLength(); i++) {
+                    if(trNodesRun1.item(i).getFirstChild().getFirstChild().toString().equals("TDZE")) {
+                        temp = trNodesRun1.item(i).getChildNodes().item(1).getFirstChild().toString().replaceAll("[^0-9.]", "");
+                        runwayStartHeight = Double.parseDouble(temp.substring(0, temp.length()-1));
+                    }
+                }
+
+                for(int i = 0; i < trNodesRun2.getLength(); i++) {
+                    if(trNodesRun2.item(i).getFirstChild().getFirstChild().toString().equals("TDZE")) {
+                        temp = trNodesRun2.item(i).getChildNodes().item(1).getFirstChild().toString().replaceAll("[^0-9.]", "");
+                        runwayEndHeight = Double.parseDouble(temp.substring(0, temp.length()-1));
+                    }
+                }
+            }
+            else {
+                for(int i = 0; i < trNodesRun1.getLength(); i++) {
+                    if(trNodesRun1.item(i).getFirstChild().getFirstChild().toString().equals("TDZE")) {
+                        temp = trNodesRun1.item(i).getChildNodes().item(1).getFirstChild().toString().replaceAll("[^0-9.]", "");
+                        runwayEndHeight = Double.parseDouble(temp.substring(0, temp.length()-1));
+                    }
+                }
+
+                for(int i = 0; i < trNodesRun2.getLength(); i++) {
+                    if(trNodesRun2.item(i).getFirstChild().getFirstChild().toString().equals("TDZE")) {
+                        temp = trNodesRun2.item(i).getChildNodes().item(1).getFirstChild().toString().replaceAll("[^0-9.]", "");
+                        runwayStartHeight = Double.parseDouble(temp.substring(0, temp.length()-1));
+                    }
+                }
+            }
+
+            log.info(runwayEndHeight + " " + runwayStartHeight);
+
+            assert length != null;
+            String slope = String.valueOf(Math.tan((runwayEndHeight-runwayStartHeight)/Double.parseDouble(length)));
+            list.add(slope);
 
 
         } catch (MalformedURLException e) {

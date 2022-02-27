@@ -17,10 +17,12 @@ export class QueryAirportComponent implements OnInit {
 
     queryAirport() {
         let airportID = document.getElementById('airportID') as HTMLInputElement;
-        let runwayNumber = document.getElementById('runwayNumber') as HTMLInputElement;
+        let runwayNumber = document.getElementById('RunwaySelect') as HTMLInputElement;
+        let runwaySideNumber = document.getElementById('RunwaySideSelect') as HTMLInputElement;
 
+        const runwayReplace = runwayNumber.value.replace("/", "_")
         this.apiService
-            .get(`airport/runway/${airportID.value}/${runwayNumber.value}`)
+            .get(`airport/runway/${airportID.value}/${runwayReplace}/${runwaySideNumber.value}`)
             .subscribe(res => {
                 console.log(res.data.airportWeather);
                 res.data.airportWeather.replace(/\n/g, '<br/>');

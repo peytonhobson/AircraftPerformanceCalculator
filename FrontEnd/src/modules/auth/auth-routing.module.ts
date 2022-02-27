@@ -9,9 +9,6 @@ import { AuthModule } from './auth.module';
 /* Containers */
 import * as authContainers from './containers';
 
-/* Guards */
-import * as authGuards from './guards';
-
 /* Routes */
 export const ROUTES: Routes = [
     {
@@ -24,7 +21,7 @@ export const ROUTES: Routes = [
         canActivate: [],
         component: authContainers.LoginComponent,
         data: {
-            title: 'Pages Login - SB Admin Angular',
+            title: 'Login',
         } as SBRouteData,
     },
     {
@@ -32,7 +29,7 @@ export const ROUTES: Routes = [
         canActivate: [],
         component: authContainers.RegisterComponent,
         data: {
-            title: 'Pages Register - SB Admin Angular',
+            title: 'Register',
         } as SBRouteData,
     },
     {
