@@ -16,6 +16,8 @@ export class QueryAirportComponent implements OnInit {
     }
 
     queryAirport() {
+
+        document.getElementById('AirportOutputContainer').innerHTML = ' ';
         let airportID = document.getElementById('airportID') as HTMLInputElement;
         let runwayNumber = document.getElementById('RunwaySelect') as HTMLInputElement;
         let runwaySideNumber = document.getElementById('RunwaySideSelect') as HTMLInputElement;
@@ -26,13 +28,14 @@ export class QueryAirportComponent implements OnInit {
             .subscribe(res => {
                 console.log(res.data.airportWeather);
                 res.data.airportWeather.replace(/\n/g, '<br/>');
-                document.getElementById('weatherOutputContainer').innerHTML = JSON.stringify(
+                document.getElementById('AirportOutputContainer').innerHTML = JSON.stringify(
                     res.data.airportWeather
                 );
             });
     }
 
     findRunways() {
+        document.getElementById('AirportOutputContainer').innerHTML = ' ';
         let airportID = document.getElementById('airportID') as HTMLInputElement;
         let runwaySelect = document.getElementById('RunwaySelect') as HTMLSelectElement;
         let runwaySideSelect = document.getElementById('RunwaySideSelect') as HTMLSelectElement;

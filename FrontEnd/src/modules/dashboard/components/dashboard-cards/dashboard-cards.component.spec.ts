@@ -6,10 +6,10 @@ import { DashboardCardsComponent } from './dashboard-cards.component';
 
 @Component({
     template: `
-        <sb-dashboard-cards
+        <dashboard-cards
             [someInput]="someInput"
             (someFunction)="someFunction($event)"
-        ></sb-dashboard-cards>
+        ></dashboard-cards>
     `,
 })
 class TestHostComponent {

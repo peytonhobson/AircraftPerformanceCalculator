@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sb-card',
+    selector: 'card',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './card.component.html',
     styleUrls: ['card.component.scss'],

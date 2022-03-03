@@ -1,5 +1,5 @@
 /* tslint:disable: ordered-imports*/
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -19,6 +19,7 @@ import * as dashboardGuards from './guards';
 
 /* Services */
 import * as dashboardServices from './services';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     imports: [
@@ -28,9 +29,11 @@ import * as dashboardServices from './services';
         FormsModule,
         AppCommonModule,
         NavigationModule,
+        DragDropModule
     ],
     providers: [...dashboardServices.services, ...dashboardGuards.guards],
     declarations: [...dashboardContainers.containers, ...dashboardComponents.components],
     exports: [...dashboardContainers.containers, ...dashboardComponents.components],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardModule {}

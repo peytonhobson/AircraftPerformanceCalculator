@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'sb-dashboard-cards',
+    selector: 'dashboard-cards',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './dashboard-cards.component.html',
     styleUrls: ['dashboard-cards.component.scss'],

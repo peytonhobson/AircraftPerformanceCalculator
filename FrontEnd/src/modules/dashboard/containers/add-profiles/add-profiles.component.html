@@ -1,2 +1,111 @@
 <layout-dashboard><sb-dashboard-head title="Add Profiles" [hideBreadcrumbs]="true">
-</sb-dashboard-head></layout-dashboard>
+</sb-dashboard-head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card top-card" >
+                <div class="card-header text-center">
+                    Specify Tank Fill
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="tipTankCheck">
+                            <label class="form-check-label" for="tipTankCheck">
+                              Tip Tank
+                            </label>
+                        </div>
+                        <div>
+                            <input type="range" id="tipRange">
+                            <span id="tipTankVal">50%</span>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="otherTank1Check">
+                            <label class="form-check-label" for="otherTank1Check">
+                              Other Tank 1
+                            </label>
+                        </div>
+                        <div>
+                            <input type="range" id="other1Range">
+                            <span id="otherTank1Val">50%</span>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="otherTank2Check">
+                            <label class="form-check-label" for="otherTank2Check">
+                              Other Tank 2
+                            </label>
+                        </div>
+                        <div>
+                            <input type="range" id="other2Range">
+                            <span id="otherTank2Val">50%</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card text-center top-card">
+                <div class="card-header">
+                    Add new attachment
+                </div>
+                <div>
+                    <label for="ComponentName">Name:</label><br>
+                    <input type="text" id="AttachmentName" name="AttachmentName" value=""><br>
+                    <label for="ComponentMass">Mass:</label><br>
+                    <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
+                    <!-- <label for="AircraftPosition">Position on Aircraft:</label><br> -->
+                    <!-- <select class = "btn btn-outline-dark active" name="PositionSelect" id="PositionSelect">
+                        <option text="Choose Position" value="Choose Position">Choose Position</option>
+                    </select><br> -->
+                    <button class = "btn btn-outline-dark active" (click)="createNew()" id="CreateNewButton">Create Component</button>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class ="row">
+        <div class="col-lg-10">
+            <div class="card text-center">
+                <div class="card-header">
+                    Select Attachments
+                </div>
+                <div class="row text-center">
+                    <div class="col-lg-4">
+                            <h2>Unused Attachments</h2>
+                            <div 
+                            cdkDropList 
+                            #attachmentList="cdkDropList" 
+                            [cdkDropListData]="Attachments"
+                            [cdkDropListConnectedTo]="[doneAttachmentList]" 
+                            class="attachment-list" 
+                            (cdkDropListDropped)="onDrop($event)">
+                                <div class="attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{attachmentList}}</div>
+                            </div>
+                    </div>
+                    <div class="col-lg-4">
+                            <h2>Attachments Used</h2>
+                            <div 
+                            cdkDropList 
+                            #doneAttachmentList="cdkDropList" 
+                            [cdkDropListData]="AttachmentsUsed"
+                            [cdkDropListConnectedTo]="[attachmentsList]" 
+                            class="attachment-list" 
+                            (cdkDropListDropped)="onDrop($event)">
+                                <div class="attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{attachmentsUsed}}</div>
+                            </div>
+                    </div>
+                    <div class="col-lg-3 text-center my-auto">
+                        <button class = "btn btn-outline-dark active" (click)="saveProfile()" id="SaveProfileButton">Save Profile</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+
+</layout-dashboard>
