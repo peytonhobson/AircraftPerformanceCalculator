@@ -2,13 +2,25 @@
 </sb-dashboard-head>
 
 <div class="container">
-    <div class="row">
+    <div class="row d-flex justify-content-center">
+        
+    </div>
+    <div class="row d-flex justify-content-center">
         <div class="col-lg-5">
-            <div class="card top-card" >
+            <div class="card">
+                <div class="card-header text-center">
+                    Choose Measurement System
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-dark active">Imperial</button>
+                    <button class="btn btn-dark">Metric</button>
+                </div>
+            </div>
+            <div class="card top-card-left">
                 <div class="card-header text-center">
                     Specify Tank Fill
                 </div>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush align-center">
                     <li class="list-group-item">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="tipTankCheck">
@@ -18,19 +30,17 @@
                         </div>
                         <div>
                             <input type="range" id="tipRange">
-                            <span id="tipTankVal">50%</span>
+                            <Label id="tipTankVal"> 50%</Label>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="otherTank1Check">
-                            <label class="form-check-label" for="otherTank1Check">
+                            <label class="form-check-label" for="otherTank1Check"><input class="form-check-input" type="checkbox" value="" id="otherTank1Check">
                               Other Tank 1
                             </label>
                         </div>
                         <div>
-                            <input type="range" id="other1Range">
-                            <span id="otherTank1Val">50%</span>
+                            <label id="otherTank1Val"><input type="range" id="other1Range"> 50%</label>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -42,33 +52,63 @@
                         </div>
                         <div>
                             <input type="range" id="other2Range">
-                            <span id="otherTank2Val">50%</span>
+                            <Label id="otherTank2Val"> 50%</Label>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-
         <div class="col-lg-5">
-            <div class="card text-center top-card">
-                <div class="card-header">
+            <div class="card top-card">
+                <div class="card-header text-center">
+                    Pilot Weights
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="pilot1Check">
+                            <label class="form-check-label" for="pilot1Check">
+                              Pilot 1
+                            </label>
+                        </div>
+                        <div>
+                            <Label>Enter Weight: </Label>
+                            <input class="PilotWeightInput" type="text" id="pilot1Weight">
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="pilot2Check">
+                            <label class="form-check-label" for="pilot2Check">
+                              Pilot 2
+                            </label>
+                        </div>
+                        <div>
+                            <Label>Enter Weight: </Label>
+                            <input class="PilotWeightInput" type="text" id="pilot2Weight">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card new-component-card">
+                <div class="card-header text-center">
                     Add new attachment
                 </div>
-                <div>
-                    <label for="ComponentName">Name:</label><br>
-                    <input type="text" id="AttachmentName" name="AttachmentName" value=""><br>
-                    <label for="ComponentMass">Mass:</label><br>
-                    <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
-                    <!-- <label for="AircraftPosition">Position on Aircraft:</label><br> -->
-                    <!-- <select class = "btn btn-outline-dark active" name="PositionSelect" id="PositionSelect">
-                        <option text="Choose Position" value="Choose Position">Choose Position</option>
-                    </select><br> -->
-                    <button class = "btn btn-outline-dark active" (click)="createNew()" id="CreateNewButton">Create Component</button>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-5 text-center">
+                        <label for="ComponentName">Name:</label><br>
+                        <input type="text" id="AttachmentName" name="AttachmentName" value=""><br>
+                        <label for="ComponentMass">Mass:</label><br>
+                        <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
+                    </div>
+                    <div class="col-lg-5 text-center my-auto">
+                        <button class = "btn btn-outline-dark active" (click)="createNew()" id="CreateNewButton">Create Component</button>
+                    </div>
                 </div>  
             </div>
         </div>
     </div>
-    <div class ="row">
+    <div class ="row d-flex justify-content-center">
         <div class="col-lg-10">
             <div class="card text-center">
                 <div class="card-header">
@@ -93,7 +133,7 @@
                             cdkDropList 
                             #doneAttachmentList="cdkDropList" 
                             [cdkDropListData]="AttachmentsUsed"
-                            [cdkDropListConnectedTo]="[attachmentsList]" 
+                            [cdkDropListConnectedTo]="[attachmentList]" 
                             class="attachment-list" 
                             (cdkDropListDropped)="onDrop($event)">
                                 <div class="attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{attachmentsUsed}}</div>

@@ -1,7 +1,11 @@
 <div class="bg-dark" id="layoutAuthentication">
     <alert></alert>
     <div id="layoutAuthentication_content">
-        <main><ng-content></ng-content></main>
+        <main>
+            <video autoplay muted loop id="myVideo" oncanplay="this.play()" onloadedmetadata="this.muted = true">
+                <source src="assets/vid/albatros.mp4" type="video/mp4">
+            </video>
+            <ng-content></ng-content></main>
     </div>
     <div id="layoutAuthentication_footer"><sb-footer></sb-footer></div>
 </div>

@@ -6,7 +6,6 @@ import { ApiService } from '@app/services/api.service';
 
 @Component({
     selector: 'calculator',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './calculator.component.html',
     styleUrls: ['calculator.component.scss'],
 })

@@ -6,10 +6,10 @@ import { DashboardHeadComponent } from './dashboard-head.component';
 
 @Component({
     template: `
-        <sb-dashboard-head
+        <
             [someInput]="someInput"
             (someFunction)="someFunction($event)"
-        ></sb-dashboard-head>
+        ></>
     `,
 })
 class TestHostComponent {
@@ -48,6 +48,6 @@ describe('DashboardHeadComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-dashboard-head')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('')).toEqual(jasmine.anything());
     });
 });
