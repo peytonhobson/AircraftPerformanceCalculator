@@ -1,21 +1,37 @@
 <layout-dashboard><sb-dashboard-head title="Airport Information" [hideBreadcrumbs]="true"></sb-dashboard-head>
 
-  <div class="col-md text-center">
-    <form action="/action_page.php">
-      <label for="airportID">Airport ID:</label><br>
-      <input type="text" id="airportID" name="airportID" value=""><br>
-      <button type="button" class="btn btn-outline-dark active text-center" (click)="findRunways()">Find Runways</button><br><br>
-      <select class = "btn btn-outline-dark active btn-md" name="RunwaySelect" id="RunwaySelect">
-        <option text="Choose a Runway" value="Choose a Runway">Choose a Runway</option>
-      </select><br><br>
-      <select class = "btn btn-outline-dark active" name="RunwaySideSelect" id="RunwaySideSelect">
-        <option text="Choose Runway Takoff Side" value="Choose Runway Takoff Side">Choose Runway Takoff Side</option>
-      </select><br><br>
-      </form>
-    <button type="button" class="btn btn-outline-dark active text-center" (click)="queryAirport()">Query</button>
-    <div id="weatherOutput" class="card">
-      <span  class="border" id="AirportOutputContainer"></span>
-    </div>
+  <div class="row">
+    <div class="col-lg-5 text-center">
+        <label for="airportID">Airport ID:</label><br>
+        <input type="text" id="airportID" name="airportID" value=""><br>
+        <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" (click)="findRunways()">Find Runways</button><br><br>
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-7">
+            <div class="blank-card my-5">
+              <button type="button" class="btn btn-outline-dark runway-button" (click)="runwayClick()">runway</button>
+              <button type="button" class="btn btn-outline-dark runway-button" (click)="runwayClick()">runway</button>
+              <button type="button" class="btn btn-outline-dark runway-button" (click)="runwayClick()">runway</button>
+              <button type="button" class="btn btn-outline-dark runway-button" (click)="runwayClick()">runway</button>
+              <button type="button" class="btn btn-outline-dark runway-button" (click)="runwayClick()">runway</button>
+            </div>
+          </div>  
+        </div>
+
+        <div class="row d-flex justify-content-center">
+          <div class= "col-md-5">
+            <div class="blank-card mt-3">
+              <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark text-center" (click)="runwaySideClick()">side 1</button>
+              <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark text-center" (click)="runwaySideClick()">side 2</button>
+            </div>
+          </div>  
+        </div>
+
+      <button type="button" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
+      </div>
+      <div id="weatherOutput" class="card col-lg-5">
+        <span  class="border" id="AirportOutputContainer"></span>
+      </div>
   </div>
 
 

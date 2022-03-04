@@ -11,6 +11,9 @@ export class QueryAirportComponent implements OnInit {
     
     constructor(private apiService: ApiService) {}
 
+    runway: string;
+    runwayNumber: number;
+
     ngOnInit() {
 
     }
@@ -51,5 +54,17 @@ export class QueryAirportComponent implements OnInit {
                 });
             });
         });
+    }
+
+    runwayClick() {
+        const buttons = document.getElementsByClassName('runway-button');
+
+        for(let i = 0; i < buttons.length; i++) {
+            if(buttons[i].classList.contains('active')) {
+                buttons[i]
+            }
+        }
+
+
     }
 }

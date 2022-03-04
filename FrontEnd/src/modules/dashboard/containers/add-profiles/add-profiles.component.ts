@@ -70,6 +70,36 @@ export class AddProfilesComponent implements OnInit {
               rangeOtherTank2.disabled = true;
           }
         })
+
+        const pilot1Check = document.getElementById('pilot1Check') as HTMLInputElement;
+        const pilot1Weight = document.getElementById('pilot1Weight') as HTMLInputElement;
+        pilot1Weight.disabled = true;
+  
+
+        pilot1Check.addEventListener('change', (e) => {
+           if(pilot1Check.checked) {
+              pilot1Weight.disabled = false;
+          }
+             else {
+              pilot1Weight.disabled = true;
+          }
+        })
+
+        const pilot2Check = document.getElementById('pilot2Check') as HTMLInputElement;
+        const pilot2Weight = document.getElementById('pilot2Weight') as HTMLInputElement;
+        pilot2Weight.disabled = true;
+  
+
+        pilot2Check.addEventListener('change', (e) => {
+           if(pilot2Check.checked) {
+              pilot2Weight.disabled = false;
+          }
+             else {
+              pilot2Weight.disabled = true;
+          }
+        })
+
+
         
     }
 
@@ -101,4 +131,6 @@ export class AddProfilesComponent implements OnInit {
 
       this.Attachments.push(new Attachment(name.value, Number(mass.value)).toString())
     }
+
+    
 }
