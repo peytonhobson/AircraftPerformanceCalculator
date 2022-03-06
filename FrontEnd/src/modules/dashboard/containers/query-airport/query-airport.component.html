@@ -8,11 +8,9 @@
         <div class="row d-flex justify-content-center">
           <div class="col-md-7">
             <label>Select Takeoff Runway:</label>
-            <div class="blank-card my-5" id="runway-button-group">
-            </div>
+            <div class="card border-1 my-4" id="runway-button-group"></div>
           </div>  
         </div>
-
         <div class="row d-flex justify-content-center">
           <div class= "col-md-5">
             <label for=RunwaySideButton1>Select Runway Starting Side: </label>
@@ -24,80 +22,86 @@
         </div>
       <button type="button" id="QueryButton" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
       </div>
-      <div id="weatherOutput" class="blank-card col-lg-5">
+      <div class="blank-card col-lg-5">
+        <div class="row d-flex justify-content-center">
+          <div id="airportID-output">
+            <div class="w-100 shadow-lg text-center bg-dark rounded p-2">
+              <h2 id="AirportIDLabel" class="output-label">&nbsp;</h2>
+            </div>
+          </div>
+        </div>
         <div class="row d-flex justify-content-center">
           <div class="col-lg-4">
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-dark rounded p-3">
-                <h3>Temperature</h3>
+                <h3 class="output-label">Temperature</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Pressure Altitude</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Pressure Altitude</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Precipitation</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Precipitation</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Head Wind</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Head Wind</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Runway Length</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Runway Length</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Runway Type</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Runway Type</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-lg text-center bg-secondary rounded p-3">
-                <h3>Slope</h3>
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3 class="output-label">Slope</h3>
               </div>
             </div> 
           </div>
           <div class="col-lg-4">
-  
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="temp-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="pressure-altitude-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="precipitation-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="headwind-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="runway-length-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="runway-type-output">&nbsp;</h3>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg text-center bg-white rounded p-3">
-                <h3>&nbsp;</h3>
+                <h3 id="slope-output">&nbsp;</h3>
               </div>
             </div> 
           </div>

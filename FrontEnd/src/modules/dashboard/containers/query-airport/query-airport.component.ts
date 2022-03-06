@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { RunwayConditions } from "@app/models/runway-conditions";
 import { ApiService } from "@app/services/api.service";
 import { Button } from "protractor";
 
@@ -35,8 +36,6 @@ export class QueryAirportComponent implements OnInit {
     }
 
     queryAirport() {
-
-        document.getElementById('AirportOutputContainer').innerHTML = ' ';
         let runwayNumbers = document.getElementsByClassName('runway-button');
         let sideNumbers = document.getElementsByClassName('side-button');
         var runwayNumber, runwaySideNumber;
@@ -54,15 +53,31 @@ export class QueryAirportComponent implements OnInit {
         }
 
         const runwayReplace = runwayNumber.innerHTML.replace("/", "_")
-        console.log(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
         this.apiService
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
-                console.log(res.data.airportWeather);
-                res.data.airportWeather.replace(/\n/g, '<br/>');
-                document.getElementById('AirportOutputContainer').innerHTML = JSON.stringify(
-                    res.data.airportWeather
-                );
+                let runwayConditions = res.data.airportWeather
+                document.getElementById('AirportIDLabel').innerHTML = runwayConditions.airportID.toUpperCase();
+                document.getElementById('temp-output').innerHTML = (Math.round(runwayConditions.temp * 100) / 100).toFixed(1).toString() + " &degC";
+                document.getElementById('pressure-altitude-output').innerHTML = (Math.round(runwayConditions.pressureAltitude * 100) / 100).toFixed(3).toString() + " m"
+                document.getElementById('precipitation-output').innerHTML = (Math.round(runwayConditions.precipitation * 100) / 100).toFixed(3).toString() + " inches"
+                document.getElementById('headwind-output').innerHTML = (Math.round(runwayConditions.headWind * 100) / 100).toFixed(3).toString() + " m/s"
+                document.getElementById('runway-length-output').innerHTML = (Math.round(runwayConditions.runwayLength * 100) / 100).toFixed(1).toString() + " ft"
+
+                if(runwayConditions.runwayType.toUpperCase() === "CONC" || runwayConditions.runwayType.toUpperCase() === "ASPH") {
+                    document.getElementById('runway-type-output').innerHTML = "Concrete"
+                }
+                else if(runwayConditions.runwayType.toUpperCase() === "BRICK") {
+                    document.getElementById('runway-type-output').innerHTML = "Brick"
+                }
+                else if(runwayConditions.runwayType.toUpperCase() === "WOOD") {
+                    document.getElementById('runway-type-output').innerHTML = "Wood"
+                }
+                else {
+                    document.getElementById('runway-type-output').innerHTML = "Grass"
+                }
+            
+                document.getElementById('slope-output').innerHTML = (Math.round(runwayConditions.slope * 100) / 100).toFixed(3).toString() + "&deg"
             });
     }
 
@@ -78,7 +93,7 @@ export class QueryAirportComponent implements OnInit {
         this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
             res.data.airportRunways.forEach(x => {
                 const newButton = document.createElement('button');
-                newButton.setAttribute('class','btn btn-outline-dark runway-button');
+                newButton.setAttribute('class','btn-sm btn-outline-dark runway-button');
                 newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
                 newButton.addEventListener('click', (e) => {
                     this.runwayClick(newButton.getAttribute('id'))

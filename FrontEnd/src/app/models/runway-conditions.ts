@@ -2,13 +2,13 @@ export class RunwayConditions {
     public airportID: string
     public temp: number;
     public pressureAltitude: number;
-    public precipitation: string;
-    public headWind: string;
+    public precipitation: number;
+    public headWind: number;
     public runwayLength: number;
     public runwayType: string;
-    public slope: string;
+    public slope: number;
 
-    constructor(airportID: string,temp: number, pressureAltitude: number, precipitation: string, headWind: string, runwayLength: number, runwayType: string, slope: string) {
+    constructor(airportID: string,temp: number, pressureAltitude: number, precipitation: number, headWind: number, runwayLength: number, runwayType: string, slope: number) {
         this.airportID = airportID
         this.temp = temp;
         this.pressureAltitude = pressureAltitude;

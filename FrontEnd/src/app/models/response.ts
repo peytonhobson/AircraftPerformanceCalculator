@@ -1,5 +1,5 @@
-import { AirportWeather } from "./airport.weather";
 import { Profile } from "./profile.model";
+import { RunwayConditions } from "./runway-conditions";
 
 export interface CustomResponse {
     timeStamp: Date;
@@ -8,7 +8,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {profiles?: Profile[], airportWeather? : string, airportRunways? : string[]};
+    data: {profiles?: Profile[], airportWeather? : RunwayConditions, airportRunways? : string[]};
 }
 
 export interface CalculatorResponse {
