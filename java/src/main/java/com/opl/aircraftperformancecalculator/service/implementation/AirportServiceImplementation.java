@@ -43,14 +43,16 @@ public class AirportServiceImplementation implements AirportService {
         Node data = null;
 
         for(int i = 0; i < root.getChildNodes().getLength(); i++) {
+            log.info(root.getChildNodes().item(i).getNodeName());
             if(root.getChildNodes().item(i).getNodeName().equals("data")) {
                 data = root.getChildNodes().item(i);
                 break;
             }
         }
 
+        log.info(String.valueOf(data));
         assert data != null;
-        Node metar = data.getFirstChild();
+        Node metar = data.getChildNodes().item(1);
 
         double temp = 0;
         double hg = 0;

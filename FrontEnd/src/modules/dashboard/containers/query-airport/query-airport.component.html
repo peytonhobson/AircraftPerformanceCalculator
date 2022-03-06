@@ -8,6 +8,7 @@
 
         <div class="row d-flex justify-content-center">
           <div class="col-md-7">
+            <label>Select Takeoff Runway:</label>
             <div class="blank-card my-5" id="runway-button-group">
               <!-- <button type="button" class="btn btn-outline-dark runway-button" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
               <button type="button" class="btn btn-outline-dark" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
@@ -20,17 +21,18 @@
 
         <div class="row d-flex justify-content-center">
           <div class= "col-md-5">
+            <label for=RunwaySideButton1>Select Runway Starting Side: </label>
             <div class="blank-card mt-3">
-              <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark text-center" (click)="runwaySideClick()">side 1</button>
-              <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark text-center" (click)="runwaySideClick()">side 2</button>
+                <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
+                <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+          
             </div>
           </div>  
         </div>
-
-      <button type="button" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
+      <button type="button" id="QueryButton" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
       </div>
       <div id="weatherOutput" class="card col-lg-5">
-        <span  class="border" id="AirportOutputContainer"></span>
+        <h3  class="border" id="AirportOutputContainer"></h3>
       </div>
   </div>
 

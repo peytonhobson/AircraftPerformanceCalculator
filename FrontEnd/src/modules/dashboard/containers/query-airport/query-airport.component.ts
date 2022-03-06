@@ -14,21 +14,49 @@ export class QueryAirportComponent implements OnInit {
     runway: string;
     runwayNumber: number;
     runwayButtonNumber: number;
+    airportID: string;
 
     ngOnInit() {
         this.runwayButtonNumber = 0;
+        const sideButton1 = document.getElementById('RunwaySideButton1') as HTMLButtonElement;
+        sideButton1.addEventListener('click', (e) => {
+            this.runwaySideClick(sideButton1.getAttribute('id'));
+        })
+        sideButton1.disabled = true;
+
+        const sideButton2 = document.getElementById('RunwaySideButton2') as HTMLButtonElement;
+        sideButton2.addEventListener('click', (e) => {
+            this.runwaySideClick(sideButton2.getAttribute('id'));
+        })
+        sideButton2.disabled = true;
+
+        const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
+        queryButton.disabled = true;
     }
 
     queryAirport() {
 
         document.getElementById('AirportOutputContainer').innerHTML = ' ';
-        let airportID = document.getElementById('airportID') as HTMLInputElement;
-        let runwayNumber = document.getElementById('RunwaySelect') as HTMLInputElement;
-        let runwaySideNumber = document.getElementById('RunwaySideSelect') as HTMLInputElement;
+        let runwayNumbers = document.getElementsByClassName('runway-button');
+        let sideNumbers = document.getElementsByClassName('side-button');
+        var runwayNumber, runwaySideNumber;
 
-        const runwayReplace = runwayNumber.value.replace("/", "_")
+        for(var i = 0; i < runwayNumbers.length; i++) {
+            if(runwayNumbers[i].getAttribute('class').includes('btn-dark')) {
+                runwayNumber = runwayNumbers[i];
+            }
+        }
+
+        for(var i = 0; i < sideNumbers.length; i++) {
+            if(sideNumbers[i].getAttribute('class').includes('btn-dark')) {
+                runwaySideNumber = sideNumbers[i];
+            }
+        }
+
+        const runwayReplace = runwayNumber.innerHTML.replace("/", "_")
+        console.log(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
         this.apiService
-            .get(`airport/runway/${airportID.value}/${runwayReplace}/${runwaySideNumber.value}`)
+            .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
                 console.log(res.data.airportWeather);
                 res.data.airportWeather.replace(/\n/g, '<br/>');
@@ -41,54 +69,60 @@ export class QueryAirportComponent implements OnInit {
     findRunways() {
         document.getElementById('AirportOutputContainer').innerHTML = ' ';
         const airportID = document.getElementById('airportID') as HTMLInputElement;
+        this.airportID = airportID.value;
         const runwayButtongroup = document.getElementById('runway-button-group');
 
-        // this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
-        //     res.data.airportRunways.forEach(x => {
-        //         const newButton = document.createElement('button');
-        //         newButton.setAttribute('class','btn btn-outline-dark');
-        //         newButton.setAttribute('(click)', 'runwayClick(runwayButton' + this.runwayButtonNumber + ')')
-        //         newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
-        //         newButton.innerHTML = x.replace('_', '/'), x.replace('_', '/');
-        //         this.runwayButtonNumber++;
-        //         runwayButtongroup.appendChild(newButton);
-        //     });
-        // });
-
-        const newButton = document.createElement('button');
-        newButton.setAttribute('class','btn btn-outline-dark runway-button');
-        newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
-        newButton.addEventListener('click', (e) => {
-            this.runwayClick(newButton.getAttribute('id'))
+        this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
+            res.data.airportRunways.forEach(x => {
+                const newButton = document.createElement('button');
+                newButton.setAttribute('class','btn btn-outline-dark runway-button');
+                newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
+                newButton.addEventListener('click', (e) => {
+                    this.runwayClick(newButton.getAttribute('id'))
+                });
+                newButton.innerHTML = x.replace('_', '/'), x.replace('_', '/');
+                this.runwayButtonNumber++;
+                runwayButtongroup.appendChild(newButton);
+            });
         });
-        newButton.innerHTML = "asdfasd";
-        this.runwayButtonNumber++;
-        runwayButtongroup.appendChild(newButton);
-
-        const newButton1 = document.createElement('button');
-        newButton1.setAttribute('class','btn btn-outline-dark runway-button');
-        newButton1.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
-        newButton1.addEventListener('click', (e) => {
-            this.runwayClick(newButton1.getAttribute('id'))
-        });
-        newButton1.innerHTML = "asdfasd";
-        this.runwayButtonNumber++;
-        runwayButtongroup.appendChild(newButton1);
     }
 
-
-
     runwayClick(id: string) {
-        console.log(id)
         const button = document.getElementById(id);
         const buttons = document.getElementsByClassName('runway-button')
 
         for(var i = 0; i < buttons.length; i++) {
-            buttons[i].className = buttons[i].className.replace("active", "");
-            buttons[i].className = buttons[i].className.replace("btn-dark", "btn-outline-dark");
+            buttons[i].className = buttons[i].className.replace('active', '');
+            buttons[i].className = buttons[i].className.replace('btn-dark', 'btn-outline-dark');
         }
 
-        button.className = button.className.replace("btn-outline-dark", "btn-dark")
-        button.className += "active"
+        button.className = button.className.replace('btn-outline-dark', 'btn-dark')
+        button.className += ' active'
+
+        const sideButton1 = document.getElementById('RunwaySideButton1') as HTMLButtonElement;
+        sideButton1.disabled = false;
+
+        const sideButton2 = document.getElementById('RunwaySideButton2') as HTMLButtonElement;
+        sideButton2.disabled = false;
+
+        const sides = button.innerHTML.split("/");
+        sideButton1.innerHTML=sides[0];
+        sideButton2.innerHTML=sides[1];
+    }
+
+    runwaySideClick(id: string) {
+        const button = document.getElementById(id);
+        const buttons = document.getElementsByClassName('side-button')
+
+        for(var i = 0; i < buttons.length; i++) {
+            buttons[i].className = buttons[i].className.replace('active', '');
+            buttons[i].className = buttons[i].className.replace('btn-dark', 'btn-outline-dark');
+        }
+
+        button.className = button.className.replace('btn-outline-dark', 'btn-dark')
+        button.className += ' active'
+
+        const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
+        queryButton.disabled = false;
     }
 }
