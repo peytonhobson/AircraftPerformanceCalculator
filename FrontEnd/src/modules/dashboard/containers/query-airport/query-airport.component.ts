@@ -70,7 +70,11 @@ export class QueryAirportComponent implements OnInit {
         document.getElementById('AirportOutputContainer').innerHTML = ' ';
         const airportID = document.getElementById('airportID') as HTMLInputElement;
         this.airportID = airportID.value;
-        const runwayButtongroup = document.getElementById('runway-button-group');
+        const runwayButtonGroup = document.getElementById('runway-button-group');
+
+        while (runwayButtonGroup.firstChild) {
+            runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
+          }
 
         this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
             res.data.airportRunways.forEach(x => {
@@ -82,7 +86,7 @@ export class QueryAirportComponent implements OnInit {
                 });
                 newButton.innerHTML = x.replace('_', '/'), x.replace('_', '/');
                 this.runwayButtonNumber++;
-                runwayButtongroup.appendChild(newButton);
+                runwayButtonGroup.appendChild(newButton);
             });
         });
     }
