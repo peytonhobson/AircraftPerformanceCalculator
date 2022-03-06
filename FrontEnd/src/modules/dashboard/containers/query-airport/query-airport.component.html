@@ -1,20 +1,14 @@
 <layout-dashboard><sb-dashboard-head title="Airport Information" [hideBreadcrumbs]="true"></sb-dashboard-head>
 
-  <div class="row">
+  <div class="row d-flex justify-content-center">
     <div class="col-lg-5 text-center">
         <label for="airportID">Airport ID:</label><br>
         <input type="text" id="airportID" name="airportID" value=""><br>
         <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" (click)="findRunways()">Find Runways</button><br><br>
-
         <div class="row d-flex justify-content-center">
           <div class="col-md-7">
             <label>Select Takeoff Runway:</label>
             <div class="blank-card my-5" id="runway-button-group">
-              <!-- <button type="button" class="btn btn-outline-dark runway-button" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
-              <button type="button" class="btn btn-outline-dark" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
-              <button type="button" class="btn btn-outline-dark" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
-              <button type="button" class="btn btn-outline-dark" #runwayButton (click)="runwayClick(runwayButton)">runway</button>
-              <button type="button" class="btn btn-outline-dark" #runwayButton (click)="runwayClick(runwayButton)">runway</button> -->
             </div>
           </div>  
         </div>
@@ -25,16 +19,89 @@
             <div class="blank-card mt-3">
                 <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
                 <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
-          
             </div>
           </div>  
         </div>
       <button type="button" id="QueryButton" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
       </div>
-      <div id="weatherOutput" class="card col-lg-5">
-        <h3  class="border" id="AirportOutputContainer"></h3>
+      <div id="weatherOutput" class="blank-card col-lg-5">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-4">
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-dark rounded p-3">
+                <h3>Temperature</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Pressure Altitude</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Precipitation</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Head Wind</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Runway Length</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Runway Type</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-secondary rounded p-3">
+                <h3>Slope</h3>
+              </div>
+            </div> 
+          </div>
+          <div class="col-lg-4">
+  
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg text-center bg-white rounded p-3">
+                <h3>&nbsp;</h3>
+              </div>
+            </div> 
+          </div>
+        </div>
       </div>
   </div>
-
-
 </layout-dashboard>

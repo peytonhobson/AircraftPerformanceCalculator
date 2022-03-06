@@ -67,14 +67,13 @@ export class QueryAirportComponent implements OnInit {
     }
 
     findRunways() {
-        document.getElementById('AirportOutputContainer').innerHTML = ' ';
         const airportID = document.getElementById('airportID') as HTMLInputElement;
         this.airportID = airportID.value;
         const runwayButtonGroup = document.getElementById('runway-button-group');
 
         while (runwayButtonGroup.firstChild) {
             runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
-          }
+        }
 
         this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
             res.data.airportRunways.forEach(x => {
