@@ -18,8 +18,6 @@ import { Subscription } from 'rxjs';
     styleUrls: ['layout-dashboard.component.scss'],
 })
 export class LayoutDashboardComponent implements OnInit, OnDestroy {
-    @Input() static = false;
-    @Input() light = false;
     @HostBinding('class.sb-sidenav-toggled') sideNavHidden = false;
     subscription: Subscription = new Subscription();
     sideNavItems = sideNavItems;
@@ -31,9 +29,6 @@ export class LayoutDashboardComponent implements OnInit, OnDestroy {
         private changeDetectorRef: ChangeDetectorRef
     ) {}
     ngOnInit() {
-        if (this.light) {
-            this.sidenavStyle = 'sb-sidenav-light';
-        }
         this.subscription.add(
             this.navigationService.sideNavVisible$().subscribe(isVisible => {
                 this.sideNavHidden = !isVisible;
