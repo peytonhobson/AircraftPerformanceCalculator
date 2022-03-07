@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RunwayConditions } from "@app/models/runway-conditions";
 import { ApiService } from "@app/services/api.service";
 import { Button } from "protractor";
@@ -11,13 +12,21 @@ import { Button } from "protractor";
 })
 export class QueryAirportComponent implements OnInit {
     
-    constructor(private apiService: ApiService) {}
+    constructor(private apiService: ApiService, private formBuilder: FormBuilder,) {}
+
     runway: string;
     runwayNumber: number;
     runwayButtonNumber: number;
     airportID: string;
+    form: FormGroup;
+    submitted = false;
 
     ngOnInit() {
+
+        this.form = this.formBuilder.group({
+            airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
+        });
+
         this.runwayButtonNumber = 0;
         const sideButton1 = document.getElementById('RunwaySideButton1') as HTMLButtonElement;
         sideButton1.addEventListener('click', (e) => {
@@ -33,6 +42,11 @@ export class QueryAirportComponent implements OnInit {
 
         const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
         queryButton.disabled = true;
+
+        const idInput = document.getElementById('airportID') as HTMLInputElement;
+        idInput.addEventListener('change', (e) => {
+            this.submitted = false;
+        })
     }
 
     queryAirport() {
@@ -58,7 +72,7 @@ export class QueryAirportComponent implements OnInit {
         this.apiService
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
-                let runwayConditions = res.data.airportWeather
+                let runwayConditions = res.data.runwayCondition
 
                 document.getElementById('AirportIDLabel').innerHTML += runwayConditions.airportID.toUpperCase();
                 document.getElementById('temp-output').innerHTML = (Math.round(runwayConditions.temp * 100) / 100).toFixed(1).toString() + " &degC";
@@ -84,7 +98,16 @@ export class QueryAirportComponent implements OnInit {
             });
     }
 
+    get f() { return this.form.controls; }
+
     findRunways() {
+
+        this.submitted = true;
+
+        if (this.form.invalid) {
+            return;
+        }
+
         const airportID = document.getElementById('airportID') as HTMLInputElement;
         this.airportID = airportID.value;
         const runwayButtonGroup = document.getElementById('runway-button-group');
@@ -93,18 +116,21 @@ export class QueryAirportComponent implements OnInit {
             runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
         }
 
-        this.apiService.get(`airport/runways/${airportID.value}`).subscribe(res => {
-            res.data.airportRunways.forEach(x => {
-                const newButton = document.createElement('button');
-                newButton.setAttribute('class','btn-sm btn-outline-dark runway-button');
-                newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
-                newButton.addEventListener('click', (e) => {
-                    this.runwayClick(newButton.getAttribute('id'))
+        this.apiService.get(`airport/runways/${this.f['airportInput'].value}`).subscribe(res => {
+
+            if(res.data.airportRunways) {
+                res.data.airportRunways.forEach(x => {
+                    const newButton = document.createElement('button');
+                    newButton.setAttribute('class','btn-sm btn-outline-dark runway-button');
+                    newButton.setAttribute('id', 'runwayButton' + this.runwayButtonNumber)
+                    newButton.addEventListener('click', (e) => {
+                        this.runwayClick(newButton.getAttribute('id'))
+                    });
+                    newButton.innerHTML = x.replace('_', '/'), x.replace('_', '/');
+                    this.runwayButtonNumber++;
+                    runwayButtonGroup.appendChild(newButton);
                 });
-                newButton.innerHTML = x.replace('_', '/'), x.replace('_', '/');
-                this.runwayButtonNumber++;
-                runwayButtonGroup.appendChild(newButton);
-            });
+            }
         });
     }
 

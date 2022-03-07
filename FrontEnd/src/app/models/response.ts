@@ -8,7 +8,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {profiles?: Profile[], airportWeather? : RunwayConditions, airportRunways? : string[]};
+    data: {profiles?: Profile[], runwayCondition? : RunwayConditions, airportRunways? : string[], runwayError?: string};
 }
 
 export interface CalculatorResponse {

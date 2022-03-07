@@ -1,9 +1,19 @@
 @import 'styles/variables.scss';
 
 #FindRunwaysButton {
-    margin-top: 4%;
+    margin: 4%;
 }
 
 #runway-button-group {
     min-height: 100px;
+}
+
+form {
+    width: 30%;
+    display: table-cell;
+}
+
+input {
+    width: 30%;
+    display: table-cell;
 }

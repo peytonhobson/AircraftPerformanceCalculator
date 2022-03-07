@@ -20,11 +20,16 @@
                                     <div *ngIf="f['password'].errors['required']">Password is required</div>
                                 </div>
                             </div>
-                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0"><a class="small" routerLink="/auth/forgot-password">Forgot Password?</a><button class="btn btn-outline-dark">Login</button></div>
+                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                <a class="small" routerLink="/auth/forgot-password">Forgot Password?</a>
+                                <button class="btn btn-outline-dark">Login</button>
+                            </div>
                         </form>
                     </div>
                     <div class="card-footer bg-dark text-center">
-                        <div class="small"><a routerLink="/auth/register" id="BottomLink">Register</a></div>
+                        <div class="small">
+                            <a routerLink="/auth/register" id="BottomLink">Register</a>
+                        </div>
                     </div>
                 </div>
             </div>

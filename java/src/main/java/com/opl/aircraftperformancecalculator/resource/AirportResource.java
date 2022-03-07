@@ -1,9 +1,6 @@
 package com.opl.aircraftperformancecalculator.resource;
 
-import com.opl.aircraftperformancecalculator.models.AuthUser;
-import com.opl.aircraftperformancecalculator.models.AuthenticationCode;
-import com.opl.aircraftperformancecalculator.models.Response;
-import com.opl.aircraftperformancecalculator.models.User;
+import com.opl.aircraftperformancecalculator.models.*;
 import com.opl.aircraftperformancecalculator.service.AirportService;
 import com.opl.aircraftperformancecalculator.service.AuthenticationService;
 import com.opl.aircraftperformancecalculator.service.UserService;
@@ -12,10 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -29,23 +28,67 @@ public class AirportResource {
 
     @GetMapping(path = "/runway/{airportID}/{runwayNumber}/{runwaySide}")
     public ResponseEntity<Response> getRunwayConditions(@PathVariable final String airportID, @PathVariable final String runwayNumber, @PathVariable final String runwaySide) throws Exception {
+
+        RunwayConditions runwayConditions = airportService.getRunwayConditions(airportID, runwayNumber, runwaySide);
+
+        if(runwayConditions.getAirportID().equals("BadMetar")) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(of("runwayError", "Runway conditions are not available."))
+                            .message("Runway Error")
+                            .status(NOT_FOUND)
+                            .statusCode(NOT_FOUND.value())
+                            .build()
+            );
+        }
+
+        if(runwayConditions.getAirportID().equals("BadRunway")) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(of("runwayError", "Runway not listed by FAA."))
+                            .message("Runway Error")
+                            .status(NOT_FOUND)
+                            .statusCode(NOT_FOUND.value())
+                            .build()
+            );
+        }
+
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("airportWeather", airportService.getRunwayConditions(airportID, runwayNumber, runwaySide)))
-                        .message("Airport Runways Returned")
+                        .data(of("runwayCondition", runwayConditions))
+                        .message("Runway conditions returned.")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
+
     }
 
     @GetMapping(path = "/runways/{airportID}")
-    public ResponseEntity<Response> getRunwayConditions(@PathVariable final String airportID) throws Exception {
+    public ResponseEntity<Response> getRunways(@PathVariable final String airportID) throws Exception {
+
+        List<String> list = airportService.getRunways(airportID);
+
+        if(list.get(0).equals("BadRunway")) {
+            log.info(list.toString());
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .timeStamp(now())
+                            .data(of("runwayError", "Runway not listed by FAA."))
+                            .message("Runway Error")
+                            .status(NOT_FOUND)
+                            .statusCode(NOT_FOUND.value())
+                            .build()
+            );
+        }
+
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("airportRunways", airportService.getRunways(airportID)))
+                        .data(of("airportRunways", list))
                         .message("Airport Weather returned")
                         .status(OK)
                         .statusCode(OK.value())

@@ -53,9 +53,13 @@ export class ApiService {
     return this.http.get<CustomResponse>(`${environment.apiUrl}${path}`, httpOptions)
     .pipe(map(res => {
       tap(console.log)
+      if(res.data.runwayError) {
+        this.alertService.error(res.data.runwayError);
+      }
       if(res.status != "200") {
         this.handleError(res.status);
       }
+
       return res;
     }));
   }

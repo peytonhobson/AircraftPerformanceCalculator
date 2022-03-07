@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'layout-dashboard',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './layout-dashboard.component.html',
     styleUrls: ['layout-dashboard.component.scss'],
 })

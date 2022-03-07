@@ -29,7 +29,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         FormsModule,
         AppCommonModule,
         NavigationModule,
-        DragDropModule
+        DragDropModule,
     ],
     providers: [...dashboardServices.services, ...dashboardGuards.guards],
     declarations: [...dashboardContainers.containers, ...dashboardComponents.components],

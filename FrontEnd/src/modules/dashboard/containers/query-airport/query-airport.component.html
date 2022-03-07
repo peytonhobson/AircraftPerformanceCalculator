@@ -1,10 +1,23 @@
 <layout-dashboard><sb-dashboard-head title="Airport Information" [hideBreadcrumbs]="true"></sb-dashboard-head>
 
-  <div class="d-flex justify-content-center">
+  <div class="row d-flex justify-content-center">
     <div class="col-lg-5 text-center">
-        <label for="airportID">Airport ID:</label><br>
-        <input type="text" id="airportID" name="airportID" value=""><br>
-        <button type="button" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" (click)="findRunways()">Find Runways</button><br><br>
+        <form [formGroup]="form" (ngSubmit)="findRunways()" class="text-center">
+          <div class="form-group " [formGroup]="form">
+              <label for="airportInput">Enter Airport ID:</label>
+              <div class="row d-flex justify-content-center">
+                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
+                <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+                  <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
+                  <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
+                  <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
+                </div>
+              </div>
+          </div> 
+          <div class="form-group justify-content-center" [formGroup]="form">
+            <button type="submit" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >Find Runways</button>
+          </div>  
+        </form>
         <div class="row d-flex justify-content-center">
           <div class="col-md-7">
             <label>Select Takeoff Runway:</label>
@@ -21,7 +34,7 @@
           </div>  
         </div>
       <button type="button" id="QueryButton" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
-      </div>
+    </div>
       <div class="blank-card col-lg-5">
         <div class="row d-flex justify-content-center">
           <div id="airportID-output">

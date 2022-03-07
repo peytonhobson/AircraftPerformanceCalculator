@@ -60,8 +60,11 @@ public class AirportServiceImplementation implements AirportService {
         assert data != null;
         Node metar = data.getChildNodes().item(1);
 
-        //TODO: Do this for the rest of errors
-        airportID = "metar";
+        if(metar == null) {
+            RunwayConditions runwayConditions = new RunwayConditions();
+            runwayConditions.setAirportID("BadMetar");
+            return runwayConditions;
+        }
 
         double temp = 0;
         double hg = 0;
@@ -100,7 +103,6 @@ public class AirportServiceImplementation implements AirportService {
         headWind = windSpeed * 0.514444 * Math.cos(0.0174533 * totalDeg);
         List<String> list = getRunwayInfo(airportID, runwayNumber, runwaySide);
 
-
         return new RunwayConditions(airportID, temp, calculatePressureAltitude(hg, elevation), precipitation, headWind,
                 Double.parseDouble(list.get(0)), list.get(1),Double.parseDouble(list.get(2)));
     }
@@ -112,6 +114,9 @@ public class AirportServiceImplementation implements AirportService {
         client.getOptions().setJavaScriptEnabled(false);
         List<String> list = new ArrayList<>();
 
+        String length = null;
+        String runwayType = null;
+
         try {
             String searchUrl = "https://nfdc.faa.gov/nfdcApps/services/ajv5/airportDisplay.jsp?airportId=" + airportID;
             HtmlPage page = client.getPage(searchUrl);
@@ -119,10 +124,12 @@ public class AirportServiceImplementation implements AirportService {
             //TODO: Make sure that user has restrictions on how they enter runwayNumber
             //TODO: Need to fix so that it matches TDZE
             HtmlElement runway = page.querySelector("div[id=runway_" + runwayNumber + "]");
+            if(runway == null) {
+                runwayType = "BadRunway";
+            }
+
             HtmlElement table = runway.getFirstByXPath("table");
             HtmlElement tbody = table.getFirstByXPath("tbody");
-            String length = null;
-            String runwayType = null;
             NodeList trNodes = tbody.getChildNodes();
 
             for(int i = 0; i < trNodes.getLength(); i++) {
@@ -205,11 +212,16 @@ public class AirportServiceImplementation implements AirportService {
             //TODO: Make sure that user has restrictions on how they enter runwayNumber
             List<DomNode> runway = page.querySelectorAll("div[id^=runway_]");
 
+            if(runway.isEmpty()) {
+                list.add("BadRunway");
+                return list;
+            }
+
             for(DomNode x : runway) {
                 list.add(x.getAttributes().getNamedItem("id").getNodeValue().substring("runway_".length()));
             }
 
-        } catch (MalformedURLException e) {
+        } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 

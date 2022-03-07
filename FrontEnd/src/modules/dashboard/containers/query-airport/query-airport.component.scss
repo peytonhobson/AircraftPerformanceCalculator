@@ -1,7 +1,7 @@
 @import 'styles/variables.scss';
 
 #FindRunwaysButton {
-    margin-top: 4%;
+    margin: 4%;
 }
 
 .shadow-lg {
@@ -24,4 +24,14 @@ h3, h2{
 
 #airportID-output{
     width: 66.7%;
+}
+
+form {
+    width: 30%;
+    display: table-cell;
+}
+
+input {
+    width: 30%;
+    display: table-cell;
 }
