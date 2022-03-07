@@ -32,7 +32,7 @@ public class AirportResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("airportWeather", airportService.getWeatherXML(airportID, runwayNumber, runwaySide)))
+                        .data(of("airportWeather", airportService.getRunwayConditions(airportID, runwayNumber, runwaySide)))
                         .message("Airport Runways Returned")
                         .status(OK)
                         .statusCode(OK.value())
@@ -52,16 +52,4 @@ public class AirportResource {
                         .build()
         );
     }
-//    @PostMapping(path = "/runway/{airportID}")
-//    public ResponseEntity<Response> getRunway(@PathVariable("airportID") String airportID,) throws Exception {
-//        return ResponseEntity.ok(
-//                Response.builder()
-//                        .timeStamp(now())
-//                        .data(of("airportRunway", airportService.getRunwayInfo(airportID, runwayNumber)))
-//                        .message("Airport Weather returned")
-//                        .status(OK)
-//                        .statusCode(OK.value())
-//                        .build()
-//        );
-//    }
 }

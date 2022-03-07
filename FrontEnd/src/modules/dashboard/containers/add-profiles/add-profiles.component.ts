@@ -132,5 +132,20 @@ export class AddProfilesComponent implements OnInit {
       this.Attachments.push(new Attachment(name.value, Number(mass.value)).toString())
     }
 
-    
+    displaySaveStyle = "none";
+  
+  openSaveModal() {
+    this.displaySaveStyle = "block";
+    document.getElementById('main-container').style.opacity = '40%';
+  }
+
+  closeSaveModal(save: boolean) {
+    this.displaySaveStyle = "none";
+
+    document.getElementById('main-container').style.opacity = '100%';
+
+    if(save) {
+      // this.save();
+    }
+  }
 }

@@ -2,8 +2,11 @@ package com.opl.aircraftperformancecalculator.service.implementation;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.opl.aircraftperformancecalculator.models.Response;
+import com.opl.aircraftperformancecalculator.models.RunwayConditions;
 import com.opl.aircraftperformancecalculator.service.AirportService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -16,11 +19,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static java.time.LocalDateTime.now;
+import static java.util.Map.of;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 
 @Service
@@ -30,7 +38,7 @@ public class AirportServiceImplementation implements AirportService {
 
     //TODO: Will likely need to make this return AirportWeather instead of string
     @Override
-    public String getWeatherXML(String airportID, String runwayNumber, String runwaySide) throws IOException, ParserConfigurationException, SAXException {
+    public RunwayConditions getRunwayConditions(String airportID, String runwayNumber, String runwaySide) throws IOException, ParserConfigurationException, SAXException {
 
 
         URL url = new URL("https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource" +
@@ -43,16 +51,17 @@ public class AirportServiceImplementation implements AirportService {
         Node data = null;
 
         for(int i = 0; i < root.getChildNodes().getLength(); i++) {
-            log.info(root.getChildNodes().item(i).getNodeName());
             if(root.getChildNodes().item(i).getNodeName().equals("data")) {
                 data = root.getChildNodes().item(i);
                 break;
             }
         }
 
-        log.info(String.valueOf(data));
         assert data != null;
         Node metar = data.getChildNodes().item(1);
+
+        //TODO: Do this for the rest of errors
+        airportID = "metar";
 
         double temp = 0;
         double hg = 0;
@@ -81,23 +90,19 @@ public class AirportServiceImplementation implements AirportService {
             if(metarChildren.item(i).getNodeName().equals("wind_dir_degrees")) {
                 windDeg = Double.parseDouble(metarChildren.item(i).getChildNodes().item(0).getNodeValue());
             }
-            if(metarChildren.item(i).getNodeName().equals("wind_speed")) {
+            if(metarChildren.item(i).getNodeName().equals("wind_speed_kt")) {
                 windSpeed = Double.parseDouble(metarChildren.item(i).getChildNodes().item(0).getNodeValue());
             }
         }
 
-        headWind = windSpeed * 0.514444 +
-                           Math.cos(0.0174533 * windDeg);
+        double totalDeg = Math.abs(Integer.parseInt(runwaySide)*10+180-windDeg);
+
+        headWind = windSpeed * 0.514444 * Math.cos(0.0174533 * totalDeg);
         List<String> list = getRunwayInfo(airportID, runwayNumber, runwaySide);
 
 
-        return "Temperature = " + temp + " C <br/>" +
-                "Pressure Altitude = " + calculatePressureAltitude(hg, elevation)+ "m <br/>" +
-                "Precipitation = " + precipitation + " inches <br/>" +
-                "Head Wind = " + headWind + " m/s <br/>" +
-                "Runway Length = " + list.get(0) + "ft <br/> " +
-                "Runway Type = " + list.get(1) + "<br/>" +
-                "Slope = " + list.get(2) + "degrees <br/>";
+        return new RunwayConditions(airportID, temp, calculatePressureAltitude(hg, elevation), precipitation, headWind,
+                Double.parseDouble(list.get(0)), list.get(1),Double.parseDouble(list.get(2)));
     }
 
     public static List<String> getRunwayInfo(String airportID, String runwayNumber, String runwaySide) throws IOException {
@@ -173,10 +178,8 @@ public class AirportServiceImplementation implements AirportService {
                 }
             }
 
-            log.info(runwayEndHeight + " " + runwayStartHeight);
-
             assert length != null;
-            String slope = String.valueOf(Math.tan((runwayEndHeight-runwayStartHeight)/Double.parseDouble(length)));
+            String slope = String.valueOf(-Math.tan((runwayEndHeight-runwayStartHeight)/Double.parseDouble(length)));
             list.add(slope);
 
 

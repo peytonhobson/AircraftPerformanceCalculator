@@ -16,10 +16,11 @@ public class RunwayConditions {
     @Id
     private String airportID;
 
-    private Double temp;
-    private Double pressureAltitude;
-    private Double headWind;
-    private Double precipitation;
-    private Double runwayLength;
+    private double temp;
+    private double pressureAltitude;
+    private double precipitation;
+    private double headWind;
+    private double runwayLength;
     private String runwayType;
+    private double slope;
 }

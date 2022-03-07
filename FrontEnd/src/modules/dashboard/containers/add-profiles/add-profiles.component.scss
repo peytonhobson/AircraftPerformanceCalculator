@@ -17,3 +17,20 @@
 .PilotWeightInput {
     margin-left: 5px;
 }
+
+.modal {
+    position: absolute;
+    top: 200px;
+    right: 100px;
+    bottom: 0;
+    left: 0;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+ }
+
+@media (prefers-reduced-motion: reduce) {
+    .fade {
+        transition: none;
+    }
+}

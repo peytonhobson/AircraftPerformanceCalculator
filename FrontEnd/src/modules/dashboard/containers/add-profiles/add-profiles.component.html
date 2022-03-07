@@ -1,8 +1,8 @@
 <layout-dashboard><sb-dashboard-head title="Add Profiles" [hideBreadcrumbs]="true">
 </sb-dashboard-head>
 
-<div class="container">
-    <div class="row d-flex justify-content-center">
+<div class="container" id="main-container">
+    <div class="row d-flex justify-content-center ">
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-header text-center">
@@ -137,11 +137,29 @@
                             </div>
                     </div>
                     <div class="col-lg-3 text-center my-auto">
-                        <button class = "btn btn-outline-dark active" (click)="saveProfile()" id="SaveProfileButton">Save Profile</button>
+                        <button class = "btn btn-outline-dark active" (click)="openSaveModal()" id="SaveProfileButton">Save Profile</button>
                     </div>
                 </div>
             </div>  
         </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyle}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">What would you like to name this profile?</h4>
+        </div>
+        <div class="modal-body">
+          <label for="profileName">Profile Name:</label><br>
+          <input type="text" id="profileName" name="profileName" value=""><br> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>
+         <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(true)">Save</button>
+        </div>
+      </div>
     </div>
 </div>
 

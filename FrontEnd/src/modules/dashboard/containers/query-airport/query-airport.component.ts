@@ -40,6 +40,8 @@ export class QueryAirportComponent implements OnInit {
         let sideNumbers = document.getElementsByClassName('side-button');
         var runwayNumber, runwaySideNumber;
 
+        document.getElementById('AirportIDLabel').innerHTML = "Airport ID: "
+
         for(var i = 0; i < runwayNumbers.length; i++) {
             if(runwayNumbers[i].getAttribute('class').includes('btn-dark')) {
                 runwayNumber = runwayNumbers[i];
@@ -57,7 +59,8 @@ export class QueryAirportComponent implements OnInit {
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
                 let runwayConditions = res.data.airportWeather
-                document.getElementById('AirportIDLabel').innerHTML = runwayConditions.airportID.toUpperCase();
+
+                document.getElementById('AirportIDLabel').innerHTML += runwayConditions.airportID.toUpperCase();
                 document.getElementById('temp-output').innerHTML = (Math.round(runwayConditions.temp * 100) / 100).toFixed(1).toString() + " &degC";
                 document.getElementById('pressure-altitude-output').innerHTML = (Math.round(runwayConditions.pressureAltitude * 100) / 100).toFixed(3).toString() + " m"
                 document.getElementById('precipitation-output').innerHTML = (Math.round(runwayConditions.precipitation * 100) / 100).toFixed(3).toString() + " inches"
