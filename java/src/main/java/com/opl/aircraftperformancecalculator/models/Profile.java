@@ -1,8 +1,10 @@
 package com.opl.aircraftperformancecalculator.models;
 
 import lombok.*;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.rest.core.annotation.RestResource;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -11,16 +13,9 @@ import javax.persistence.Id;
 public class Profile {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String userID;
-    private String profileName;
-    private String takeoffMass;
-    private String landingMass;
-
-    //TODO: Should drag even be used?
-    // Maybe make optional?
-    private String drag;
-    private String aircraftType;
-    private String output;
+    private String name;
 }

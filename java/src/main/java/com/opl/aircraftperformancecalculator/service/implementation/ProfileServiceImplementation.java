@@ -26,7 +26,7 @@ public class ProfileServiceImplementation implements ProfileService {
 
     @Override
     public Profile save(Profile profile) {
-        log.info("Saving new loadout: {}", profile.getProfileName());
+        log.info("Saving new loadout: {}", profile.getName());
         return loadoutRepo.save(profile); //saves server to serverRepo
     }
 
@@ -50,7 +50,7 @@ public class ProfileServiceImplementation implements ProfileService {
 
     @Override
     public Profile update(Profile profile) {
-        log.info("Updating Loadout: {}", profile.getProfileName());
+        log.info("Updating Loadout: {}", profile.getName());
         return loadoutRepo.save(profile);
     }
 
@@ -64,7 +64,6 @@ public class ProfileServiceImplementation implements ProfileService {
     @Override
     public String calculate(Profile profile) throws FileNotFoundException {
         log.info("Calculating output of loadout");
-        profile.setOutput(OverallCalculator.getData(profile));
         return OverallCalculator.getData(profile);
     }
 }

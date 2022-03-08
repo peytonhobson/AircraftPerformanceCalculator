@@ -57,8 +57,8 @@ public class ProfileResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("loadout", profileService.save(profile)))
-                        .message("Loadout saved")
+                        .data(of("profile", profileService.save(profile)))
+                        .message("Profile saved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

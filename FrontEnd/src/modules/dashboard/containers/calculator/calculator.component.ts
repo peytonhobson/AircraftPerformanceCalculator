@@ -33,8 +33,8 @@ export class CalculatorComponent implements OnInit {
         this.restClassifier.returnProfiles(localStorage.getItem('username')).subscribe(res => {
             if (res.data.profiles !== undefined) {
                 res.data.profiles.forEach(element => {
-                    profiles.set(element.profileName, element);
-                    profileBox.add(new Option(element.profileName, element.profileName), undefined);
+                    profiles.set(element.name, element);
+                    profileBox.add(new Option(element.name, element.name), undefined);
                 });
             }
         });
