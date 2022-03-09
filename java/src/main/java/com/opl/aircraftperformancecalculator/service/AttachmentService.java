@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AttachmentService {
 
-    List<Attachment> save(List<Attachment> attachments);
+    List<Attachment> saveAll(List<Attachment> attachments);
+    Attachment save(Attachment attachment);
     Attachment get(String name, String userID);
-    List<Attachment> listByUsername(String userID);
     Attachment update(Attachment attachment);
     Boolean delete(Attachment attachment);
     List<Attachment> listByUserID(String userID);

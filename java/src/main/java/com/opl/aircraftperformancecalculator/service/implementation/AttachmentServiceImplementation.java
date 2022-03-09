@@ -18,21 +18,21 @@ public class AttachmentServiceImplementation implements AttachmentService {
     private final AttachmentRepo attachmentRepo;
 
     @Override
-    public List<Attachment> save(List<Attachment> attachments) {
+    public List<Attachment> saveAll(List<Attachment> attachments) {
         log.info("Saving new Attachments: {}", attachments);
         return attachmentRepo.saveAll(attachments);
+    }
+
+    @Override
+    public Attachment save(Attachment attachment) {
+        log.info("Saving new Attachments: {}", attachment);
+        return attachmentRepo.save(attachment);
     }
 
     @Override
     public Attachment get(String name, String userID) {
         log.info("Fetching attachment by username and name.");
         return attachmentRepo.findAllByUserIDAndName(userID, name);
-    }
-
-    @Override
-    public List<Attachment> listByUsername(String userID) {
-        log.info("Fetching all attachments" + attachmentRepo.findAllByUserID(userID));
-        return attachmentRepo.findAllByUserID(userID);
     }
 
     @Override

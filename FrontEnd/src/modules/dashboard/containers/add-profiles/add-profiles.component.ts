@@ -4,6 +4,7 @@ import { ApiService } from "@app/services/api.service";
 import { Attachment } from "@app/models/attachment";
 import { UserService } from '@modules/auth/services';
 import { async } from "rxjs";
+import { first, map } from "rxjs/operators";
 
 @Component({
     selector: 'add-profiles',
@@ -12,14 +13,25 @@ import { async } from "rxjs";
 })
 export class AddProfilesComponent implements OnInit {
     
-  constructor(private apiService: ApiService, private userService: UserService) {}
+  constructor(private apiService: ApiService) {}
 
   CreatedAttachments = [];
+  ExistingAttachments = [];
   Attachments = [];
   AttachmentsUsed = [];
 
     ngOnInit() {
 
+      const user = localStorage.getItem('username');
+
+      this.apiService.get(`attachments/getAll/${user}`).subscribe(
+        element => {
+          element.data.attachments.forEach((e) => {
+            this.ExistingAttachments.push(e);
+            this.Attachments.push(this.toImperialString(e));
+          });
+      })
+         
       const rangeInternal = document.getElementById('InternalTankRange') as HTMLInputElement;
       const internalVal = document.getElementById('InternalTankVal') as HTMLInputElement;
       rangeInternal.addEventListener('change', (e) => {
@@ -123,6 +135,7 @@ export class AddProfilesComponent implements OnInit {
     })
 
     this.apiService.post('attachments/save',this.CreatedAttachments).subscribe();
+
   }
 
   createAttachment() {
@@ -131,7 +144,16 @@ export class AddProfilesComponent implements OnInit {
     const mass = document.getElementById('AttachmentMass') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
-    this.Attachments.push(name.value + " Mass = " + mass.value);
+    this.Attachments.push(name.value + " - Mass = " + mass.value);
     this.CreatedAttachments.push(new Attachment(user + "_" + name.value, name.value, null, user, Number(mass.value)));
   }
+
+  toImperialString(attachment : Attachment) {
+    return attachment.name + " - Mass = " + attachment.mass + " lbs";
+}
+
+//TODO: Convert metric factor
+toMetricString(attachment: Attachment) {
+    return attachment.name + " - Mass = " + attachment.mass + " kgs";
+}
 }

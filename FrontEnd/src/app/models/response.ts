@@ -9,7 +9,7 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {profiles?: Profile[], runwayCondition? : RunwayConditions, airportRunways? : string[], runwayError?: string, attachment?: Attachment};
+    data: {profiles?: Profile[], runwayCondition? : RunwayConditions, airportRunways? : string[], runwayError?: string, attachments?: Attachment[]};
 }
 
 export interface CalculatorResponse {

@@ -1,9 +1,11 @@
 package com.opl.aircraftperformancecalculator;
 
+import com.opl.aircraftperformancecalculator.models.Attachment;
 import com.opl.aircraftperformancecalculator.models.AuthenticationCode;
 import com.opl.aircraftperformancecalculator.models.Profile;
 import com.opl.aircraftperformancecalculator.models.User;
 import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
+import com.opl.aircraftperformancecalculator.service.AttachmentService;
 import com.opl.aircraftperformancecalculator.service.AuthenticationService;
 import com.opl.aircraftperformancecalculator.service.ProfileService;
 import com.opl.aircraftperformancecalculator.service.UserService;
@@ -23,7 +25,8 @@ public class AircraftPerformanceCalculatorApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(ProfileService profileService, UserService userService, AuthenticationService authenticationService) {
+	CommandLineRunner run(ProfileService profileService, UserService userService,
+						  AuthenticationService authenticationService, AttachmentService attachmentService) {
 		System.out.println("here");
 		return args -> {
 //			profileService.save(new Profile("peytonhobson_Test","peytonhobson", "Test", "5000", "5000",
@@ -35,6 +38,12 @@ public class AircraftPerformanceCalculatorApplication {
 			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));
 			authenticationService.saveCode(new AuthenticationCode("LiWjL9qOnTRu"));
 			authenticationService.saveCode(new AuthenticationCode("v7iWtMox595v"));
+			attachmentService.save(new Attachment("peytonhobson_1", "1", "prof1",
+					"peytonhobson", 100 ));
+			attachmentService.save(new Attachment("peytonhobson_2", "2", "prof1",
+					"peytonhobson", 100 ));
+			attachmentService.save(new Attachment("peytonhobson_3", "3", "prof1",
+					"peytonhobson", 100 ));
 		};
 	}
 
