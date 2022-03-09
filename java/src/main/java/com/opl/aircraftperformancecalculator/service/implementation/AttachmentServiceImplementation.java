@@ -32,7 +32,7 @@ public class AttachmentServiceImplementation implements AttachmentService {
     @Override
     public Attachment get(String name, String userID) {
         log.info("Fetching attachment by username and name.");
-        return attachmentRepo.findAllByUserIDAndName(userID, name);
+        return attachmentRepo.findAllByUsernameAndName(userID, name);
     }
 
     @Override
@@ -44,17 +44,12 @@ public class AttachmentServiceImplementation implements AttachmentService {
     @Override
     public Boolean delete(Attachment attachment) {
         log.info("Deleting Attachment");
-        return attachmentRepo.deleteAllByUserIDAndName(attachment.getUserID(), attachment.getName());
+        return attachmentRepo.deleteAllByUsernameAndName(attachment.getUsername(), attachment.getName());
     }
 
     @Override
     public List<Attachment> listByUserID(String userID) {
         log.info("Listing all Attachments by User ID {}:", userID);
-        return attachmentRepo.findAllByUserID(userID);
-    }
-
-    public List<Attachment> listByUserIDandProfile(String userID, String profile) {
-        log.info("Listing all Attachments by User ID {} and profile name {}:", userID, profile);
-        return attachmentRepo.findAllByUserIDAndProfile(userID, profile);
+        return attachmentRepo.findAllByUsername(userID);
     }
 }

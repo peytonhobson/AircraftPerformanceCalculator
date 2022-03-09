@@ -9,8 +9,6 @@ import java.util.List;
 public interface ProfileService {
 
     Profile save(Profile profile);
-//    Collection<Profile> list(int limit);
-    Profile get(Long id);
     Profile update(Profile profile);
     Boolean delete(Long id);
     String calculate(Profile profile) throws FileNotFoundException;

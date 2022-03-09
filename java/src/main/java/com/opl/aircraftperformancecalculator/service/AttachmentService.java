@@ -14,5 +14,4 @@ public interface AttachmentService {
     Attachment update(Attachment attachment);
     Boolean delete(Attachment attachment);
     List<Attachment> listByUserID(String userID);
-    List<Attachment> listByUserIDandProfile(String userID, String profile);
 }

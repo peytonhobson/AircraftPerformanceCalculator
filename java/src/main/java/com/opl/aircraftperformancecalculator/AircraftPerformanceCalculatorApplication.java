@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @SpringBootApplication
 @Order(1)
 public class AircraftPerformanceCalculatorApplication {
@@ -27,23 +31,29 @@ public class AircraftPerformanceCalculatorApplication {
 	@Bean
 	CommandLineRunner run(ProfileService profileService, UserService userService,
 						  AuthenticationService authenticationService, AttachmentService attachmentService) {
-		System.out.println("here");
 		return args -> {
-//			profileService.save(new Profile("peytonhobson_Test","peytonhobson", "Test", "5000", "5000",
-//					"0.2", "con", ""))
+			Attachment attachment = new Attachment();
+			attachment.setName("asdf");
+			attachment.setUsername("peytonhobsonn");
+			Profile profile = new Profile();
+			profile.setName("asdf");
+			profile.setUsername("peytonhobson");
+			profile.getAttachments().add(attachment);
+			attachment.getProfiles().add(profile);
+			profileService.save(profile);
 			userService.saveUser(new User("peytonhobson", "password"));
-			userService.saveUser(new User("johnsmith", "password"));
-			userService.saveUser(new User("apple", "password"));
-			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
-			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));
-			authenticationService.saveCode(new AuthenticationCode("LiWjL9qOnTRu"));
-			authenticationService.saveCode(new AuthenticationCode("v7iWtMox595v"));
-			attachmentService.save(new Attachment("peytonhobson_1", "1", "prof1",
-					"peytonhobson", 100 ));
-			attachmentService.save(new Attachment("peytonhobson_2", "2", "prof1",
-					"peytonhobson", 100 ));
-			attachmentService.save(new Attachment("peytonhobson_3", "3", "prof1",
-					"peytonhobson", 100 ));
+//			userService.saveUser(new User("johnsmith", "password"));
+//			userService.saveUser(new User("apple", "password"));
+//			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
+//			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));
+//			authenticationService.saveCode(new AuthenticationCode("LiWjL9qOnTRu"));
+//			authenticationService.saveCode(new AuthenticationCode("v7iWtMox595v"));
+//			attachmentService.save(new Attachment("peytonhobson_1", "1", "prof1",
+//					"peytonhobson", 100 ));
+//			attachmentService.save(new Attachment("peytonhobson_2", "2", "prof1",
+//					"peytonhobson", 100 ));
+//			attachmentService.save(new Attachment("peytonhobson_3", "3", "prof1",
+//					"peytonhobson", 100 ));
 		};
 	}
 
