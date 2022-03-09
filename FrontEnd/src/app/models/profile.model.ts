@@ -1,15 +1,17 @@
+import { Attachment } from "./attachment";
+
 /**
  * Class used to represent response, where output is initialized to empty
  */
  export class Profile {
     
-    public id : number;
-    public userID : string;
+    public username : string;
     public name: string;
+    public attachments: Attachment[]
 
-    constructor(id: number, userID: string, name: string) {
-        this.id = id;
-        this.userID = userID;
+    constructor(username: string, name: string, attachments: Attachment[]) {
+        this.username = username;
         this.name = name;
+        this.attachments = attachments;
     }
 }

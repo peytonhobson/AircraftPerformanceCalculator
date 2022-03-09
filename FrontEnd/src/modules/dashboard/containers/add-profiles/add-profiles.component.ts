@@ -5,6 +5,7 @@ import { Attachment } from "@app/models/attachment";
 import { UserService } from '@modules/auth/services';
 import { async } from "rxjs";
 import { first, map } from "rxjs/operators";
+import { Profile } from "@app/models/profile.model";
 
 @Component({
     selector: 'add-profiles',
@@ -127,15 +128,16 @@ export class AddProfilesComponent implements OnInit {
 
   save() {
 
-    console.log("here");
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
+    const user = localStorage.getItem('username');
 
-    this.CreatedAttachments.forEach((x) => {
-      x.profile = profileName.value;
+    this.CreatedAttachments.forEach((e) =>{
+      this.ExistingAttachments.push(e);
     })
 
-    this.apiService.post('attachments/save',this.CreatedAttachments).subscribe();
+    const profile = new Profile(user,profileName.value, this.ExistingAttachments);
 
+    this.apiService.post('profiles/save',profile).subscribe();
   }
 
   createAttachment() {
@@ -145,15 +147,15 @@ export class AddProfilesComponent implements OnInit {
     const user = localStorage.getItem('username');
 
     this.Attachments.push(name.value + " - Mass = " + mass.value);
-    this.CreatedAttachments.push(new Attachment(user + "_" + name.value, name.value, null, user, Number(mass.value)));
+    this.CreatedAttachments.push(new Attachment(name.value, user, Number(mass.value)));
   }
 
-  toImperialString(attachment : Attachment) {
+    toImperialString(attachment : Attachment) {
     return attachment.name + " - Mass = " + attachment.mass + " lbs";
 }
 
-//TODO: Convert metric factor
-toMetricString(attachment: Attachment) {
+  //TODO: Convert metric factor
+  toMetricString(attachment: Attachment) {
     return attachment.name + " - Mass = " + attachment.mass + " kgs";
-}
+  }
 }

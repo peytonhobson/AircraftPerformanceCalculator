@@ -33,8 +33,9 @@ public class AircraftPerformanceCalculatorApplication {
 						  AuthenticationService authenticationService, AttachmentService attachmentService) {
 		return args -> {
 			Attachment attachment = new Attachment();
+			attachment.setId("peytonhobson_asdf");
 			attachment.setName("asdf");
-			attachment.setUsername("peytonhobsonn");
+			attachment.setUsername("peytonhobson");
 			Profile profile = new Profile();
 			profile.setName("asdf");
 			profile.setUsername("peytonhobson");

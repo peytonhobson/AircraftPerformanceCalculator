@@ -1,16 +1,16 @@
+import { Profile } from "./profile.model";
+
 export class Attachment {
     
     public id: string;
+    public username: string;
     public name: string;
-    public profile: string;
-    public userID: string;
     public mass: number;
 
-    constructor(id: string, name: string, profile: string, userID: string, mass: number) {
-        this.id = id;
+    constructor(name: string, username: string, mass: number) {
+        this.id = username + "_" + name;
         this.name = name;
-        this.profile = profile;
-        this.userID = userID;
+        this.username = username;
         this.mass = mass;
     }
 }

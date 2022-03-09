@@ -25,7 +25,6 @@ public class Profile {
     private String username;
     private String name;
 
-    @JsonManagedReference
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "profile_attachment",
             joinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id"),
