@@ -8,5 +8,7 @@ import java.util.List;
 public interface AttachmentRepo extends JpaRepository<Attachment, Long> {
 
     List<Attachment> findAllByUserIDAndProfile(String userID, String profile);
-    List<Attachment> findAllByUserIDAndName(String userID, String name);
+    List<Attachment> findAllByUserID(String userID);
+    Attachment findAllByUserIDAndName(String userID, String name);
+    Boolean deleteAllByUserIDAndName(String userID, String name);
 }

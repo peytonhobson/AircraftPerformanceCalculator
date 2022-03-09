@@ -20,36 +20,35 @@
                 <ul class="list-group list-group-flush align-center">
                     <li class="list-group-item">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="tipTankCheck">
-                            <label class="form-check-label" for="tipTankCheck">
-                              Tip Tank
+                            <label class="form-check-label">
+                              Internal Tanks
                             </label>
                         </div>
-                        <div>
-                            <input type="range" id="tipRange">
-                            <Label id="tipTankVal"> 50%</Label>
+                        <div class="row d-flex">
+                            <input type="range" class="range-input" id="InternalTankRange">
+                            <Label class="rangeVal" id="InternalTankVal">&nbsp;50%</Label>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="form-check">
-                            <label class="form-check-label" for="otherTank1Check"><input class="form-check-input" type="checkbox" value="" id="otherTank1Check">
-                              Other Tank 1
-                            </label>
+                            <input class="form-check-input" type="checkbox" value="" name="DropTankCheck" id="DropTankCheck">
+                            <label class="form-check-label" for="DropTankCheck">Drop Tanks</label>
                         </div>
-                        <div>
-                            <label id="otherTank1Val"><input type="range" id="other1Range"> 50%</label>
+                        <div class="row d-flex">
+                            <input type="range" class="range-input" id="DropTankRange">
+                            <label class="rangeVal" id="DropTankVal">&nbsp;50%</label>
                         </div>
                     </li>
                     <li class="list-group-item">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="otherTank2Check">
-                            <label class="form-check-label" for="otherTank2Check">
-                              Other Tank 2
+                            <input class="form-check-input" type="checkbox" value="" id="TipTankCheck">
+                            <label class="form-check-label" for="TipTankCheck">
+                                Tip Tanks
                             </label>
                         </div>
-                        <div>
-                            <input type="range" id="other2Range">
-                            <Label id="otherTank2Val"> 50%</Label>
+                        <div class="row d-flex">
+                            <input type="range" class="range-input" id="TipTankRange">
+                            <Label class="rangeVal" id="TipTankVal">&nbsp;50%</Label>
                         </div>
                     </li>
                 </ul>
@@ -87,7 +86,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="card new-component-card">
+            <div class="card new-component-card h-50">
                 <div class="card-header text-center">
                     Add new attachment
                 </div>
@@ -99,7 +98,7 @@
                         <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
                     </div>
                     <div class="col-lg-5 text-center my-auto">
-                        <button class = "btn btn-outline-dark active" (click)="createNew()" id="CreateNewButton">Create Attachment</button>
+                        <button class = "btn btn-outline-dark active" (click)="createAttachment()" id="CreateNewButton">Create Attachment</button>
                     </div>
                 </div>  
             </div>
@@ -152,8 +151,8 @@
           <h4 class="modal-title">What would you like to name this profile?</h4>
         </div>
         <div class="modal-body">
-          <label for="profileName">Profile Name:</label><br>
-          <input type="text" id="profileName" name="profileName" value=""><br> 
+          <label for="ProfileName">Profile Name:</label><br>
+          <input type="text" id="ProfileName" name="ProfileName" value=""><br> 
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>

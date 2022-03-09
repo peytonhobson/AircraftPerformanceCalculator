@@ -22,42 +22,36 @@ import static org.springframework.data.domain.PageRequest.of;
 @Slf4j
 public class ProfileServiceImplementation implements ProfileService {
 
-    private final ProfileRepo loadoutRepo;
+    private final ProfileRepo profileRepo;
 
     @Override
     public Profile save(Profile profile) {
         log.info("Saving new loadout: {}", profile.getName());
-        return loadoutRepo.save(profile); //saves server to serverRepo
+        return profileRepo.save(profile); //saves server to serverRepo
     }
 
     @Override
     public Profile get(Long id) {
         log.info("Fetching server by id: {}", id);
-        return loadoutRepo.findById(id).get();
+        return profileRepo.findById(id).get();
     }
-
-//    @Override
-//    public Collection<Profile> list(int limit) {
-//        log.info("Fetching all loadouts" + loadoutRepo.findAll(of(0, limit)).toList());
-//        return loadoutRepo.findAll(of(0, limit)).toList();
-//    }
 
     @Override
     public List<Profile> listByUsername(String username) {
-        log.info("Fetching all loadouts" + loadoutRepo.findAllByUserID(username));
-        return loadoutRepo.findAllByUserID(username);
+        log.info("Fetching all loadouts" + profileRepo.findAllByUserID(username));
+        return profileRepo.findAllByUserID(username);
     }
 
     @Override
     public Profile update(Profile profile) {
         log.info("Updating Loadout: {}", profile.getName());
-        return loadoutRepo.save(profile);
+        return profileRepo.save(profile);
     }
 
     @Override
     public Boolean delete(Long id) {
         log.info("Deleting Server by ID: {}", id);
-        loadoutRepo.deleteById(id);
+        profileRepo.deleteById(id);
         return TRUE;
     }
 

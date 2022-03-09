@@ -8,12 +8,12 @@ public class OverallCalculator {
 
     public static String getData(Profile input) throws FileNotFoundException {
 
-        String takeoffMass = input.getTakeoffMass();
-        String landingMass = input.getLandingMass();
-        String drag = input.getDrag();
-        String aircraftType = input.getAircraftType();
+//        String takeoffMass = input.getTakeoffMass();
+//        String landingMass = input.getLandingMass();
+//        String drag = input.getDrag();
+//        String aircraftType = input.getAircraftType();
 
-        System.out.println(takeoffMass);
+//        System.out.println(takeoffMass);
 
 //        return AccelStopCalculator.getAccelStop(takeoffMass, runwayType) +
 //                GroundRunCalculator.getGroundRun(psi, temp, takeoffMass, drag, wind, slope, friction) +

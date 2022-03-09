@@ -26,12 +26,8 @@ public class AircraftPerformanceCalculatorApplication {
 	CommandLineRunner run(ProfileService profileService, UserService userService, AuthenticationService authenticationService) {
 		System.out.println("here");
 		return args -> {
-			profileService.save(new Profile("peytonhobson_Test","peytonhobson", "Test", "5000", "5000",
-					"0.2", "con", ""));
-			profileService.save(new Profile("peytonhobson_lightweight","peytonhobson", "lightweight", "5000", "5000",
-					 "0.2", "combat", ""));
-			profileService.save(new Profile("johnsmith_lightweight","johnsmith", "heavy", "5000", "5000",
-					"0.2", "combat", ""));
+//			profileService.save(new Profile("peytonhobson_Test","peytonhobson", "Test", "5000", "5000",
+//					"0.2", "con", ""))
 			userService.saveUser(new User("peytonhobson", "password"));
 			userService.saveUser(new User("johnsmith", "password"));
 			userService.saveUser(new User("apple", "password"));
