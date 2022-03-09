@@ -8,7 +8,7 @@ export class Attachment {
     public mass: number;
 
     constructor(name: string, username: string, mass: number) {
-        this.id = username + "_" + name;
+        this.id = username + "_" + name
         this.name = name;
         this.username = username;
         this.mass = mass;

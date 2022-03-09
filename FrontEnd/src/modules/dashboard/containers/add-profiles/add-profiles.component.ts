@@ -16,8 +16,6 @@ export class AddProfilesComponent implements OnInit {
     
   constructor(private apiService: ApiService) {}
 
-  CreatedAttachments = [];
-  ExistingAttachments = [];
   Attachments = [];
   AttachmentsUsed = [];
 
@@ -28,8 +26,7 @@ export class AddProfilesComponent implements OnInit {
       this.apiService.get(`attachments/getAll/${user}`).subscribe(
         element => {
           element.data.attachments.forEach((e) => {
-            this.ExistingAttachments.push(e);
-            this.Attachments.push(this.toImperialString(e));
+            this.Attachments.push(e);
           });
       })
          
@@ -131,11 +128,9 @@ export class AddProfilesComponent implements OnInit {
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
-    this.CreatedAttachments.forEach((e) =>{
-      this.ExistingAttachments.push(e);
-    })
+    const profile = new Profile(user,profileName.value, this.AttachmentsUsed);
 
-    const profile = new Profile(user,profileName.value, this.ExistingAttachments);
+    this.apiService.post('profiles/saveAll',  this.AttachmentsUsed);
 
     this.apiService.post('profiles/save',profile).subscribe();
   }
@@ -146,13 +141,12 @@ export class AddProfilesComponent implements OnInit {
     const mass = document.getElementById('AttachmentMass') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
-    this.Attachments.push(name.value + " - Mass = " + mass.value);
-    this.CreatedAttachments.push(new Attachment(name.value, user, Number(mass.value)));
+    this.Attachments.push(new Attachment(name.value, user, Number(mass.value)));
   }
 
-    toImperialString(attachment : Attachment) {
+  toImperialString(attachment : Attachment) {
     return attachment.name + " - Mass = " + attachment.mass + " lbs";
-}
+  }
 
   //TODO: Convert metric factor
   toMetricString(attachment: Attachment) {

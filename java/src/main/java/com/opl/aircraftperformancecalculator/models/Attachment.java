@@ -27,10 +27,6 @@ public class Attachment {
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "attachments")
     private Set<Profile> profiles = new HashSet<>();
 

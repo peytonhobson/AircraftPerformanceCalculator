@@ -25,7 +25,7 @@ public class Profile {
     private String username;
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "profile_attachment",
             joinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"))

@@ -120,7 +120,7 @@
                             [cdkDropListConnectedTo]="[doneAttachmentList]" 
                             class="attachment-list" 
                             (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{attachmentList}}</div>
+                                <div class="attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{toImperialString(attachmentList)}}</div>
                             </div>
                     </div>
                     <div class="col-lg-4">
@@ -132,7 +132,7 @@
                             [cdkDropListConnectedTo]="[attachmentList]" 
                             class="attachment-list" 
                             (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{attachmentsUsed}}</div>
+                                <div class="attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{toImperialString(attachmentsUsed)}}</div>
                             </div>
                     </div>
                     <div class="col-lg-3 text-center my-auto">

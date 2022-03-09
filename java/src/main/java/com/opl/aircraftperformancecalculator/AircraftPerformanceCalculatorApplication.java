@@ -36,11 +36,11 @@ public class AircraftPerformanceCalculatorApplication {
 			attachment.setId("peytonhobson_asdf");
 			attachment.setName("asdf");
 			attachment.setUsername("peytonhobson");
+			attachmentService.save(attachment);
 			Profile profile = new Profile();
 			profile.setName("asdf");
 			profile.setUsername("peytonhobson");
 			profile.getAttachments().add(attachment);
-			attachment.getProfiles().add(profile);
 			profileService.save(profile);
 			userService.saveUser(new User("peytonhobson", "password"));
 //			userService.saveUser(new User("johnsmith", "password"));
