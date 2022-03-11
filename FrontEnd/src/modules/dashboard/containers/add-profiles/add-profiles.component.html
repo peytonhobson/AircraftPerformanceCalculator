@@ -61,38 +61,39 @@
             </div>
         </div>
         <div class="col-lg-5">
-            <div class="card top-card">
+            <div class="card top-card h-50 right-card">
                 <div class="card-header text-center">
-                    Pilot Weights
+                    Add New Pilot
                 </div>
-                <div class="card-header text-center">
-                    Add new attachment
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-6 text-center">
+                                <label for="PilotName">Name:</label>
+                                <input type="text" id="PilotName" name="PilotName" value="">
+                                <label for="PilotMass">Weight:</label>
+                                <input type="text" id="PilotMass" name="PilotMass" value="">
+                        </div>
+                        <div class="col-lg-6 my-auto">
+                            <button class = "btn btn-outline-dark active" (click)="createPilot()" id="CreateNewPilotButton">Create Pilot Profile</button>
+                        </div>
+                    </div> 
                 </div>
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-5 text-center">
-                        <label for="ComponentName">Name:</label><br>
-                        <input type="text" id="AttachmentName" name="AttachmentName" value=""><br>
-                        <label for="ComponentMass">Mass:</label><br>
-                        <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
-                    </div>
-                    <div class="col-lg-5 text-center my-auto">
-                        <button class = "btn btn-outline-dark active" (click)="createAttachment()" id="CreateNewButton">Create Attachment</button>
-                    </div>
-                </div>  
             </div>
-            <div class="card new-component-card h-50">
+            <div class="card new-component-card h-50 right-card">
                 <div class="card-header text-center">
                     Add new attachment
                 </div>
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-5 text-center">
-                        <label for="ComponentName">Name:</label><br>
-                        <input type="text" id="AttachmentName" name="AttachmentName" value=""><br>
-                        <label for="ComponentMass">Mass:</label><br>
-                        <input type="text" id="AttachmentMass" name="AttachmentMass" value=""><br>
-                    </div>
-                    <div class="col-lg-5 text-center my-auto">
-                        <button class = "btn btn-outline-dark active" (click)="createAttachment()" id="CreateNewButton">Create Attachment</button>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-6 text-center">
+                            <label for="AttachmentName">Name:</label>
+                            <input type="text" id="AttachmentName" name="AttachmentName" value="">
+                            <label for="AttachmentMass">Mass:</label>
+                            <input type="text" id="AttachmentMass" name="AttachmentMass" value="">
+                        </div>
+                        <div class="col-lg-6 my-auto">
+                            <button class = "btn btn-outline-dark active my-auto" (click)="createAttachment()" id="CreateNewAttachmentButton">Create Attachment</button>
+                        </div>
                     </div>
                 </div>  
             </div>

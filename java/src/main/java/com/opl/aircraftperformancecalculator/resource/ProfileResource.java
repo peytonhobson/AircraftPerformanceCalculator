@@ -42,7 +42,6 @@ public class ProfileResource {
 
     @GetMapping(path = "/{username}/all")
     public ResponseEntity<Response> returnLoadout(@PathVariable("username") String username) {
-        System.out.println(username);
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())

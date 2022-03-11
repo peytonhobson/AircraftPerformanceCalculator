@@ -98,7 +98,9 @@ public class AirportServiceImplementation implements AirportService {
             }
         }
 
-        double totalDeg = Math.abs(Integer.parseInt(runwaySide)*10+180-windDeg);
+        log.info(runwaySide);
+        double totalDeg = Math.abs(Integer.parseInt(runwaySide.replaceAll("[a-zA-Z]",""))*10+180-windDeg);
+        log.info(runwaySide);
 
         headWind = windSpeed * 0.514444 * Math.cos(0.0174533 * totalDeg);
         List<String> list = getRunwayInfo(airportID, runwayNumber, runwaySide);

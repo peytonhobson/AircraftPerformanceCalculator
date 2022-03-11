@@ -40,7 +40,7 @@ public class AircraftPerformanceCalculatorApplication {
 			Profile profile = new Profile();
 			profile.setName("asdf");
 			profile.setUsername("peytonhobson");
-			profile.getAttachments().add(attachment);
+			profile.setAttachments(new HashSet<>(List.of(attachment)));
 			profileService.save(profile);
 			userService.saveUser(new User("peytonhobson", "password"));
 //			userService.saveUser(new User("johnsmith", "password"));

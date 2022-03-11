@@ -33,7 +33,7 @@ public class ProfileServiceImplementation implements ProfileService {
 
     @Override
     public List<Profile> listByUsername(String username) {
-        log.info("Fetching all profiles" + profileRepo.findAllByUsername(username));
+        log.info("Fetching all profiles for: {} ", username);
         return profileRepo.findAllByUsername(username);
     }
 

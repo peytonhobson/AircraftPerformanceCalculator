@@ -7,6 +7,7 @@ import { async } from "rxjs";
 import { first, map } from "rxjs/operators";
 import { Profile } from "@app/models/profile.model";
 import { NgbProgressbar } from "@ng-bootstrap/ng-bootstrap";
+import { Pilot } from "@app/models/pilot";
 
 @Component({
     selector: 'add-profiles',
@@ -74,30 +75,7 @@ export class AddProfilesComponent implements OnInit {
             rangeTipTank.disabled = true;
         }
       })
-      const pilot1Check = document.getElementById('pilot1Check') as HTMLInputElement;
-      const pilot1Weight = document.getElementById('pilot1Weight') as HTMLInputElement;
-      pilot1Weight.disabled = true;
-
-      pilot1Check.addEventListener('change', (e) => {
-         if(pilot1Check.checked) {
-            pilot1Weight.disabled = false;
-        }
-           else {
-            pilot1Weight.disabled = true;
-        }
-      })
-      const pilot2Check = document.getElementById('pilot2Check') as HTMLInputElement;
-      const pilot2Weight = document.getElementById('pilot2Weight') as HTMLInputElement;
-      pilot2Weight.disabled = true;
-
-      pilot2Check.addEventListener('change', (e) => {
-         if(pilot2Check.checked) {
-            pilot2Weight.disabled = false;
-        }
-           else {
-            pilot2Weight.disabled = true;
-        }
-      })
+      
     }
 
     onDrop(event: CdkDragDrop<string[]>) {
@@ -145,6 +123,21 @@ export class AddProfilesComponent implements OnInit {
     const user = localStorage.getItem('username');
 
     this.Attachments.push(new Attachment(name.value, user, Number(mass.value)));
+
+    name.value = "";
+    mass.value = "";
+  }
+
+  createPilot() {
+    const name = document.getElementById('PilotName') as HTMLInputElement;
+    const mass = document.getElementById('PilotMass') as HTMLInputElement;
+    const user = localStorage.getItem('username');
+
+
+    this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).subscribe();
+
+    name.value = "";
+    mass.value = "";
   }
 
   toImperialString(attachment : Attachment) {
