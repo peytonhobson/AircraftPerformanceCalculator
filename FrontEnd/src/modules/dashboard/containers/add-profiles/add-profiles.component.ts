@@ -110,14 +110,13 @@ export class AddProfilesComponent implements OnInit {
 
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
     const user = localStorage.getItem('username');
-    const internalTankVal = document.getElementById('InternalTankVal') as HTMLInputElement;
-    const dropTankVal = document.getElementById('DropTankVal') as HTMLInputElement;
-    const tipTankVal = document.getElementById('TipTankVal') as HTMLInputElement;
+    const internalTankVal = document.getElementById('InternalTankRange') as HTMLInputElement;
+    const dropTankVal = document.getElementById('DropTankRange') as HTMLInputElement;
+    const tipTankVal = document.getElementById('TipTankRange') as HTMLInputElement;
 
     const profile = new Profile(user,profileName.value, Number(internalTankVal.value),
       Number(dropTankVal.value), Number(tipTankVal.value), this.AttachmentsUsed);
 
-    this.apiService.post('profiles/saveAll',  this.AttachmentsUsed);
     this.apiService.post('profiles/save',profile).subscribe();
   }
 

@@ -38,6 +38,7 @@ export class ApiService {
     console.log("executing post method : " + path);
     return this.http.post<CustomResponse>(`${environment.apiUrl}${path}`, JSON.stringify(body), httpOptions)
     .pipe(map(res => {
+      tap(console.log)
       if(res.status != "200") {
         if(res.status == "404") {
           this.alertService.error(res.message);

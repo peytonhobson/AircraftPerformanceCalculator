@@ -44,9 +44,20 @@ export class CalculatorComponent implements OnInit {
         });
 
         this.restClassifier.get(`profiles/${localStorage.getItem('username')}/all`).subscribe(res => {
-            
+            const aircraftProfileSelect = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
+
+            res.data.profiles.forEach((profile) => {
+                aircraftProfileSelect.add(new Option(profile.name, profile.name), undefined)
+            });
         });
 
+        this.restClassifier.get(`pilots/${localStorage.getItem('username')}/all`).subscribe(res => {
+            const pilotProfileSelect = document.getElementById('PilotProfileSelect') as HTMLSelectElement;
+
+            res.data.pilots.forEach((profile) => {
+                pilotProfileSelect.add(new Option(profile.name, profile.name), undefined)
+            });
+        });
     }
 
     submit() {

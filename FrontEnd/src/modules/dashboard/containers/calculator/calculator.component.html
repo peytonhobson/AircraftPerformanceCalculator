@@ -3,39 +3,37 @@
 <div class="container" id="main-container">
   <div class="row">
     <div class="col-lg-4 text-center">
- 
-                <div class="card text-center ">
-                  <div class="card-header text-center">
-                    Automatic or Manual Airport Parameters?
-                  </div>
-                  <div class="card-body">
-                    <button class="btn btn-dark runway-button" (click)="openManualModal()">Manual</button>
-                    <button class="btn btn-dark runway-button" (click)="openAutomaticModal()">Automatic</button>
-                  </div>
-                </div>
-            
-            
-              <div class="card text-center left-card">
-                <div class="card-header text-center">
-                  Select Pilot Profile
-                </div>
-                <div class="card-body">
-                  <input type="text">
-                  <button class="btn btn-dark">Search</button>
-                </div>
-              </div>
-            
-              <div class="card text-center left-card">
-                <div class="card-header text-center">
-                  Select Aircraft Profile
-                </div>
-                <div class="card-body">
-                  <input type="text">
-                  <button class="btn btn-dark">Search</button>
-                </div>
-              </div>
-            
-
+      <div class="card text-center ">
+        <div class="card-header text-center">
+          Aiport Parameters
+        </div>
+        <div class="card-body">
+          <button class="btn btn-dark runway-button" (click)="openManualModal()">Manual</button>
+          <button class="btn btn-dark runway-button" (click)="openAutomaticModal()">Automatic</button>
+        </div>
+      </div>
+      <div class="card text-center left-card">
+        <div class="card-header text-center">
+          Select Pilot Profile
+        </div>
+        <div class="card-body">
+          <select class="btn btn-dark" id="PilotProfileSelect">
+            <option>Choose Pilot</option>
+          </select>
+          <button class="btn btn-dark">Info</button>
+        </div>
+      </div>
+      <div class="card text-center left-card">
+        <div class="card-header text-center">
+          Select Aircraft Profile
+        </div>
+        <div class="card-body">
+          <select class="btn btn-dark" id="AircraftProfileSelect">
+            <option>Choose Profile</option>
+          </select>
+          <button class="btn btn-dark">Info</button>
+        </div>
+      </div>
       <button class="btn-lg btn-dark" id="CalculateButton">Calculate</button>
     </div>  
     <div class="col-lg-6 text-center" id="RightColumn">
