@@ -3,13 +3,8 @@
 <div class="container" id="main-container">
   <div class="row">
     <div class="col-lg-4 text-center">
-      <div class="card ">
-        <div class="card-header text-center">
-            Select Input
-        </div>
-        <ul class="list-group list-group-flush align-center">
-            <li class="list-group-item">
-                <div class="card text-center">
+ 
+                <div class="card text-center ">
                   <div class="card-header text-center">
                     Automatic or Manual Airport Parameters?
                   </div>
@@ -18,9 +13,9 @@
                     <button class="btn btn-dark runway-button" (click)="openAutomaticModal()">Automatic</button>
                   </div>
                 </div>
-            </li>
-            <li class="list-group-item">
-              <div class="card text-center">
+            
+            
+              <div class="card text-center left-card">
                 <div class="card-header text-center">
                   Select Pilot Profile
                 </div>
@@ -29,9 +24,8 @@
                   <button class="btn btn-dark">Search</button>
                 </div>
               </div>
-            </li>
-            <li class="list-group-item">
-              <div class="card text-center">
+            
+              <div class="card text-center left-card">
                 <div class="card-header text-center">
                   Select Aircraft Profile
                 </div>
@@ -40,9 +34,8 @@
                   <button class="btn btn-dark">Search</button>
                 </div>
               </div>
-            </li>
-        </ul>
-      </div>
+            
+
       <button class="btn-lg btn-dark" id="CalculateButton">Calculate</button>
     </div>  
     <div class="col-lg-6 text-center" id="RightColumn">
@@ -61,7 +54,7 @@
                 <div class="shadow-lg bg-dark rounded p-2 m-0">
                   <h2 class="output-label">Takeoff Speed</h2>
                 </div>
-                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                <div class="shadow-lg rounded output-block bg-white p-2">
                   <h3 id="takeoff-speed-output">&nbsp;</h3>
                 </div>
               </div> 
@@ -71,7 +64,7 @@
                 <div class="shadow-lg bg-dark rounded p-2 m-0">
                   <h2 class="output-label">Takeoff Distance</h2>
                 </div>
-                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                <div class="shadow-lg rounded output-block bg-white p-2">
                   <h3 id="takeoff-distance-output">&nbsp;</h3>
                 </div>
               </div> 
@@ -81,7 +74,7 @@
                 <div class="shadow-lg bg-dark rounded p-2 m-0">
                   <h2 class="output-label">Ground-Run Distance</h2>
                 </div>
-                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                <div class="shadow-lg rounded output-block bg-white p-2">
                   <h3 id="ground-distance-output">&nbsp;</h3>
                 </div>
               </div> 
@@ -91,7 +84,7 @@
                 <div class="shadow-lg bg-dark rounded p-2 m-0">
                   <h2 class="output-label">Accel-Stop Distance</h2>
                 </div>
-                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                <div class="shadow-lg rounded output-block bg-white p-2">
                   <h3 id="accel-distance-output">&nbsp;</h3>
                 </div>
               </div> 

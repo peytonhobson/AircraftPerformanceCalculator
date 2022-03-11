@@ -7,11 +7,17 @@ import { Attachment } from "./attachment";
     
     public username : string;
     public name: string;
+    public internalTank: number;
+    public dropTank: number;
+    public tipTank: number;
     public attachments: Attachment[]
 
-    constructor(username: string, name: string, attachments: Attachment[]) {
+    constructor(username: string, name: string, internalTank: number, dropTank: number, tipTank:number, attachments: Attachment[]) {
         this.username = username;
         this.name = name;
+        this.internalTank = internalTank;
+        this.dropTank = dropTank;
+        this.tipTank = tipTank;
         this.attachments = attachments;
     }
 }

@@ -24,6 +24,9 @@ public class Profile {
 
     private String username;
     private String name;
+    private double internalTank;
+    private double dropTank;
+    private double tipTank;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "profile_attachment",

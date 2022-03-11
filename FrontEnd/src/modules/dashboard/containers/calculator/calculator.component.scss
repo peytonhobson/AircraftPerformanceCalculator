@@ -89,6 +89,10 @@ input[type='text'] {
     margin-inline: 5%;
 }
 
-.card {
+.card, li {
     border-color: black;
+}
+
+.left-card {
+    margin-top: 10%;
 }
