@@ -6,6 +6,7 @@ import { UserService } from '@modules/auth/services';
 import { async } from "rxjs";
 import { first, map } from "rxjs/operators";
 import { Profile } from "@app/models/profile.model";
+import { NgbProgressbar } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'add-profiles',
@@ -49,6 +50,8 @@ export class AddProfilesComponent implements OnInit {
             rangeDropTank.disabled = false;
         }
            else {
+            rangeDropTank.value = '0';
+            dropTankVal.innerHTML = '&nbsp0%'
             rangeDropTank.disabled = true;
         }
       })
@@ -66,6 +69,8 @@ export class AddProfilesComponent implements OnInit {
             rangeTipTank.disabled = false;
         }
            else {
+            rangeTipTank.value = '0';
+            TipTankVal.innerHTML = '&nbsp0%'
             rangeTipTank.disabled = true;
         }
       })
@@ -127,11 +132,9 @@ export class AddProfilesComponent implements OnInit {
 
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
     const user = localStorage.getItem('username');
-
     const profile = new Profile(user,profileName.value, this.AttachmentsUsed);
 
     this.apiService.post('profiles/saveAll',  this.AttachmentsUsed);
-
     this.apiService.post('profiles/save',profile).subscribe();
   }
 

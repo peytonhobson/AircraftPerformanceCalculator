@@ -12,7 +12,7 @@ import { Button } from "protractor";
 })
 export class QueryAirportComponent implements OnInit {
     
-    constructor(private apiService: ApiService, private formBuilder: FormBuilder,) {}
+    constructor(private apiService: ApiService, private formBuilder: FormBuilder) {}
 
     runway: string;
     runwayNumber: number;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Profile } from '@app/models/profile.model';
 import { AccountService } from '@app/services/account.service';
 import { ApiService } from '@app/services/api.service';
@@ -18,36 +18,39 @@ export class CalculatorComponent implements OnInit {
     title = 'FrontEnd';
 
     form: FormGroup;
+    formManualModal: FormGroup;
 
-    displaySaveStyle = 'none';
+    displaySaveStyleAutomatic = 'none';
+    displaySaveStyleManual = 'none';
+
+    submittedManualModal = false;
 
     ngOnInit() {
 
-        const profileBox = document.getElementById('profiles') as HTMLSelectElement;
-        const profiles = new Map<string, Profile>();
+        this.form = this.formBuilder.group({
+            airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
+        });
 
-        this.restClassifier.returnProfiles(localStorage.getItem('username')).subscribe(res => {
-            if (res.data.profiles !== undefined) {
-                res.data.profiles.forEach(element => {
-                    profiles.set(element.name, element);
-                    profileBox.add(new Option(element.name, element.name), undefined);
-                });
-            }
+        this.formManualModal = this.formBuilder.group({
+            temperature: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]],
+            //TODO: add pattern to check for only "double" type numbers
+            slope: [''],
+            psi: ['', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[0-9]/)]],
+            headwind: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]],
+            concreteRunway: [''],
+            grassRunway: [''],
+            precipitationYes: [''],
+            precipitationNo: ['']
+        });
+
+        this.restClassifier.get(`profiles/${localStorage.getItem('username')}/all`).subscribe(res => {
+            
         });
 
     }
 
     submit() {
-        let takeoffMass = document.getElementById('tmass') as HTMLInputElement;
-        let landingMass = document.getElementById('lmass') as HTMLInputElement;
-        let temp = document.getElementById('temp') as HTMLInputElement;
-        let drag = document.getElementById('drag') as HTMLInputElement;
-        let slope = document.getElementById('slope') as HTMLInputElement;
-        let friction = document.getElementById('friction') as HTMLInputElement;
-        let runwayType = document.getElementById('runwayType') as HTMLInputElement;
-        let psi = document.getElementById('psi') as HTMLInputElement;
-        let wind = document.getElementById('wind') as HTMLInputElement;
-        let aircraftType = document.getElementById('aircraftType') as HTMLInputElement;
+
 
         
 
@@ -58,33 +61,64 @@ export class CalculatorComponent implements OnInit {
         // });
     }
 
-    save() {
-        let takeoffMass = document.getElementById('tmass') as HTMLInputElement;
-        let landingMass = document.getElementById('lmass') as HTMLInputElement;
-        let temp = document.getElementById('temp') as HTMLInputElement;
-        let drag = document.getElementById('drag') as HTMLInputElement;
-        let slope = document.getElementById('slope') as HTMLInputElement;
-        let friction = document.getElementById('friction') as HTMLInputElement;
-        let runwayType = document.getElementById('runwayType') as HTMLInputElement;
-        let psi = document.getElementById('psi') as HTMLInputElement;
-        let wind = document.getElementById('wind') as HTMLInputElement;
-        let aircraftType = document.getElementById('aircraftType') as HTMLInputElement;
-        let profileName = document.getElementById('profileName') as HTMLInputElement;
+    saveManualModal() {
+        this.submittedManualModal = true;
 
+        if(!this.fManual['temperature'].errors) {
+            this.displaySaveStyleManual = 'none';
+            document.getElementById('main-container').style.opacity = '100%';
+
+            for(var name in this.formManualModal.controls) {
+                (<FormControl>this.formManualModal.controls[name]).setValue('');
+                this.formManualModal.controls[name].setErrors(null);
+            }
+
+            this.submittedManualModal=false;
+        }
+    }
+
+    saveAutomaticModal() {
         
 
-        // this.restClassifier.saveProfile(profile).subscribe();
+    
     }
 
-    openSaveModal() {
-        this.displaySaveStyle = 'block';
+    get fManual() { return this.formManualModal.controls; }
+
+    openAutomaticModal() {
+        this.displaySaveStyleAutomatic = 'block';
+        document.getElementById('main-container').style.opacity = '40%';
     }
 
-    closeSaveModal(save: boolean) {
-        this.displaySaveStyle = 'none';
+    closeAutomaticModal(save: boolean) {
+        this.displaySaveStyleAutomatic = 'none';
+        document.getElementById('main-container').style.opacity = '100%';
+
+        // if (save) {
+        //     this.save();
+        // }
+    }
+
+    openManualModal() {
+        this.displaySaveStyleManual = 'block';
+        document.getElementById('main-container').style.opacity = '40%';
+    }
+
+    closeManualModal(save: boolean) {
 
         if (save) {
-            this.save();
+            this.saveManualModal();
+        }
+        else {
+            this.displaySaveStyleManual = 'none';
+            document.getElementById('main-container').style.opacity = '100%';
+
+            for(var name in this.formManualModal.controls) {
+                (<FormControl>this.formManualModal.controls[name]).setValue('');
+                this.formManualModal.controls[name].setErrors(null);
+            }
+
+            this.submittedManualModal=false;
         }
     }
 

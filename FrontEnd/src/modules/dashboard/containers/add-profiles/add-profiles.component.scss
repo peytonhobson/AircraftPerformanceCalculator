@@ -36,6 +36,7 @@
 
 .range-input {
     margin-left: 3%;
+    width: 70%;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
@@ -61,7 +62,7 @@
 }
 /** FF*/
 input[type="range"]::-moz-range-progress {
-  background-color: black; 
+    background-color: black; 
 }
 input[type="range"]::-moz-range-track {  
     border: 1px;
@@ -72,4 +73,24 @@ input[type="range"]::-moz-range-track {
 input[type="range"]::-ms-fill-lower {
   background-color: gray; 
 }
+
+#internalCheck {
+    visibility: hidden;
+}
+
+.card-header, .modal-header {
+    background-color: $gray-800;
+    color: white;
+}
+
+.measurement-button {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.card {
+    border-color: black;
+}
+
+
 

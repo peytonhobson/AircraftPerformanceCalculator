@@ -73,16 +73,6 @@ export class ApiService {
     );
   }
 
-  returnProfiles(username: string): Observable<CustomResponse> {
-    return this.http.post<CustomResponse>(`${environment.apiUrl}profiles/${username}/all`, username, httpOptions)
-        .pipe(map(res => {
-        if(res.status != "200") {
-            this.handleError(res.status);
-        }
-        return res;
-        }));
-  }
-
   saveProfile(Profile : Profile): Observable<CustomResponse> {
     return this.post('profiles/save', Profile);
   }

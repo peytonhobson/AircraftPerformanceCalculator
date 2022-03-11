@@ -1,38 +1,228 @@
 <layout-dashboard><sb-dashboard-head title="Calculator" [hideBreadcrumbs]="true"></sb-dashboard-head>
 
-  <div class="col-lg-5 text-center">
-    <form [formGroup]="form" (ngSubmit)="findRunways()" class="text-center">
-      <div class="form-group " [formGroup]="form">
-          <label for="airportInput">Enter Airport ID:</label>
-          <div class="row d-flex justify-content-center">
-            <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
-            <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
-              <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
-              <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
-              <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
-            </div>
-          </div>
-      </div> 
-      <div class="form-group justify-content-center" [formGroup]="form">
-        <button type="submit" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >Find Runways</button>
-      </div>  
-    </form>
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-7">
-        <label>Select Takeoff Runway:</label>
-        <div class="card border-1 my-4" id="runway-button-group"></div>
-      </div>  
-    </div>
-    <div class="row d-flex justify-content-center">
-      <div class= "col-md-5">
-        <label for=RunwaySideButton1>Select Runway Starting Side: </label>
-        <div class="blank-card mt-3">
-            <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
-            <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+<div class="container" id="main-container">
+  <div class="row">
+    <div class="col-lg-4 text-center">
+      <div class="card ">
+        <div class="card-header text-center">
+            Select Input
         </div>
-      </div>  
-    </div>
-  <button type="button" id="QueryButton" class="btn btn-outline-dark active text-center mt-5" (click)="queryAirport()">Query</button>
+        <ul class="list-group list-group-flush align-center">
+            <li class="list-group-item">
+                <div class="card text-center">
+                  <div class="card-header text-center">
+                    Automatic or Manual Airport Parameters?
+                  </div>
+                  <div class="card-body">
+                    <button class="btn btn-dark runway-button" (click)="openManualModal()">Manual</button>
+                    <button class="btn btn-dark runway-button" (click)="openAutomaticModal()">Automatic</button>
+                  </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+              <div class="card text-center">
+                <div class="card-header text-center">
+                  Select Pilot Profile
+                </div>
+                <div class="card-body">
+                  <input type="text">
+                  <button class="btn btn-dark">Search</button>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="card text-center">
+                <div class="card-header text-center">
+                  Select Aircraft Profile
+                </div>
+                <div class="card-body">
+                  <input type="text">
+                  <button class="btn btn-dark">Search</button>
+                </div>
+              </div>
+            </li>
+        </ul>
+      </div>
+      <button class="btn-lg btn-dark" id="CalculateButton">Calculate</button>
+    </div>  
+    <div class="col-lg-6 text-center" id="RightColumn">
+      <div class="card performance-card">
+        <div class="card-header text-center">
+            Performance Parameters
+        </div>
+        <ul class="list-group list-group-flush align-center">
+            <li class="list-group-item">
+                <button class="btn btn-dark performance-selection">Takeoff</button>
+                <button class="btn btn-secondary performance-selection">Landing</button>
+                <button class="btn btn-secondary performance-selection">Stall Speeds</button>
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Takeoff Speed</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                  <h3 id="takeoff-speed-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Takeoff Distance</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                  <h3 id="takeoff-distance-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Ground-Run Distance</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                  <h3 id="ground-distance-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Accel-Stop Distance</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-secondary p-2">
+                  <h3 id="accel-distance-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+        </ul>
+      </div>
+      <div class="row">
+        <img src="assets/img/runway.png" id="RunwayPicture"/>
+        <img src="assets/img/runway.png" id="RunwayPicture"/>
+      </div>
+     </div> 
+     
+
+  </div>
 </div>
-    
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">What would you like to name this profile?</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row d-flex justify-content-center">
+          <form [formGroup]="form" (ngSubmit)="findRunways()">
+                <div class="row d-flex justify-content-center">
+                  <label for="airportInput">Enter Airport ID:</label>
+                </div>
+                <div class="row d-flex justify-content-center">
+                  <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
+                  <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+                    <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
+                    <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
+                    <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
+                  </div>
+                </div>
+              <div class="row d-flex justify-content-center">
+                <button type="submit" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >Find Runways</button>
+              </div>
+          </form>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <label>Select Takeoff Runway:</label>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="card border-1 mb-4" id="runway-button-group"></div> 
+        </div>
+        <div class="row d-flex justify-content-center">
+            <label for=RunwaySideButton1>Select Runway Starting Side: </label>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="blank-card mt-2">
+                <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
+                <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+            </div>
+        </div>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(false)">Close</button>
+          <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(true)">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleManual}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h4 class="modal-title text-center">Input Runway Conditions</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center">
+            <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
+              <div class="form-group" [formGroup]="formManualModal">
+                  <label for="temperature">Temperature</label>
+                  <input type="text" formControlName="temperature" class="form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
+                  <div *ngIf="submittedManualModal && fManual['temperature'].errors" class="invalid-feedback">
+                      <div *ngIf="fManual['temperature'].errors['required']">Temperature is required</div>
+                      <div *ngIf="fManual['temperature'].errors['maxlength'] && !fManual['temperature'].errors['pattern']">Temperature cannot be greater than 3 digits.</div>
+                      <div *ngIf="fManual['temperature'].errors['pattern']">Temperature must be numeric.</div>
+                  </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="slope">Runway Slope</label>
+                <input type="text" formControlName="slope" class="form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['slope'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['slope'].errors['pattern']">Slope must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="precipitation">Is the runway wet?</label>
+                 <div class="row d-flex justify-content-left">
+                  <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="precipitationYes" class="radio-label">Yes</label>
+                  <input type="radio" formControlName="precipitationNo" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="precipitationNo" class="radio-label">No</label>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="precipitation">What is the runway surface type?</label>
+                 <div class="row d-flex justify-content-left">
+                  <input type="radio" formControlName="concreteRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="concreteRunway" class="radio-label">Concrete</label>
+                  <input type="radio" formControlName="grassRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="grassRunway" class="radio-label">Grass</label>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="psi">PSI</label>
+                <input type="text" formControlName="psi" class="form-control" placeholder="Enter PSI" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['psi'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['psi'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['psi'].errors['pattern']">PSI must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="headwind">Headwind</label>
+                <input type="text" formControlName="headwind" class="form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['headwind'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['headwind'].errors['pattern']">Headwind must be numeric.</div>
+                </div>
+              </div> 
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(false)">Close</button>
+          <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(true)">Save</button>
+        </div>
+      </div> 
+    </div>
+  </div>
+
 </layout-dashboard>

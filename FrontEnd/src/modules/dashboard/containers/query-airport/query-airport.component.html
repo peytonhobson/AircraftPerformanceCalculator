@@ -2,6 +2,7 @@
 
   <div class="row d-flex justify-content-center">
     <div class="col-lg-5 text-center">
+      <div class="row d-flex justify-content-center">
         <form [formGroup]="form" (ngSubmit)="findRunways()" class="text-center">
           <div class="form-group " [formGroup]="form">
               <label for="airportInput">Enter Airport ID:</label>
@@ -18,16 +19,17 @@
             <button type="submit" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >Find Runways</button>
           </div>  
         </form>
+        </div>
         <div class="row d-flex justify-content-center">
           <div class="col-md-7">
             <label>Select Takeoff Runway:</label>
-            <div class="card border-1 my-4" id="runway-button-group"></div>
+            <div class="card border-1 mb-4" id="runway-button-group"></div>
           </div>  
         </div>
         <div class="row d-flex justify-content-center">
           <div class= "col-md-5">
             <label for=RunwaySideButton1>Select Runway Starting Side: </label>
-            <div class="blank-card mt-3">
+            <div class="blank-card mt-2">
                 <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
                 <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
             </div>
