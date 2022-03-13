@@ -8,8 +8,8 @@
           Aiport Parameters
         </div>
         <div class="card-body">
-          <button class="btn btn-dark runway-button" (click)="openManualModal()">Manual</button>
-          <button class="btn btn-dark runway-button" (click)="openAutomaticModal()">Automatic</button>
+          <button class="btn btn-dark parameter-button" (click)="openManualModal()">Manual</button>
+          <button class="btn btn-dark parameter-button" (click)="openAutomaticModal()">Automatic</button>
         </div>
       </div>
       <div class="card text-center left-card">
@@ -103,15 +103,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">What would you like to name this profile?</h4>
+        <h4 class="modal-title">Query Runway</h4>
       </div>
       <div class="modal-body">
         <div class="row d-flex justify-content-center">
-          <form [formGroup]="form" (ngSubmit)="findRunways()">
+          <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
                 <div class="row d-flex justify-content-center">
                   <label for="airportInput">Enter Airport ID:</label>
                 </div>
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
                   <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
                   <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
                     <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
@@ -174,6 +174,13 @@
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
+                <label for="runwayLength">Runway Length</label>
+                <input type="text" formControlName="runwayLength" class="form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['runwayLength'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['runwayLength'].errors['pattern']">Slope must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
                 <label for="precipitation">Is the runway wet?</label>
                  <div class="row d-flex justify-content-left">
                   <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
@@ -192,10 +199,10 @@
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
-                <label for="psi">PSI</label>
-                <input type="text" formControlName="psi" class="form-control" placeholder="Enter PSI" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['psi'].errors }" />
-                <div *ngIf="submittedManualModal && fManual['psi'].errors" class="invalid-feedback">
-                    <div *ngIf="fManual['psi'].errors['pattern']">PSI must be numeric.</div>
+                <label for="pressureAltitude">PSI</label>
+                <input type="text" formControlName="pressureAltitude" class="form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['pressureAltitude'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['pressureAltitude'].errors['pattern']">Pressure Altitude must be numeric.</div>
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
