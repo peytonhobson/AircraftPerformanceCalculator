@@ -1,5 +1,7 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -7,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class LandingDistanceCalculator {
 
-    public static String getLandingDistance(String mass1, String aircraftType, String friction1) throws FileNotFoundException {
+    public static Double getLandingDistance(double mass, double friction) throws FileNotFoundException {
 
-        double mass = Double.parseDouble(mass1);
-        double friction = Double.parseDouble(friction1);
+        log.info("landingdist");
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
@@ -42,23 +44,14 @@ public class LandingDistanceCalculator {
 
         double landingDist;
 
-        if(aircraftType.equalsIgnoreCase("clean")) {
-            if(friction == 0.25) {
-                landingDist = lineList.get(0).get(0)*mass + lineList.get(0).get(1);
-            }
-            else {
-                landingDist = lineList.get(1).get(0)*mass + lineList.get(1).get(1);
-            }
+
+        if(mass < 5000) {
+            landingDist = lineList.get(1).get(0)*mass + lineList.get(0).get(1);
         }
         else {
-            if(friction == 0.25) {
-                landingDist = lineList.get(2).get(0)*mass + lineList.get(2).get(1);
-            }
-            else {
-                landingDist = lineList.get(3).get(0)*mass + lineList.get(3).get(1);
-            }
+            landingDist = lineList.get(3).get(0)*mass + lineList.get(3).get(1);
         }
 
-        return "Landing Distance: " + landingDist +"<br/>";
+        return friction <= 0.2 ?  landingDist*1.17:landingDist;
     }
 }

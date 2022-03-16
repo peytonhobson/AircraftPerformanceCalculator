@@ -42,7 +42,7 @@ public class PilotResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("pilots", pilotService.getByID(id)))
+                        .data(of("pilot", pilotService.getByID(id)))
                         .message("Pilot returned")
                         .status(OK)
                         .statusCode(OK.value())

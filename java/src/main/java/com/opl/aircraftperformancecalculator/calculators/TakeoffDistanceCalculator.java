@@ -1,5 +1,7 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -7,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class TakeoffDistanceCalculator {
 
-    public static String getTakeoffDistance(String mass1, String runwayType) throws FileNotFoundException {
+    public static Double getTakeoffDistance(double mass, String runwayType) throws FileNotFoundException {
 
-        double mass = Double.parseDouble(mass1);
+        log.info("takleoffdist");
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
@@ -48,6 +51,6 @@ public class TakeoffDistanceCalculator {
                     lineList.get(1).get(2)*mass + lineList.get(1).get(3);
         }
 
-        return "Takeoff Distance:" + takeoffDist + "<br/>";
+        return takeoffDist;
     }
 }

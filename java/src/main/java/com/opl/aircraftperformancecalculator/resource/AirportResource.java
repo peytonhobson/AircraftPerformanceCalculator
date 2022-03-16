@@ -32,6 +32,7 @@ public class AirportResource {
         RunwayConditions runwayConditions = airportService.getRunwayConditions(airportID, runwayNumber, runwaySide);
 
         if(runwayConditions.getAirportID().equals("BadMetar")) {
+            log.info("bad metar");
             return ResponseEntity.ok(
                     Response.builder()
                             .timeStamp(now())
@@ -44,6 +45,7 @@ public class AirportResource {
         }
 
         if(runwayConditions.getAirportID().equals("BadRunway")) {
+            log.info("bad runway");
             return ResponseEntity.ok(
                     Response.builder()
                             .timeStamp(now())

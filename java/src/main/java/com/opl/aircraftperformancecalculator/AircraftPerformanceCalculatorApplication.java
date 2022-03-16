@@ -1,14 +1,8 @@
 package com.opl.aircraftperformancecalculator;
 
-import com.opl.aircraftperformancecalculator.models.Attachment;
-import com.opl.aircraftperformancecalculator.models.AuthenticationCode;
-import com.opl.aircraftperformancecalculator.models.Profile;
-import com.opl.aircraftperformancecalculator.models.User;
+import com.opl.aircraftperformancecalculator.models.*;
 import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
-import com.opl.aircraftperformancecalculator.service.AttachmentService;
-import com.opl.aircraftperformancecalculator.service.AuthenticationService;
-import com.opl.aircraftperformancecalculator.service.ProfileService;
-import com.opl.aircraftperformancecalculator.service.UserService;
+import com.opl.aircraftperformancecalculator.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,31 +24,46 @@ public class AircraftPerformanceCalculatorApplication {
 
 	@Bean
 	CommandLineRunner run(ProfileService profileService, UserService userService,
-						  AuthenticationService authenticationService, AttachmentService attachmentService) {
+						  AuthenticationService authenticationService, AttachmentService attachmentService,
+						  PilotService pilotService) {
 		return args -> {
-			Attachment attachment = new Attachment();
-			attachment.setId("peytonhobson_asdf");
-			attachment.setName("asdf");
-			attachment.setUsername("peytonhobson");
-			attachmentService.save(attachment);
+			Attachment attachment1 = new Attachment();
+			attachment1.setId("peytonhobson_attachment1");
+			attachment1.setName("attachment2");
+			attachment1.setUsername("peytonhobson");
+			attachment1.setMass(200);
+			attachmentService.save(attachment1);
+
+			Attachment attachment2 = new Attachment();
+			attachment2.setId("peytonhobson_attachment2");
+			attachment2.setName("attachment2");
+			attachment2.setUsername("peytonhobson");
+			attachment2.setMass(100);
+			attachmentService.save(attachment2);
+
+			Attachment attachment3 = new Attachment();
+			attachment3.setId("peytonhobson_attachment3");
+			attachment3.setName("attachment3");
+			attachment3.setUsername("peytonhobson");
+			attachment3.setMass(400);
+			attachmentService.save(attachment3);
+
 			Profile profile = new Profile();
-			profile.setName("asdf");
+			profile.setName("profile1");
 			profile.setUsername("peytonhobson");
-			profile.setAttachments(new HashSet<>(List.of(attachment)));
+			profile.setAttachments(new HashSet<>(List.of(attachment1, attachment2, attachment3)));
+			profile.setInternalTank(78);
+			profile.setDropTank(50);
+			profile.setTipTank(50);
 			profileService.save(profile);
 			userService.saveUser(new User("peytonhobson", "password"));
-//			userService.saveUser(new User("johnsmith", "password"));
-//			userService.saveUser(new User("apple", "password"));
+
+			pilotService.save(new Pilot("peytonhobson_peyton", "peytonhobson", "peyton", 100));
+
 //			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
 //			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));
 //			authenticationService.saveCode(new AuthenticationCode("LiWjL9qOnTRu"));
 //			authenticationService.saveCode(new AuthenticationCode("v7iWtMox595v"));
-//			attachmentService.save(new Attachment("peytonhobson_1", "1", "prof1",
-//					"peytonhobson", 100 ));
-//			attachmentService.save(new Attachment("peytonhobson_2", "2", "prof1",
-//					"peytonhobson", 100 ));
-//			attachmentService.save(new Attachment("peytonhobson_3", "3", "prof1",
-//					"peytonhobson", 100 ));
 		};
 	}
 

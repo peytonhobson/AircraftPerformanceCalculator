@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProfileRepo extends JpaRepository<Profile, Long> {
     List<Profile> findAllByUsername(String userID);
+    Profile findByUsernameAndName(String username, String name);
 }

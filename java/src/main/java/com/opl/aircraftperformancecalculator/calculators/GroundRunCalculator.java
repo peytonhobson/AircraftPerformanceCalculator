@@ -1,5 +1,7 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -7,20 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class GroundRunCalculator {
 
-    public static String getGroundRun(String psi1, String temp1, String mass1, String drag1, String wind1, String slope1, String friction1) throws FileNotFoundException {
+    public static Double getGroundRun(double psi, double temp, double mass, double wind, double slope, double rollingFriction) throws FileNotFoundException {
 
-        double psi = Double.parseDouble(psi1);
-        double temp = Double.parseDouble(temp1);
-        double mass = Double.parseDouble(mass1);
-        double drag = Double.parseDouble(drag1);
-        double wind = Double.parseDouble(wind1);
-        double slope = Double.parseDouble(slope1);
-        double friction = Double.parseDouble(friction1);
+        log.info("groundrun");
 
-        // Names of the csv file names the contain the coefficients
-        String[] files = {"temp", "mass", "drag", "wind", "slopes", "friction"};
+        // Names of the csv file names that contain the coefficients
+        String[] files = {"temp", "mass", "wind", "slopes", "friction"};
 
         // This list stores lists for each files.
         // Each list within it contains a list for each row of a file.
@@ -75,12 +72,7 @@ public class GroundRunCalculator {
             if(Math.abs(psi-i*500) < min) {
                 min = Math.abs(psi-i*500);
                 graph = i;
-                if(psi-i*500 >= 0) {
-                    higher = true;
-                }
-                else {
-                    higher=false;
-                }
+                higher = psi - i * 500 >= 0;
             }
         }
 
@@ -102,6 +94,8 @@ public class GroundRunCalculator {
         else {
             tempOutput = actualGraph;
         }
+
+        log.info("massList");
 
         // massLists is the entire file for mass
         List<List<Double>> massLists = polyList.get(1);
@@ -127,23 +121,7 @@ public class GroundRunCalculator {
         double massOutput= massLists.get(graph).get(0) * (Math.pow(mass, 3)) + massLists.get(graph).get(1) * (Math.pow(mass, 2))
                 + massLists.get(graph).get(2) * mass + massLists.get(graph).get(3) + yDifference;
 
-        List<List<Double>> dragLists = polyList.get(2);
-        min = Integer.MAX_VALUE;
-
-        for(int i = 0; i < 7; i++) {
-            curList = dragLists.get(i);
-            curY = curList.get(0) * (Math.pow(drag, 3)) + curList.get(1) * (Math.pow(drag, 2))
-                    + curList.get(2) * drag + curList.get(3);
-            if(Math.abs(curY-massOutput) < min) {
-                min = Math.abs(curY-massOutput);
-                graph = i;
-                yDifference = massOutput-curY;
-            }
-        }
-
-        double dragOutput = dragLists.get(graph).get(0) * (Math.pow(drag, 3)) + dragLists.get(graph).get(1) * (Math.pow(drag, 2))
-                + dragLists.get(graph).get(2) * drag + dragLists.get(graph).get(3) + yDifference;
-
+        log.info("windList");
 
         List<List<Double>> windLists = polyList.get(3);
         min = Integer.MAX_VALUE;
@@ -152,15 +130,18 @@ public class GroundRunCalculator {
             curList = windLists.get(i);
             curY = curList.get(0) * (Math.pow(wind, 3)) + curList.get(1) * (Math.pow(wind, 2))
                     + curList.get(2) * wind + curList.get(3);
-            if(Math.abs(curY-dragOutput) < min) {
-                min = Math.abs(curY-dragOutput);
+            if(Math.abs(curY-massOutput) < min) {
+                min = Math.abs(curY-massOutput);
                 graph = i;
-                yDifference = dragOutput-curY;
+                yDifference = massOutput-curY;
             }
         }
 
         double windOutput = windLists.get(graph).get(0) * (Math.pow(wind, 3)) + windLists.get(graph).get(1) * (Math.pow(wind, 2))
                 + windLists.get(graph).get(2) * wind + windLists.get(graph).get(3) + yDifference;
+
+
+        log.info("slopeList");
 
         List<List<Double>> slopeLists = polyList.get(4);
         min = Integer.MAX_VALUE;
@@ -179,13 +160,15 @@ public class GroundRunCalculator {
         double slopeOutput = slopeLists.get(graph).get(0) * (Math.pow(slope, 3)) + slopeLists.get(graph).get(1) * (Math.pow(slope, 2))
                 + slopeLists.get(graph).get(2) * slope + slopeLists.get(graph).get(3) + yDifference;
 
-        List<List<Double>> fricLists = polyList.get(5);
+        log.info("fricList");
+
+        List<List<Double>> fricLists = polyList.get(4);
         min = Integer.MAX_VALUE;
 
         for(int i = 0; i < 7; i++) {
             curList = fricLists.get(i);
-            curY = curList.get(0) * (Math.pow(friction, 3)) + curList.get(1) * (Math.pow(friction, 2))
-                    + curList.get(2) * friction + curList.get(3);
+            curY = curList.get(0) * (Math.pow(rollingFriction, 3)) + curList.get(1) * (Math.pow(rollingFriction, 2))
+                    + curList.get(2) * rollingFriction + curList.get(3);
             if(Math.abs(curY-slopeOutput) < min) {
                 min = Math.abs(curY-slopeOutput);
                 graph = i;
@@ -193,9 +176,7 @@ public class GroundRunCalculator {
             }
         }
 
-        double fricOutput = fricLists.get(graph).get(0) * (Math.pow(friction, 3)) + fricLists.get(graph).get(1) * (Math.pow(friction, 2))
-                + fricLists.get(graph).get(2) * friction + fricLists.get(graph).get(3) + yDifference;
-
-        return "Ground Run Distance: " + fricOutput +"<br/>";
+        return (fricLists.get(graph).get(0) * (Math.pow(rollingFriction, 3)) + fricLists.get(graph).get(1) * (Math.pow(rollingFriction, 2))
+                + fricLists.get(graph).get(2) * rollingFriction + fricLists.get(graph).get(3) + yDifference)*100;
     }
 }

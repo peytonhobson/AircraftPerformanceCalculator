@@ -51,8 +51,8 @@ public class ProfileServiceImplementation implements ProfileService {
     }
 
     @Override
-    public String calculate(Profile profile) throws FileNotFoundException {
-        log.info("Calculating output of loadout");
-        return OverallCalculator.getData(profile);
+    public Profile getByUsernameandName(String username, String profileName) {
+        log.info("Getting Profile");
+        return profileRepo.findByUsernameAndName(username, profileName);
     }
 }

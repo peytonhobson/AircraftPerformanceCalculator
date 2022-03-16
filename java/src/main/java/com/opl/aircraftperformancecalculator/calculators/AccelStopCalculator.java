@@ -1,5 +1,7 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -7,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class AccelStopCalculator {
 
-    public static String getAccelStop(String mass1, String runwayType) throws FileNotFoundException {
+    public static Double getAccelStop(double mass, String runwayType, double friction) throws FileNotFoundException {
 
-        double mass = Double.parseDouble(mass1);
-
+        log.info("accel-stop");
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
@@ -37,13 +39,17 @@ public class AccelStopCalculator {
             }
         }
 
+        double dist;
+
         if (runwayType.equalsIgnoreCase("concrete")) {
-            return "Accel-Stop Distance: " + (lineList.get(0).get(0) * Math.pow(mass, 3) + lineList.get(0).get(1) * Math.pow(mass, 2) +
-                    lineList.get(0).get(2) * mass + lineList.get(0).get(3)) + "<br/>";
+            dist = lineList.get(0).get(0) * Math.pow(mass, 3) + lineList.get(0).get(1) * Math.pow(mass, 2) +
+                    lineList.get(0).get(2) * mass + lineList.get(0).get(3);
         }
         else {
-            return "Accel-Stop Distance: " + (lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
-                    lineList.get(1).get(2)*mass + lineList.get(1).get(3)) + "<br/>";
+            dist = lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
+                    lineList.get(1).get(2)*mass + lineList.get(1).get(3);
         }
+
+        return friction <= 0.2 ? dist*1.17 : dist;
     }
 }

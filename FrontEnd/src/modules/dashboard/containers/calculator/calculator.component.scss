@@ -27,29 +27,27 @@ form {
 }
 
 
-  .radio-label{
-    float: left;
-    clear: none;
-    display: inline;
-    padding-left: 5%;
-    padding-top: 4%
-  }
-  
-  .radio {
-    clear: none;
-    margin: 0;
-    margin-left:5%;
-  }
+.radio-label{
+  float: left;
+  clear: none;
+  display: inline;
+  padding-left: 5%;
+  padding-top: 4%
+}
 
-  .card-header, .modal-header, .output-label {
-      background-color: $gray-800;
-      color: white;
-  }
-
-  .performance-selection {
-      width: 25%;
-      margin-inline: 3%;
-  }
+.radio {
+  clear: none;
+  margin: 0;
+  margin-left:5%;
+}
+.card-header, .modal-header, .output-label {
+    background-color: $gray-800;
+    color: white;
+}
+.performance-selection {
+    width: 25%;
+    margin-inline: 3%;
+}
 
 .shadow-lg {
     width: 50%;
@@ -59,6 +57,7 @@ form {
 
 h2, h3 {
     display: table-cell;
+    align-items: center;
 }
 
 #RunwayPicture {
@@ -66,21 +65,16 @@ h2, h3 {
     height: 100%
 }
 
-.performance-card {
-    margin-bottom: 5%;
-}
-
-#RightColumn {
-    margin-left: 5%;
+img {
+    margin-left: 10%;
 }
 
 #CalculateButton {
     width: 100%;
-    margin-top: 10%;
     height: 11%;
 }
 
-select {
+#AircraftProfileSelect {
     margin-right: 5%;
     height: 100%;
     width: 50%;
@@ -91,10 +85,42 @@ select {
     margin-inline: 5%;
 }
 
-.card, li {
+.performance-card {
+    width: 100%;
+    border-right-width: 1.5px;
+    border-left-width: 1.5px;
+}
+
+.card, .left-card{
+    border-color: black;
+}
+
+li {
+    border-width: 100px;
     border-color: black;
 }
 
 .left-card {
-    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.pilot-input {
+    margin-block: 2%;
+    width: 85%;
+}
+
+#MissionTimeInput {
+    margin-left: 14%
+}
+
+.time-item {
+    width:40%;
+    margin: 0%;
+    padding: 0%;
+}
+
+.performance-container {
+    height: 61%;
+    width: 110%;
+    border: none;
 }

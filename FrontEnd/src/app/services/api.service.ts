@@ -65,15 +65,6 @@ export class ApiService {
     }));
   }
 
-  calculate(body: Object): Observable<CalculatorResponse> {
-    console.log(body);
-    return this.http.post<CalculatorResponse>(`${environment.apiUrl}/profiles/calculator`, JSON.stringify(body), httpOptions)
-    .pipe(
-      tap(console.log),
-      catchError(this.handleError)
-    );
-  }
-
   saveProfile(Profile : Profile): Observable<CustomResponse> {
     return this.post('profiles/save', Profile);
   }

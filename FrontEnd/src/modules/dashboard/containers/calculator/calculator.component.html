@@ -2,10 +2,10 @@
 
 <div class="container" id="main-container">
   <div class="row">
-    <div class="col-lg-4 text-center">
-      <div class="card text-center ">
+    <div class="col-lg-5 text-center">
+      <div class="card left-card text-center">
         <div class="card-header text-center">
-          Aiport Parameters
+          Runway Conditions
         </div>
         <div class="card-body">
           <button class="btn btn-dark parameter-button" (click)="openManualModal()">Manual</button>
@@ -14,18 +14,32 @@
       </div>
       <div class="card text-center left-card">
         <div class="card-header text-center">
-          Select Pilot Profile
+          Mission Specific Info
         </div>
         <div class="card-body">
-          <select class="btn btn-dark" id="PilotProfileSelect">
-            <option>Choose Pilot</option>
-          </select>
-          <button class="btn btn-dark">Info</button>
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-6">
+              <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
+                <option>Choose Pilot 1</option>
+              </select>
+              <select class="btn btn-dark pilot-input" id="Pilot2ProfileSelect">
+                <option>Choose Pilot 2</option>
+                <option>None</option>
+              </select>
+            </div>  
+            <div class="col-lg-6 my-auto">
+              <label>Approximate Flight Time:</label>
+              <div class="row text-left">
+                <input type="text" class="time-item text-right" id="MissionTimeInput" value="">
+                <label class="time-item">&nbsp;minutes</label>
+              </div>
+            </div>
+          </div>  
         </div>
       </div>
       <div class="card text-center left-card">
         <div class="card-header text-center">
-          Select Aircraft Profile
+          Aircraft Profile
         </div>
         <div class="card-body">
           <select class="btn btn-dark" id="AircraftProfileSelect">
@@ -34,19 +48,24 @@
           <button class="btn btn-dark">Info</button>
         </div>
       </div>
-      <button class="btn-lg btn-dark" id="CalculateButton">Calculate</button>
+      <button class="btn-lg btn-dark" id="CalculateButton" (click) = "calculate()">Calculate</button>
     </div>  
     <div class="col-lg-6 text-center" id="RightColumn">
-      <div class="card performance-card">
-        <div class="card-header text-center">
-            Performance Parameters
-        </div>
-        <ul class="list-group list-group-flush align-center">
+      <div class="container performance-container">
+        <div class="card performance-card">
+          <div class="card-header text-center">
+              Performance Parameters
+          </div>
+          <ul class="list-group list-group-flush align-center">
             <li class="list-group-item">
-                <button class="btn btn-dark performance-selection">Takeoff</button>
-                <button class="btn btn-secondary performance-selection">Landing</button>
-                <button class="btn btn-secondary performance-selection">Stall Speeds</button>
+              <button class="btn btn-dark performance-selection" id="DisplayTakeoffButton">Takeoff</button>
+              <button class="btn btn-secondary performance-selection" id="DisplayLandingButton">Landing</button>
+              <button class="btn btn-secondary performance-selection" id="DisplayStallSpeedButton">Stall Speeds</button>
             </li>
+          </ul>
+
+          <!-- Takeoff output list -->
+          <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayTakeoff}">
             <li class="list-group-item p-0">
               <div class="row d-flex justify-content-left m-0">
                 <div class="shadow-lg bg-dark rounded p-2 m-0">
@@ -86,16 +105,93 @@
                   <h3 id="accel-distance-output">&nbsp;</h3>
                 </div>
               </div> 
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Speed Over Obstacle</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="speed-over-obstacle-output">&nbsp;</h3>
+                </div>
+              </div> 
             </li>
-        </ul>
+
+          </ul>
+
+          <!-- Landing Output List -->
+          <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayLanding}">
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Landing Distance</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="landing-distance-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Approach Speed</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="approach-speed-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h2 class="output-label">Touch-Down Speed</h2>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="touch-down-speed-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+          </ul>
+
+          <!-- Stall speed output list -->
+          <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displaySpeeds}">
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="vs1-output">&nbsp;</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-2">
+                  <h3 id="vs0-gu-output">asdfasdf</h3>
+                </div>
+              </div> 
+            </li>
+            <li class="list-group-item p-0">
+              <div class="row d-flex justify-content-left m-0">
+                <div class="shadow-lg bg-dark rounded p-2 m-0">
+                  <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
+                </div>
+                <div class="shadow-lg rounded output-block bg-white p-4">
+                  <h3 id="vs0-gd-output">asdfasd</h3>
+                </div>
+              </div> 
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="row">
         <img src="assets/img/runway.png" id="RunwayPicture"/>
         <img src="assets/img/runway.png" id="RunwayPicture"/>
       </div>
-     </div> 
-     
-
+    </div> 
   </div>
 </div>
 

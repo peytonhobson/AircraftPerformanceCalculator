@@ -18,5 +18,5 @@ public class Pilot {
 
     private String username;
     private String name;
-    private String mass;
+    private double mass;
 }

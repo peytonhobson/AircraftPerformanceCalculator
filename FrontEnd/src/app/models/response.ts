@@ -1,4 +1,5 @@
 import { Attachment } from "./attachment";
+import { CalculatorOutput } from "./calculator-output";
 import { Pilot } from "./pilot";
 import { Profile } from "./profile.model";
 import { RunwayConditions } from "./runway-conditions";
@@ -10,8 +11,8 @@ export interface CustomResponse {
     reason: string;
     message: string;
     developerMessage: string;
-    data: {profiles?: Profile[], runwayCondition? : RunwayConditions, airportRunways? : string[], 
-        runwayError?: string, attachments?: Attachment[], pilots: Pilot[]};
+    data: {profiles?: Profile[], profile?: Profile, runwayCondition? : RunwayConditions, airportRunways? : string[], 
+        runwayError?: string, attachments?: Attachment[], pilots: Pilot[], pilot: Pilot, calculatorOutput: CalculatorOutput};
 }
 
 export interface CalculatorResponse {

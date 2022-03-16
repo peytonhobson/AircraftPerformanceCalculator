@@ -1,11 +1,13 @@
-import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Profile } from '@app/models/profile.model';
+import { CalculatorInput } from '@app/models/calculator-input';
 import { RunwayConditions } from '@app/models/runway-conditions';
 import { AccountService } from '@app/services/account.service';
+import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
 import { positionElements } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import { timer } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'calculator',
@@ -17,6 +19,7 @@ export class CalculatorComponent implements OnInit {
         private restClassifier: ApiService,
         private accountService: AccountService,
         private formBuilder: FormBuilder,
+        private alertService: AlertService
     ) {}
     title = 'FrontEnd';
 
@@ -32,6 +35,9 @@ export class CalculatorComponent implements OnInit {
     submittedManualModal = false;
     submittedAutomaticModal = false;
 
+    displayTakeoff = 'block';
+    displayLanding = 'none';
+    displaySpeeds = 'none';
 
     ngOnInit() {
 
@@ -65,10 +71,12 @@ export class CalculatorComponent implements OnInit {
         });
 
         this.restClassifier.get(`pilots/${localStorage.getItem('username')}/all`).subscribe(res => {
-            const pilotProfileSelect = document.getElementById('PilotProfileSelect') as HTMLSelectElement;
+            const pilot1ProfileSelect = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
+            const pilot2ProfileSelect = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
 
             res.data.pilots.forEach((profile) => {
-                pilotProfileSelect.add(new Option(profile.name, profile.name), undefined)
+                pilot1ProfileSelect.add(new Option(profile.name, profile.name), undefined)
+                pilot2ProfileSelect.add(new Option(profile.name, profile.name), undefined)
             });
         });
 
@@ -89,18 +97,167 @@ export class CalculatorComponent implements OnInit {
         idInput.addEventListener('change', (e) => {
             this.submittedAutomaticModal = false;
         })
+
+        const takeoffOutputButton = document.getElementById('DisplayTakeoffButton') as HTMLButtonElement;
+        const landingOutputButton = document.getElementById('DisplayLandingButton') as HTMLButtonElement;
+        const speedOutputButton = document.getElementById('DisplayStallSpeedButton') as HTMLButtonElement;
+
+        takeoffOutputButton.addEventListener('click', (e) => {
+            this.displayTakeoff = 'block';
+            this.displayLanding = 'none';
+            this.displaySpeeds = 'none'
+
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
+            landingOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
+            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+        })
+
+        landingOutputButton.addEventListener('click', (e) => {
+            this.displayTakeoff = 'none';
+            this.displayLanding = 'block';
+            this.displaySpeeds = 'none'
+
+            landingOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
+            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+        })
+
+        speedOutputButton.addEventListener('click', (e) => {
+            this.displayTakeoff = 'none';
+            this.displayLanding = 'none';
+            this.displaySpeeds = 'block'
+
+            speedOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
+            landingOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+        })
     }
 
-    submit() {
+    calculate() {
 
+        const pilot1Name = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
+        const pilot2Name = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
 
+        if(pilot1Name.value === "Choose Pilot 1" || pilot2Name.value === "Choose Pilot 2") {
+            this.alertService.error("Please select pilots.")
+            return;
+        }
         
+        const aircraftProfileName = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
+        
+        if(aircraftProfileName.value === "Choose Profile") {
+            this.alertService.error("Please select aircraft profile.")
+            return;
+        }
 
-        // this.restClassifier.calculate(profile).subscribe(res => {
-        //     console.log(res.data.output);
-        //     res.data.output.replace(/\n/g, '<br/>');
-        //     document.getElementById('outputContainer').innerHTML = res.data.output;
-        // });
+        const missionTime = document.getElementById('MissionTimeInput') as HTMLInputElement;
+
+        if(missionTime.value == "" || !missionTime.value.match(/^[0-9]/)) {
+            this.alertService.error("Please input correct flight time.")
+            return;
+        }
+
+        if(this.runwayConditions === undefined) {
+            this.alertService.error("Please input runway conditions.")
+            return;
+        }
+
+        var wetRunway;
+
+        if(this.runwayConditions.precipitation > 0) {
+            wetRunway = true;
+        }
+
+        const username = localStorage.getItem('username');
+
+        var rollingFriction, brakingFriction;
+
+        if(wetRunway && this.runwayConditions.runwayType == "Concrete") {
+            rollingFriction = 0.05;
+            brakingFriction = 0.2 //TODO: May need to change based on levels of precipitation
+        }
+        if(!wetRunway && this.runwayConditions.runwayType == "Concrete") {
+            rollingFriction = 0.04;
+            brakingFriction = 0.4 //TODO: May need to change based on levels of precipitation
+        }
+        if(wetRunway && this.runwayConditions.runwayType == "Grass") {
+            rollingFriction = 0.08;
+            brakingFriction = 0.2 //TODO: May need to change based on levels of precipitation
+        }
+        if(!wetRunway && this.runwayConditions.runwayType == "Grass") {
+            rollingFriction = 0.04;
+            brakingFriction = 0.3 //TODO: May need to change based on levels of precipitation
+        }
+
+        var mass= 3544; // Basic empty aircraft in kg
+
+
+        //TODO: Clean this up into different functions
+        this.restClassifier.get(`profiles/${username}/${aircraftProfileName.value}`).subscribe((res) => {
+            res.data.profile.attachments.forEach(element => {
+                mass += Number(element.mass);
+            });
+            mass += Number((res.data.profile.internalTank/100)*1100*0.818);
+            mass += Number((res.data.profile.dropTank/100)*300*0.818);
+            mass += Number((res.data.profile.tipTank/100)*200*0.818);
+
+            this.restClassifier.get(`pilots/${username}_${pilot1Name.value}`).subscribe((res) => {
+                mass += Number(res.data.pilot.mass);
+
+                if(pilot2Name.value !== "None") {
+                    this.restClassifier.get(`pilots/${username}_${pilot2Name.value}`).subscribe(res => {
+                        mass += Number(res.data.pilot.mass);
+        
+                        const calculatorInput = new CalculatorInput(mass, Number(missionTime.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
+                        this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
+         
+                        this.restClassifier.post(`calculate`, calculatorInput).subscribe(res => {
+                            console.log(res.data.calculatorOutput);
+                            const calculatorOutput = res.data.calculatorOutput
+                            document.getElementById('takeoff-speed-output').innerHTML = calculatorOutput.takeoffSpeed.toString()
+                            document.getElementById('takeoff-distance-output').innerHTML = calculatorOutput.takeoffDistance.toString()
+                            document.getElementById('ground-distance-output').innerHTML = calculatorOutput.groundRunDistance.toString()
+                            document.getElementById('accel-distance-output').innerHTML = calculatorOutput.accelStopDistance.toString()
+                            document.getElementById('speed-over-obstacle-output').innerHTML = calculatorOutput.speedOverObstacle.toString()
+                            document.getElementById('approach-speed-output').innerHTML = calculatorOutput.approachSpeed.toString()
+                            document.getElementById('touch-down-speed-output').innerHTML = calculatorOutput.touchDownSpeed.toString()
+                            document.getElementById('landing-distance-output').innerHTML = calculatorOutput.landingDistance.toString()
+                            document.getElementById('vs1-output').innerHTML = calculatorOutput.stallSpeedVS1.toString()
+                            document.getElementById('vs0-gu-output').innerHTML = calculatorOutput.stallSpeedVS0GU.toString()
+                            document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
+                        });
+                    });
+                }
+                else {
+                    const calculatorInput = new CalculatorInput(mass, Number(missionTime.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
+                    this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
+           
+                    this.restClassifier.post(`calculate`, calculatorInput).subscribe(res => { 
+                        console.log(res.data.calculatorOutput);
+                        const calculatorOutput = res.data.calculatorOutput
+                        document.getElementById('takeoff-speed-output').innerHTML = calculatorOutput.takeoffSpeed.toString()
+                        document.getElementById('takeoff-distance-output').innerHTML = calculatorOutput.takeoffDistance.toString()
+                        document.getElementById('ground-distance-output').innerHTML = calculatorOutput.groundRunDistance.toString()
+                        document.getElementById('accel-distance-output').innerHTML = calculatorOutput.accelStopDistance.toString()
+                        document.getElementById('speed-over-obstacle-output').innerHTML = calculatorOutput.speedOverObstacle.toString()
+                        document.getElementById('approach-speed-output').innerHTML = calculatorOutput.approachSpeed.toString()
+                        document.getElementById('touch-down-speed-output').innerHTML = calculatorOutput.touchDownSpeed.toString()
+                        document.getElementById('landing-distance-output').innerHTML = calculatorOutput.landingDistance.toString()
+                        document.getElementById('vs1-output').innerHTML = calculatorOutput.stallSpeedVS1.toString()
+                        document.getElementById('vs0-gu-output').innerHTML = calculatorOutput.stallSpeedVS0GU.toString()
+                        document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
+                    });
+                }
+            },
+            error => {
+                this.alertService.error("Cant find pilot:" + pilot1Name.value)
+                return;
+            });
+        },
+        error => {
+            this.alertService.error("Cant find aircraft profile:" + aircraftProfileName.value)
+        })
+
     }
 
     saveManualModal() {
@@ -149,7 +306,6 @@ export class CalculatorComponent implements OnInit {
         var runwayNumber, runwaySideNumber;
 
         for(var i = 0; i < runwayNumbers.length; i++) {
-            console.log(runwayNumbers[i])
             if(runwayNumbers[i].getAttribute('class').includes('btn-dark')) {
                 runwayNumber = runwayNumbers[i];
             }
@@ -166,6 +322,19 @@ export class CalculatorComponent implements OnInit {
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
                 this.runwayConditions = res.data.runwayCondition
+
+                if(this.runwayConditions.runwayType.toUpperCase() === "CONC" || this.runwayConditions.runwayType.toUpperCase() === "ASPH") {
+                    this.runwayConditions.runwayType = "Concrete"
+                }
+                else if(this.runwayConditions.runwayType.toUpperCase() === "BRICK") {
+                    this.runwayConditions.runwayType = "Brick"
+                }
+                else if(this.runwayConditions.runwayType.toUpperCase() === "WOOD") {
+                    this.runwayConditions.runwayType = "Wood"
+                }
+                else {
+                    this.runwayConditions.runwayType = "Grass"
+                }
             });
     
     }
@@ -297,9 +466,11 @@ export class CalculatorComponent implements OnInit {
         const sides = button.innerHTML.split("/");
         sideButton1.innerHTML=sides[0];
         sideButton2.innerHTML=sides[1];
+        sideButton1.className = sideButton1.className.replace('btn-outline-dark', 'btn-dark');
     }
 
     logout() {
         this.accountService.logout();
     }
+
 }

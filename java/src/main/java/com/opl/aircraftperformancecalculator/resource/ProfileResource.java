@@ -25,27 +25,24 @@ public class ProfileResource {
 
     private final ProfileServiceImplementation profileService;
 
-    @PostMapping(path = "/calculator")
-    public ResponseEntity<Response> calculate(@RequestBody Profile profile) throws Exception {
-
-        // TODO: This is only temporary. Set actual API values.
+    @GetMapping(path = "/{username}/all")
+    public ResponseEntity<Response> returnAllProfiles(@PathVariable("username") String username) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("output", profileService.calculate(profile)))
-                        .message("Output returned")
-                        .status(OK)
+                        .data(of("profiles", profileService.listByUsername(username)))
+                        .message("Profiles retrieved")
                         .statusCode(OK.value())
                         .build()
         );
     }
 
-    @GetMapping(path = "/{username}/all")
-    public ResponseEntity<Response> returnLoadout(@PathVariable("username") String username) {
+    @GetMapping(path = "/{username}/{profileName}")
+    public ResponseEntity<Response> returnProfile(@PathVariable("username") String username, @PathVariable("profileName") String profileName) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("profiles", profileService.listByUsername(username)))
+                        .data(of("profile", profileService.getByUsernameandName(username, profileName)))
                         .message("Profiles retrieved")
                         .statusCode(OK.value())
                         .build()

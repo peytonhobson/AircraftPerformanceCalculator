@@ -1,5 +1,7 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -7,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Slf4j
 public class TakeoffAirspeedCalculator {
 
-    public static String getTakeoffAirspeed(String mass1) throws FileNotFoundException {
+    public static List<Double> getTakeoffAirspeed(double mass) throws FileNotFoundException {
 
-        double mass = Double.parseDouble(mass1);
+        log.info("takeoffSpeed");
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
@@ -39,8 +42,8 @@ public class TakeoffAirspeedCalculator {
             }
         }
 
-        return "Speed over obstacle: " + (lineList.get(2).get(0)*mass + lineList.get(2).get(1)) + "<br/>" +
-            "Takeoff Speed: " + (lineList.get(1).get(0)*mass + lineList.get(1).get(1)) + "<br/>" +
-            "Stall Speed: " + lineList.get(0).get(0)*mass + lineList.get(0).get(1) + "<br/>";
+        return List.of(lineList.get(2).get(0)*mass + lineList.get(2).get(1),
+            lineList.get(1).get(0)*mass + lineList.get(1).get(1),
+            lineList.get(0).get(0)*mass + lineList.get(0).get(1));
     }
 }
