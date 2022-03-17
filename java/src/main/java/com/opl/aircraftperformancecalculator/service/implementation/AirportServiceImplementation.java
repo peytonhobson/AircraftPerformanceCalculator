@@ -98,15 +98,13 @@ public class AirportServiceImplementation implements AirportService {
             }
         }
 
-        log.info(runwaySide);
         double totalDeg = Math.abs(Integer.parseInt(runwaySide.replaceAll("[a-zA-Z]",""))*10+180-windDeg);
-        log.info(runwaySide);
 
         headWind = windSpeed * 0.514444 * Math.cos(0.0174533 * totalDeg);
         List<String> list = getRunwayInfo(airportID, runwayNumber, runwaySide);
 
-        return new RunwayConditions(airportID, temp, calculatePressureAltitude(hg, elevation), precipitation, headWind,
-                Double.parseDouble(list.get(0)), list.get(1),Double.parseDouble(list.get(2)));
+        return new RunwayConditions(airportID, temp, calculatePressureAltitude(hg, elevation), precipitation*2.54,
+                headWind,Double.parseDouble(list.get(0))*0.3048, list.get(1), Double.parseDouble(list.get(2)));
     }
 
     public static List<String> getRunwayInfo(String airportID, String runwayNumber, String runwaySide) throws IOException {

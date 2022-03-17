@@ -60,9 +60,10 @@ form {
     display: table;
 }
 
-.unit-block {
+.unit-block, .speed-unit-block {
     width: 10%;
     display: table;
+    padding: 2%;
 }
 
 .unit-block-big {
