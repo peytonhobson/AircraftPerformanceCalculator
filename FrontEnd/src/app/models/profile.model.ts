@@ -3,7 +3,7 @@ import { Attachment } from "./attachment";
 /**
  * Class used to represent response, where output is initialized to empty
  */
- export class Profile {
+export class Profile {
     
     public username : string;
     public name: string;

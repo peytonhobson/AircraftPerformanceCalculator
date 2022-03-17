@@ -41,6 +41,8 @@ export class CalculatorComponent implements OnInit {
 
     runwaysLoading = false;
     calculateLoading = false;
+    notCalculated = true;
+    pilot1NotSelected = true;
 
     ngOnInit() {
 
@@ -189,7 +191,7 @@ export class CalculatorComponent implements OnInit {
             var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
             bigUnit2.style.paddingInlineEnd = "2.25%";
             bigUnit2.style.paddingInlineStart = "2.25%";
-        })
+        });
 
         pilot1ProfileSelect.addEventListener('change', (e) => {
 
@@ -205,20 +207,12 @@ export class CalculatorComponent implements OnInit {
                     pilot2ProfileSelect.options.add(new Option(pilot1ProfileSelect.options.item(i).value));
                 }
             }
-        });
 
-        pilot2ProfileSelect.addEventListener('change', (e) => {
-
-            var i = 1;
-
-            while(pilot1ProfileSelect.options.length > 1) {
-                pilot1ProfileSelect.options.remove(i);
+            if(pilot1ProfileSelect.value !== "Choose Pilot 1") {
+                this.pilot1NotSelected = false;
             }
-
-            for(var i = 2; i < pilot2ProfileSelect.options.length; i++) {
-                if(i !== pilot2ProfileSelect.options.selectedIndex) {
-                    pilot1ProfileSelect.options.add(new Option(pilot2ProfileSelect.options.item(i).value));
-                }
+            else {
+                this.pilot1NotSelected = true;
             }
         });
     }
@@ -321,6 +315,7 @@ export class CalculatorComponent implements OnInit {
                             document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
 
                             this.calculateLoading = false;
+                            this.notCalculated = false;
                         },
                         error => {
                             this.alertService.error("Conditions could not be calculated.")
@@ -349,6 +344,7 @@ export class CalculatorComponent implements OnInit {
                         document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
 
                         this.calculateLoading = false;
+                        this.notCalculated = false;
                     },
                     error => {
                         this.alertService.error("Conditions could not be calculated.")
