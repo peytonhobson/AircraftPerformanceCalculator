@@ -26,7 +26,6 @@ form {
     overflow-y: auto;
 }
 
-
 .radio-label{
   float: left;
   clear: none;
@@ -49,24 +48,43 @@ form {
     margin-inline: 3%;
 }
 
-.shadow-lg {
+.output-label-block {
     width: 50%;
     margin:0;
     display: table;
 }
 
-h2, h3 {
+.output-block {
+    width: 40%;
+    margin:0;
+    display: table;
+}
+
+.unit-block {
+    width: 10%;
+    display: table;
+}
+
+.unit-block-big {
+    width: 5%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    padding-inline: 2.95%;
+    display: table;
+}
+
+h2, h3, h4 {
     display: table-cell;
     align-items: center;
 }
 
 #RunwayPicture {
-    width: 100%;
-    height: 100%
+    size: 80%;
+    margin-top: 1%;
 }
 
-img {
-    margin-left: 10%;
+#RightColumn {
+    margin-left: 3%;
 }
 
 #CalculateButton {
@@ -86,7 +104,7 @@ img {
 }
 
 .performance-card {
-    width: 100%;
+    width: 90%;
     border-right-width: 1.5px;
     border-left-width: 1.5px;
 }
@@ -101,7 +119,7 @@ li {
 }
 
 .left-card {
-    margin-bottom: 10%;
+    margin-bottom: 12%;
 }
 
 .pilot-input {
@@ -119,8 +137,7 @@ li {
     padding: 0%;
 }
 
-.performance-container {
-    height: 61%;
-    width: 110%;
-    border: none;
+.measurement-button {
+    width: 40%;
+    margin-inline: 5%;
 }

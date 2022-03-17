@@ -59,6 +59,8 @@ public class AircraftPerformanceCalculatorApplication {
 			userService.saveUser(new User("peytonhobson", "password"));
 
 			pilotService.save(new Pilot("peytonhobson_peyton", "peytonhobson", "peyton", 100));
+			pilotService.save(new Pilot("peytonhobson_asdfdf", "peytonhobson", "asdfdf", 100));
+			pilotService.save(new Pilot("peytonhobson_asdf", "peytonhobson", "asdf", 100));
 
 //			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
 //			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));

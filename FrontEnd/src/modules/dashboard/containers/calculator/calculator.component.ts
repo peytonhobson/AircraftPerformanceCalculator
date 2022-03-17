@@ -39,12 +39,17 @@ export class CalculatorComponent implements OnInit {
     displayLanding = 'none';
     displaySpeeds = 'none';
 
+    runwaysLoading = false;
+    calculateLoading = false;
+
     ngOnInit() {
 
         this.form = this.formBuilder.group({
             airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
         });
 
+
+        // TODO: More validators needed
         this.formManualModal = this.formBuilder.group({
             temperature: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]],
             //TODO: add pattern to check for only "double" type numbers
@@ -70,9 +75,10 @@ export class CalculatorComponent implements OnInit {
             });
         });
 
+        const pilot1ProfileSelect = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
+        const pilot2ProfileSelect = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
+
         this.restClassifier.get(`pilots/${localStorage.getItem('username')}/all`).subscribe(res => {
-            const pilot1ProfileSelect = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
-            const pilot2ProfileSelect = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
 
             res.data.pilots.forEach((profile) => {
                 pilot1ProfileSelect.add(new Option(profile.name, profile.name), undefined)
@@ -88,7 +94,7 @@ export class CalculatorComponent implements OnInit {
         sideButton1.disabled = true;
 
         const sideButton2 = document.getElementById('RunwaySideButton2') as HTMLButtonElement;
-        sideButton2.addEventListener('click', (e) => {
+        sideButton2.addEventListener('click',  (e) => {
             this.runwaySideClick(sideButton2.getAttribute('id'));
         })
         sideButton2.disabled = true;
@@ -107,9 +113,9 @@ export class CalculatorComponent implements OnInit {
             this.displayLanding = 'none';
             this.displaySpeeds = 'none'
 
-            takeoffOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
-            landingOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
-            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-outline-dark', 'btn-dark')
+            landingOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-outline-dark')
+            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-outline-dark')
         })
 
         landingOutputButton.addEventListener('click', (e) => {
@@ -117,9 +123,9 @@ export class CalculatorComponent implements OnInit {
             this.displayLanding = 'block';
             this.displaySpeeds = 'none'
 
-            landingOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
-            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
-            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+            landingOutputButton.className = landingOutputButton.className.replace('btn-outline-dark', 'btn-dark')
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-outline-dark')
+            speedOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-outline-dark')
         })
 
         speedOutputButton.addEventListener('click', (e) => {
@@ -127,19 +133,106 @@ export class CalculatorComponent implements OnInit {
             this.displayLanding = 'none';
             this.displaySpeeds = 'block'
 
-            speedOutputButton.className = landingOutputButton.className.replace('btn-secondary', 'btn-dark')
-            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-secondary')
-            landingOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-secondary')
+            speedOutputButton.className = landingOutputButton.className.replace('btn-outline-dark', 'btn-dark')
+            takeoffOutputButton.className = landingOutputButton.className.replace('btn-dark', 'btn-outline-dark')
+            landingOutputButton.className = speedOutputButton.className.replace('btn-dark', 'btn-outline-dark')
         })
+
+        const imperialButton = document.getElementById('ImperialButton') as HTMLButtonElement;
+        const metricButton = document.getElementById('MetricButton') as HTMLButtonElement;
+
+        imperialButton.addEventListener('click', (e) => {
+            imperialButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
+            metricButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
+
+            document.getElementById('takeoff-speed-unit').innerHTML = 'kts';
+            document.getElementById('takeoff-distance-unit').innerHTML = 'ft';
+            document.getElementById('ground-run-unit').innerHTML = 'ft';
+            document.getElementById('accel-stop-unit').innerHTML = 'ft';
+            document.getElementById('speed-over-unit').innerHTML = 'kts';
+            document.getElementById('landing-distance-unit').innerHTML = 'ft';
+            document.getElementById('approach-speed-unit').innerHTML = 'kts';
+            document.getElementById('touch-down-unit').innerHTML = 'kts';
+            document.getElementById('vs1-unit').innerHTML = 'kts';
+            document.getElementById('vs0-gu-unit').innerHTML = 'kts';
+            document.getElementById('vs0-gd-unit').innerHTML = 'kts';
+
+            var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
+            bigUnit1.style.paddingInlineEnd = "2.95%";
+            bigUnit1.style.paddingInlineStart = "2.95%";
+
+            var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
+            bigUnit2.style.paddingInlineEnd = "2.95%";
+            bigUnit2.style.paddingInlineStart = "2.95%";
+        })
+
+        metricButton.addEventListener('click', (e) => {
+            metricButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
+            imperialButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
+
+            document.getElementById('takeoff-speed-unit').innerHTML = 'm/s';
+            document.getElementById('takeoff-distance-unit').innerHTML = 'm';
+            document.getElementById('ground-run-unit').innerHTML = 'm';
+            document.getElementById('accel-stop-unit').innerHTML = 'm';
+            document.getElementById('speed-over-unit').innerHTML = 'm/s';
+            document.getElementById('landing-distance-unit').innerHTML = 'm';
+            document.getElementById('approach-speed-unit').innerHTML = 'm/s';
+            document.getElementById('touch-down-unit').innerHTML = 'm/s';
+            document.getElementById('vs1-unit').innerHTML = 'm/s';
+            document.getElementById('vs0-gu-unit').innerHTML = 'm/s';
+            document.getElementById('vs0-gd-unit').innerHTML = 'm/s';
+
+            var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
+            bigUnit1.style.paddingInlineEnd = "2.25%";
+            bigUnit1.style.paddingInlineStart = "2.25%";
+
+            var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
+            bigUnit2.style.paddingInlineEnd = "2.25%";
+            bigUnit2.style.paddingInlineStart = "2.25%";
+        })
+
+        pilot1ProfileSelect.addEventListener('change', (e) => {
+
+            var i = 2;
+
+            //TODO: Make this more efficient
+            while(pilot2ProfileSelect.options.length > 2) {
+                pilot2ProfileSelect.options.remove(i);
+            }
+
+            for(var i = 1; i < pilot1ProfileSelect.options.length; i++) {
+                if(i !== pilot1ProfileSelect.options.selectedIndex) {
+                    pilot2ProfileSelect.options.add(new Option(pilot1ProfileSelect.options.item(i).value));
+                }
+            }
+        });
+
+        pilot2ProfileSelect.addEventListener('change', (e) => {
+
+            var i = 1;
+
+            while(pilot1ProfileSelect.options.length > 1) {
+                pilot1ProfileSelect.options.remove(i);
+            }
+
+            for(var i = 2; i < pilot2ProfileSelect.options.length; i++) {
+                if(i !== pilot2ProfileSelect.options.selectedIndex) {
+                    pilot1ProfileSelect.options.add(new Option(pilot2ProfileSelect.options.item(i).value));
+                }
+            }
+        });
     }
 
     calculate() {
+
+        this.calculateLoading = true;
 
         const pilot1Name = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
         const pilot2Name = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
 
         if(pilot1Name.value === "Choose Pilot 1" || pilot2Name.value === "Choose Pilot 2") {
             this.alertService.error("Please select pilots.")
+            this.calculateLoading = false;
             return;
         }
         
@@ -147,6 +240,7 @@ export class CalculatorComponent implements OnInit {
         
         if(aircraftProfileName.value === "Choose Profile") {
             this.alertService.error("Please select aircraft profile.")
+            this.calculateLoading = false;
             return;
         }
 
@@ -154,11 +248,13 @@ export class CalculatorComponent implements OnInit {
 
         if(missionTime.value == "" || !missionTime.value.match(/^[0-9]/)) {
             this.alertService.error("Please input correct flight time.")
+            this.calculateLoading = false;
             return;
         }
 
         if(this.runwayConditions === undefined) {
             this.alertService.error("Please input runway conditions.")
+            this.calculateLoading = false;
             return;
         }
 
@@ -191,8 +287,6 @@ export class CalculatorComponent implements OnInit {
 
         var mass= 3544; // Basic empty aircraft in kg
 
-
-        //TODO: Clean this up into different functions
         this.restClassifier.get(`profiles/${username}/${aircraftProfileName.value}`).subscribe((res) => {
             res.data.profile.attachments.forEach(element => {
                 mass += Number(element.mass);
@@ -225,6 +319,13 @@ export class CalculatorComponent implements OnInit {
                             document.getElementById('vs1-output').innerHTML = calculatorOutput.stallSpeedVS1.toString()
                             document.getElementById('vs0-gu-output').innerHTML = calculatorOutput.stallSpeedVS0GU.toString()
                             document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
+
+                            this.calculateLoading = false;
+                        },
+                        error => {
+                            this.alertService.error("Conditions could not be calculated.")
+                            this.calculateLoading = false;
+                            return;
                         });
                     });
                 }
@@ -246,16 +347,26 @@ export class CalculatorComponent implements OnInit {
                         document.getElementById('vs1-output').innerHTML = calculatorOutput.stallSpeedVS1.toString()
                         document.getElementById('vs0-gu-output').innerHTML = calculatorOutput.stallSpeedVS0GU.toString()
                         document.getElementById('vs0-gd-output').innerHTML = calculatorOutput.stallSpeedVS0GD.toString()
+
+                        this.calculateLoading = false;
+                    },
+                    error => {
+                        this.alertService.error("Conditions could not be calculated.")
+                        this.calculateLoading = false;
+                        return;
                     });
                 }
             },
             error => {
                 this.alertService.error("Cant find pilot:" + pilot1Name.value)
+                this.calculateLoading = false;
                 return;
             });
         },
         error => {
             this.alertService.error("Cant find aircraft profile:" + aircraftProfileName.value)
+            this.calculateLoading = false;
+            return;
         })
 
     }
@@ -288,7 +399,6 @@ export class CalculatorComponent implements OnInit {
             this.runwayConditions = new RunwayConditions(null, Number(temperature), Number(pressureAltitude), precipitation, Number(headwind),
                 Number(runwayLength), runwayType, Number(slope))
 
-            console.log(this.runwayConditions);
 
             for(var name in this.formManualModal.controls) {
                 (<FormControl>this.formManualModal.controls[name]).setValue('');
@@ -296,11 +406,17 @@ export class CalculatorComponent implements OnInit {
             }
 
             this.submittedManualModal=false;
+
+            const manualButton = document.getElementById('ManualButton') as HTMLButtonElement;
+            manualButton.innerHTML = "Manual &#x2713;"
+            manualButton.className = manualButton.className.replace('btn-dark', 'btn-success')
         }
     }
 
     saveAutomaticModal() {
         
+        this.submittedAutomaticModal = true;
+
         let runwayNumbers = document.getElementsByClassName('runway-button');
         let sideNumbers = document.getElementsByClassName('side-button');
         var runwayNumber, runwaySideNumber;
@@ -335,6 +451,10 @@ export class CalculatorComponent implements OnInit {
                 else {
                     this.runwayConditions.runwayType = "Grass"
                 }
+
+                const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
+                automaticButton.innerHTML = "Automatic &#x2713;"
+                automaticButton.className = automaticButton.className.replace('btn-dark', 'btn-success')
             });
     
     }
@@ -344,10 +464,10 @@ export class CalculatorComponent implements OnInit {
     openAutomaticModal() {
         this.displaySaveStyleAutomatic = 'block';
         document.getElementById('main-container').style.opacity = '40%';
+        this.submittedAutomaticModal = false;
     }
 
     closeAutomaticModal(save: boolean) {
-
 
         if (save) {
             this.saveAutomaticModal();
@@ -400,7 +520,7 @@ export class CalculatorComponent implements OnInit {
 
     findRunways() {
 
-        this.submittedAutomaticModal = true;
+        this.runwaysLoading = true;
 
         if (this.formAutomaticModal.invalid) {
             return;
@@ -429,6 +549,8 @@ export class CalculatorComponent implements OnInit {
                     runwayButtonGroup.appendChild(newButton);
                 });
             }
+
+            this.runwaysLoading = false;
         });
     }
 
