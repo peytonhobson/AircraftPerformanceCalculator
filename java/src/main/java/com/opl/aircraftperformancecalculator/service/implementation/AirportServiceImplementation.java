@@ -121,13 +121,13 @@ public class AirportServiceImplementation implements AirportService {
             String searchUrl = "https://nfdc.faa.gov/nfdcApps/services/ajv5/airportDisplay.jsp?airportId=" + airportID;
             HtmlPage page = client.getPage(searchUrl);
 
-            //TODO: Make sure that user has restrictions on how they enter runwayNumber
             //TODO: Need to fix so that it matches TDZE
             HtmlElement runway = page.querySelector("div[id=runway_" + runwayNumber + "]");
             if(runway == null) {
                 runwayType = "BadRunway";
             }
 
+            assert runway != null;
             HtmlElement table = runway.getFirstByXPath("table");
             HtmlElement tbody = table.getFirstByXPath("tbody");
             NodeList trNodes = tbody.getChildNodes();
@@ -209,7 +209,6 @@ public class AirportServiceImplementation implements AirportService {
             String searchUrl = "https://nfdc.faa.gov/nfdcApps/services/ajv5/airportDisplay.jsp?airportId=" + airportID;
             HtmlPage page = client.getPage(searchUrl);
 
-            //TODO: Make sure that user has restrictions on how they enter runwayNumber
             List<DomNode> runway = page.querySelectorAll("div[id^=runway_]");
 
             if(runway.isEmpty()) {

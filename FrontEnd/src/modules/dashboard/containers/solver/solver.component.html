@@ -1,1 +1,188 @@
-<layout-dashboard><sb-dashboard-head title="Solver" [hideBreadcrumbs]="true"></sb-dashboard-head></layout-dashboard>
+<layout-dashboard><sb-dashboard-head title="Solver" [hideBreadcrumbs]="true"></sb-dashboard-head>
+
+    <div class="container" id="main-container">
+        <div class="row">
+          <div class="col-lg-5 text-center">
+            <div class="card left-card text-center">
+              <div class="card-header text-center">
+                Runway Conditions
+              </div>
+              <div class="card-body">
+                <button class="btn btn-dark parameter-button" (click)="openManualModal()" id="ManualButton">Manual</button>
+                <button class="btn btn-dark parameter-button" (click)="openAutomaticModal()" id="AutomaticButton">Automatic</button>
+              </div>
+            </div>
+            <div class="card text-center left-card">
+              <div class="card-header text-center">
+                Mission Specific Info
+              </div>
+              <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-lg-6">
+                    <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
+                      <option>Choose Pilot 1</option>
+                    </select>
+                    <select [disabled] = "pilot1NotSelected" class="btn btn-dark pilot-input" id="Pilot2ProfileSelect">
+                      <option>Choose Pilot 2</option>
+                      <option>None</option>
+                    </select>
+                  </div>  
+                  <div class="col-lg-6 my-auto">
+                    <label>Approximate Flight Time:</label>
+                    <div class="row text-left">
+                      <input type="text" class="time-item text-right" id="MissionTimeInput" value="">
+                      <label class="time-item">&nbsp;minutes</label>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+            </div>
+            <div class="card text-center left-card">
+              <div class="card-header text-center">
+                Aircraft Profile
+              </div>
+              <div class="card-body">
+                <select class="btn btn-dark" id="AircraftProfileSelect">
+                  <option>Choose Profile</option>
+                </select>
+                <button class="btn btn-dark">Info</button>
+              </div>
+            </div>
+            <button class="btn-lg btn-dark" [disabled]="calculateLoading" id="CalculateButton" (click) = "calculate()">
+              <span *ngIf="calculateLoading" class="spinner-border spinner-border-sm mr-1"></span>
+              Calculate
+            </button>
+          </div>  
+        </div>
+    </div>  
+
+    <!-- Automatic runway condition modal -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Query Runway</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row d-flex justify-content-center">
+                <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
+                      <div class="row d-flex justify-content-center">
+                        <label for="airportInput">Enter Airport ID:</label>
+                      </div>
+                      <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
+                        <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
+                        <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+                          <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
+                          <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
+                          <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
+                        </div>
+                      </div>
+                    <div class="row d-flex justify-content-center">
+                      <button type="submit" [disabled]="runwaysLoading" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >
+                        <span *ngIf="runwaysLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Find Runways
+                      </button>
+                    </div>
+                </form>
+              </div>
+              <div class="row d-flex justify-content-center">
+                  <label>Select Takeoff Runway:</label>
+              </div>
+              <div class="row d-flex justify-content-center">
+                  <div class="card border-1 mb-4" id="runway-button-group"></div> 
+              </div>
+              <div class="row d-flex justify-content-center">
+                  <label for=RunwaySideButton1>Select Runway Starting Side: </label>
+              </div>
+              <div class="row d-flex justify-content-center">
+                  <div class="blank-card mt-2">
+                      <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
+                      <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+                  </div>
+              </div>
+            </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(false)">Close</button>
+                <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(true)">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Manual runway condition modal -->
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleManual}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header d-flex justify-content-center">
+                <h4 class="modal-title text-center">Input Runway Conditions</h4>
+              </div>
+              <div class="modal-body">
+                <div class="row d-flex justify-content-center">
+                  <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
+                    <div class="form-group" [formGroup]="formManualModal">
+                        <label for="temperature">Temperature</label>
+                        <input type="text" formControlName="temperature" class="form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
+                        <div *ngIf="submittedManualModal && fManual['temperature'].errors" class="invalid-feedback">
+                            <div *ngIf="fManual['temperature'].errors['required']">Temperature is required</div>
+                            <div *ngIf="fManual['temperature'].errors['maxlength'] && !fManual['temperature'].errors['pattern']">Temperature cannot be greater than 3 digits.</div>
+                            <div *ngIf="fManual['temperature'].errors['pattern']">Temperature must be numeric.</div>
+                        </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="slope">Runway Slope</label>
+                      <input type="text" formControlName="slope" class="form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
+                      <div *ngIf="submittedManualModal && fManual['slope'].errors" class="invalid-feedback">
+                          <div *ngIf="fManual['slope'].errors['pattern']">Slope must be numeric.</div>
+                      </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="runwayLength">Runway Length</label>
+                      <input type="text" formControlName="runwayLength" class="form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
+                      <div *ngIf="submittedManualModal && fManual['runwayLength'].errors" class="invalid-feedback">
+                          <div *ngIf="fManual['runwayLength'].errors['pattern']">Slope must be numeric.</div>
+                      </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="precipitation">Is the runway wet?</label>
+                       <div class="row d-flex justify-content-left">
+                        <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                        <label for="precipitationYes" class="radio-label">Yes</label>
+                        <input type="radio" formControlName="precipitationNo" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                        <label for="precipitationNo" class="radio-label">No</label>
+                      </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="precipitation">What is the runway surface type?</label>
+                       <div class="row d-flex justify-content-left">
+                        <input type="radio" formControlName="concreteRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                        <label for="concreteRunway" class="radio-label">Concrete</label>
+                        <input type="radio" formControlName="grassRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                        <label for="grassRunway" class="radio-label">Grass</label>
+                      </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="pressureAltitude">PSI</label>
+                      <input type="text" formControlName="pressureAltitude" class="form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
+                      <div *ngIf="submittedManualModal && fManual['pressureAltitude'].errors" class="invalid-feedback">
+                          <div *ngIf="fManual['pressureAltitude'].errors['pattern']">Pressure Altitude must be numeric.</div>
+                      </div>
+                    </div> 
+                    <div class="form-group" [formGroup]="formManualModal">
+                      <label for="headwind">Headwind</label>
+                      <input type="text" formControlName="headwind" class="form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
+                      <div *ngIf="submittedManualModal && fManual['headwind'].errors" class="invalid-feedback">
+                          <div *ngIf="fManual['headwind'].errors['pattern']">Headwind must be numeric.</div>
+                      </div>
+                    </div> 
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(false)">Close</button>
+                <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(true)">Save</button>
+              </div>
+            </div> 
+          </div>
+        </div>
+
+</layout-dashboard>

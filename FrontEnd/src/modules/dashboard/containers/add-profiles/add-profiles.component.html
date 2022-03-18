@@ -9,8 +9,8 @@
                     Choose Measurement System
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-dark active border border-dark measurement-button">Imperial</button>
-                    <button class="btn btn-outline-dark border border-dark measurement-button">Metric</button>
+                    <button id="ImperialButton" class="btn btn-dark border border-dark measurement-button">Imperial</button>
+                    <button id="MetricButton" class="btn btn-outline-dark border border-dark measurement-button">Metric</button>
                 </div>
             </div>
             <div class="card top-card-left">
@@ -71,7 +71,12 @@
                                 <label for="PilotName">Name:</label>
                                 <input type="text" id="PilotName" name="PilotName" value="">
                                 <label for="PilotMass">Weight:</label>
-                                <input type="text" id="PilotMass" name="PilotMass" value="">
+                                <div class="row d-flex justify-content-center">
+                                    <input type="text" class="unit-input" id="PilotMass" name="PilotMass" value="">
+                                    <div class="bg-dark rounded unit-block">
+                                        <h4 class="unit-label m-0">lbs</h4>
+                                    </div>
+                                </div>
                         </div>
                         <div class="col-lg-6 my-auto">
                             <button class = "btn btn-outline-dark active create-button" (click)="createPilot()" id="CreateNewPilotButton">Create Pilot Profile</button>
@@ -88,8 +93,13 @@
                         <div class="col-lg-6 text-center">
                             <label for="AttachmentName">Name:</label>
                             <input type="text" id="AttachmentName" name="AttachmentName" value="">
-                            <label for="AttachmentMass">Mass:</label>
-                            <input type="text" id="AttachmentMass" name="AttachmentMass" value="">
+                            <label for="AttachmentMass">Weight:</label>
+                            <div class="row d-flex justify-content-center">
+                                <input type="text" class="unit-input" id="AttachmentMass" name="AttachmentMass" value="">
+                                <div class="bg-dark rounded unit-block">
+                                    <h4 class="unit-label m-0">lbs</h4>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-6 my-auto">
                             <button class = "btn btn-outline-dark active create-button" (click)="createAttachment()" id="CreateNewAttachmentButton">Create Attachment</button>
@@ -115,7 +125,7 @@
                             [cdkDropListConnectedTo]="[doneAttachmentList]" 
                             class="attachment-list" 
                             (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{toImperialString(attachmentList)}}</div>
+                                <div class="attachment-block unused-attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{toImperialString(attachmentList)}}</div>
                             </div>
                     </div>
                     <div class="col-lg-4">
@@ -127,7 +137,7 @@
                             [cdkDropListConnectedTo]="[attachmentList]" 
                             class="attachment-list" 
                             (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{toImperialString(attachmentsUsed)}}</div>
+                                <div class="attachment-block used-attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{toImperialString(attachmentsUsed)}}</div>
                             </div>
                     </div>
                     <div class="col-lg-3 text-center my-auto">

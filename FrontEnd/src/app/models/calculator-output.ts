@@ -12,7 +12,9 @@ export class CalculatorOutput {
     public stallSpeedVS0GD: number;
     public stallSpeedVS0GU: number;
 
-    constructor(groundRunDistance: number, takeoffSpeed: number, takeoffDistance: number, accelStopDistance: number, speedOverObstacle: number, stallSpeedVS1: number, landingDistance: number, approachSpeed: number, touchDownSpeed: number, stallSpeedVS0GD: number, stallSpeedVS0GU: number) {
+    constructor(groundRunDistance?: number, takeoffSpeed?: number, takeoffDistance?: number, accelStopDistance?: number, 
+        speedOverObstacle?: number, stallSpeedVS1?: number, landingDistance?: number, approachSpeed?: number, 
+        touchDownSpeed?: number, stallSpeedVS0GD?: number, stallSpeedVS0GU?: number) {
         this.groundRunDistance = groundRunDistance;
         this.takeoffSpeed = takeoffSpeed;
         this.takeoffDistance = takeoffDistance;

@@ -45,7 +45,7 @@
             <select class="btn btn-dark" id="AircraftProfileSelect">
               <option>Choose Profile</option>
             </select>
-            <button class="btn btn-dark">Info</button>
+            <button class="btn btn-dark" (click)="getProfileInfo()">Info</button>
           </div>
         </div>
         <button class="btn-lg btn-dark" [disabled] = "calculateLoading" id="CalculateButton" (click) = "calculate()">
@@ -96,7 +96,7 @@
                   <div class="shadow-lg output-block bg-white p-2">
                     <h3 id="takeoff-distance-output">&nbsp;</h3>
                   </div>
-                  <div class="shadow-lg bg-dark p-2 m-0 unit-block  text-center">
+                  <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
                     <h4 class="output-label" id="takeoff-distance-unit">ft</h4>
                   </div>
                 </div> 
@@ -229,57 +229,65 @@
           </div>
         </div>
         <div class="row d-flex justify-content-center">
-          <img src="assets/img/runway.png" id="RunwayPicture"/>
-          <img src="assets/img/runway.png" id="RunwayPicture"/>
+          <div class="parent">
+            <img class="runway-picture" src="assets/img/runway.png" />
+            <img [ngStyle]="{'display':displayPlanes}" src="assets/img/red-line.jpg" id="takeoff-red-line" />
+            <img [ngStyle]="{'display':displayPlanes}" src="assets/img/airplane-icon.png" id="takeoff-plane"/>
+          </div>
+          <div class="parent">
+            <img class="runway-picture" src="assets/img/runway.png" />
+            <img [ngStyle]="{'display':displayPlanes}" src="assets/img/red-line.jpg" id="landing-red-line" />
+            <img [ngStyle]="{'display':displayPlanes}" src="assets/img/airplane-icon.png" id="landing-plane"/>
+          </div>
         </div>
       </div> 
     </div>
   </div>
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Query Runway</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row d-flex justify-content-center">
-          <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
-                <div class="row d-flex justify-content-center">
-                  <label for="airportInput">Enter Airport ID:</label>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title text-center my-auto">Query Runway</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center">
+            <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
+              <div class="row d-flex justify-content-center">
+                <label for="airportInput">Enter Airport ID:</label>
+              </div>
+              <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
+                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
+                <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+                  <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
+                  <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
+                  <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
                 </div>
-                <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
-                  <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
-                  <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
-                    <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
-                    <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
-                    <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
-                  </div>
-                </div>
+              </div>
               <div class="row d-flex justify-content-center">
                 <button type="submit" [disabled]="runwaysLoading" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >
                   <span *ngIf="runwaysLoading" class="spinner-border spinner-border-sm mr-1"></span>
                   Find Runways
                 </button>
               </div>
-          </form>
-        </div>
-        <div class="row d-flex justify-content-center">
+            </form>
+          </div>
+          <div class="row d-flex justify-content-center">
             <label>Select Takeoff Runway:</label>
-        </div>
-        <div class="row d-flex justify-content-center">
+          </div>
+          <div class="row d-flex justify-content-center">
             <div class="card border-1 mb-4" id="runway-button-group"></div> 
-        </div>
-        <div class="row d-flex justify-content-center">
-            <label for=RunwaySideButton1>Select Runway Starting Side: </label>
-        </div>
-        <div class="row d-flex justify-content-center">
+          </div>
+          <div class="row d-flex justify-content-center">
+              <label for=RunwaySideButton1>Select Runway Starting Side: </label>
+          </div>
+          <div class="row d-flex justify-content-center">
             <div class="blank-card mt-2">
-                <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
-                <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+              <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
+              <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
             </div>
+          </div>
         </div>
-      </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(false)">Close</button>
           <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(true)">Save</button>
@@ -292,7 +300,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-center">
-          <h4 class="modal-title text-center">Input Runway Conditions</h4>
+          <h1 class="modal-title text-center my-auto">Input Runway Conditions</h1>
         </div>
         <div class="modal-body">
           <div class="row d-flex justify-content-center">
@@ -360,6 +368,45 @@
           <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(true)">Save</button>
         </div>
       </div> 
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayProfileInfo}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content d-flex justify-content-center">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title my-auto">Profile Info</h1>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+          <table>
+            <tr>
+              <td class="shadow-lg p-1 text-center border-td">Name:</td>
+              <td class="shadow-lg p-1 border-td">{{currentProfile.name}}</td>
+            </tr>
+            <tr>
+              <td class="shadow-lg p-1 text-center border-td">Internal Tank:</td>
+              <td class="shadow-lg border-td">{{currentProfile.internalTank}}%</td>
+            </tr>
+            <tr>
+              <td class="shadow-lg p-1 text-center border-td">Drop Tanks:</td>
+              <td class="shadow-lg border-td">{{currentProfile.dropTank}}%</td>
+            </tr>
+            <tr>
+              <td class="shadow-lg p-1 text-center border-td">Tip Tanks:</td>
+              <td class="shadow-lg border-td">{{currentProfile.tipTank}}%</td>
+            </tr>
+            <tr>
+              <td class="shadow-lg p-1 text-center border-td">Attachments:</td>
+              <td class="shadow-lg p-1 text-center border-td">
+                <tr *ngFor="let attachment of currentProfile.attachments">{{attachmentToString(attachment)}}</tr>
+              </td>
+            </tr>
+          </table>
+        </div>  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeProfileModal()">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 

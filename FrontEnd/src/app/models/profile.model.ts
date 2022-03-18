@@ -12,7 +12,8 @@ export class Profile {
     public tipTank: number;
     public attachments: Attachment[]
 
-    constructor(username: string, name: string, internalTank: number, dropTank: number, tipTank:number, attachments: Attachment[]) {
+    constructor(username?: string, name?: string, internalTank?: number, dropTank?: number, tipTank?: number,
+         attachments?: Attachment[]) {
         this.username = username;
         this.name = name;
         this.internalTank = internalTank;

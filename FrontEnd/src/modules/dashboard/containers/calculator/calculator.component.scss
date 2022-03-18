@@ -142,3 +142,48 @@ li {
     width: 40%;
     margin-inline: 5%;
 }
+
+.parent {
+  position: relative;
+  top: 0;
+  left: 0;
+  margin-top: 1%;
+}
+.runway-picture {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+#takeoff-red-line {
+  position: absolute;
+  top: 47%; 
+  height: 4%;
+}
+
+#landing-red-line {
+  position: absolute;
+  top: 47%; 
+  right: 60%;
+  width: 40%;
+  height: 4%;
+}
+
+#takeoff-plane {
+  position: absolute;
+  bottom: 30%;
+  max-width: 15%;
+  height: auto;
+}
+
+#landing-plane {
+    position: absolute;
+    left: 58%;
+    bottom: 40%;
+    max-width: 15%;
+    height: auto;
+    transform: rotate(40deg);
+}
+
+.border-td {
+    border: black 2px solid;
+}

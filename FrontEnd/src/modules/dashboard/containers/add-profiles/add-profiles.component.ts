@@ -75,7 +75,62 @@ export class AddProfilesComponent implements OnInit {
             rangeTipTank.disabled = true;
         }
       })
-      
+
+      const imperialButton = document.getElementById('ImperialButton') as HTMLButtonElement;
+      const metricButton = document.getElementById('MetricButton') as HTMLButtonElement;
+
+      imperialButton.addEventListener('click', (e) => {
+
+        if(!imperialButton.className.match('btn-dark')) {
+            imperialButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
+            metricButton.className = metricButton.className.replace('btn-dark', 'btn-outline-dark');
+
+            const unitLabels = document.getElementsByClassName('unit-label');
+
+            for(let index = 0; index < unitLabels.length; index++) {
+              unitLabels[index].innerHTML = 'lbs';
+            }
+
+            const unusedList = document.getElementsByClassName('unused-attachment-block');
+
+            for(let index = 0; index < unusedList.length; index++) {
+              unusedList[index].innerHTML=this.toImperialString(this.Attachments[index]);
+            }
+            
+            const usedList = document.getElementsByClassName('used-attachment-block');
+
+            for(let index = 0; index < usedList.length; index++) {
+              usedList[index].innerHTML=this.toImperialString(this.AttachmentsUsed[index]);
+            }
+        }
+      });
+
+      metricButton.addEventListener('click', (e) => {
+
+        if(!metricButton.className.match('btn-dark')) {
+            metricButton.className = metricButton.className.replace('btn-outline-dark', 'btn-dark');
+            imperialButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
+
+            const unitLabels = document.getElementsByClassName('unit-label');
+
+            for(let index = 0; index < unitLabels.length; index++) {
+              unitLabels[index].innerHTML = 'kgs';
+            }
+
+            const unusedList = document.getElementsByClassName('unused-attachment-block');
+
+            for(let index = 0; index < unusedList.length; index++) {
+              unusedList[index].innerHTML=this.toMetricString(this.Attachments[index]);
+            }
+            
+            const usedList = document.getElementsByClassName('used-attachment-block');
+
+            for(let index = 0; index < usedList.length; index++) {
+              usedList[index].innerHTML=this.toMetricString(this.AttachmentsUsed[index]);
+            }
+            
+        }
+      });
     }
 
     onDrop(event: CdkDragDrop<string[]>) {
@@ -126,7 +181,14 @@ export class AddProfilesComponent implements OnInit {
     const mass = document.getElementById('AttachmentMass') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
-    this.Attachments.push(new Attachment(name.value, user, Number(mass.value)));
+    const imperialButton = document.getElementById('ImperialButton');
+
+    if(imperialButton.className.match('btn-dark')) {
+      this.Attachments.push(new Attachment(name.value, user, Number(mass.value)/2.20462));
+    }
+    else {
+      this.Attachments.push(new Attachment(name.value, user, Number(mass.value)));
+    }
 
     name.value = "";
     mass.value = "";
@@ -137,19 +199,25 @@ export class AddProfilesComponent implements OnInit {
     const mass = document.getElementById('PilotMass') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
+    const imperialButton = document.getElementById('ImperialButton');
 
-    this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).subscribe();
+    if(imperialButton.className.match('btn-dark')) {
+      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value)/2.20462)).subscribe();
+    }
+    else {
+      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).subscribe();
+    }
 
     name.value = "";
     mass.value = "";
   }
 
   toImperialString(attachment : Attachment) {
-    return attachment.name + " - Mass = " + attachment.mass + " lbs";
+    return attachment.name + " - Mass = " + Math.round(attachment.mass*2.20462*10)/10 + " lbs";
   }
 
   //TODO: Convert metric factor
   toMetricString(attachment: Attachment) {
-    return attachment.name + " - Mass = " + attachment.mass + " kgs";
+    return attachment.name + " - Mass = " + Math.round(attachment.mass*10)/10 + " kgs";
   }
 }

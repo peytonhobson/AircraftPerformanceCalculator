@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Attachment } from '@app/models/attachment';
 import { CalculatorInput } from '@app/models/calculator-input';
+import { CalculatorOutput } from '@app/models/calculator-output';
+import { Profile } from '@app/models/profile.model';
 import { RunwayConditions } from '@app/models/runway-conditions';
 import { AccountService } from '@app/services/account.service';
 import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
 import { positionElements } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import { Profiler } from 'inspector';
 import { timer } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, first, take, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'calculator',
@@ -38,11 +42,18 @@ export class CalculatorComponent implements OnInit {
     displayTakeoff = 'block';
     displayLanding = 'none';
     displaySpeeds = 'none';
+    displayPlanes = 'none';
+    displayProfileInfo = 'none';
 
     runwaysLoading = false;
     calculateLoading = false;
     notCalculated = true;
     pilot1NotSelected = true;
+
+    calculatorOutputImperial = new CalculatorOutput();
+    calculatorOutputMetric = new CalculatorOutput();
+
+    currentProfile = new Profile();
 
     ngOnInit() {
 
@@ -69,9 +80,9 @@ export class CalculatorComponent implements OnInit {
             airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
         });
 
-        this.restClassifier.get(`profiles/${localStorage.getItem('username')}/all`).subscribe(res => {
-            const aircraftProfileSelect = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
+        const aircraftProfileSelect = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
 
+        this.restClassifier.get(`profiles/${localStorage.getItem('username')}/all`).subscribe(res => {
             res.data.profiles.forEach((profile) => {
                 aircraftProfileSelect.add(new Option(profile.name, profile.name), undefined)
             });
@@ -144,63 +155,92 @@ export class CalculatorComponent implements OnInit {
         const metricButton = document.getElementById('MetricButton') as HTMLButtonElement;
 
         imperialButton.addEventListener('click', (e) => {
-            imperialButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
-            metricButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
 
-            document.getElementById('takeoff-speed-unit').innerHTML = 'kts';
-            document.getElementById('takeoff-distance-unit').innerHTML = 'ft';
-            document.getElementById('ground-run-unit').innerHTML = 'ft';
-            document.getElementById('accel-stop-unit').innerHTML = 'ft';
-            document.getElementById('speed-over-unit').innerHTML = 'kts';
-            document.getElementById('landing-distance-unit').innerHTML = 'ft';
-            document.getElementById('approach-speed-unit').innerHTML = 'kts';
-            document.getElementById('touch-down-unit').innerHTML = 'kts';
-            document.getElementById('vs1-unit').innerHTML = 'kts';
-            document.getElementById('vs0-gu-unit').innerHTML = 'kts';
-            document.getElementById('vs0-gd-unit').innerHTML = 'kts';
+            if(!imperialButton.className.match('btn-dark')) {
+                imperialButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
+                metricButton.className = metricButton.className.replace('btn-dark', 'btn-outline-dark');
 
-            var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
-            bigUnit1.style.paddingInlineEnd = "2.95%";
-            bigUnit1.style.paddingInlineStart = "2.95%";
+                document.getElementById('takeoff-speed-unit').innerHTML = 'kts';
+                document.getElementById('takeoff-distance-unit').innerHTML = 'ft';
+                document.getElementById('ground-run-unit').innerHTML = 'ft';
+                document.getElementById('accel-stop-unit').innerHTML = 'ft';
+                document.getElementById('speed-over-unit').innerHTML = 'kts';
+                document.getElementById('landing-distance-unit').innerHTML = 'ft';
+                document.getElementById('approach-speed-unit').innerHTML = 'kts';
+                document.getElementById('touch-down-unit').innerHTML = 'kts';
+                document.getElementById('vs1-unit').innerHTML = 'kts';
+                document.getElementById('vs0-gu-unit').innerHTML = 'kts';
+                document.getElementById('vs0-gd-unit').innerHTML = 'kts';
 
-            var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
-            bigUnit2.style.paddingInlineEnd = "2.95%";
-            bigUnit2.style.paddingInlineStart = "2.95%";
+                var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
+                bigUnit1.style.paddingInlineEnd = "2.95%";
+                bigUnit1.style.paddingInlineStart = "2.95%";
+
+                var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
+                bigUnit2.style.paddingInlineEnd = "2.95%";
+                bigUnit2.style.paddingInlineStart = "2.95%";
+
+                document.getElementById('takeoff-speed-output').innerHTML = this.calculatorOutputImperial.takeoffSpeed.toString();
+                document.getElementById('takeoff-distance-output').innerHTML =this.calculatorOutputImperial.takeoffDistance.toString();
+                document.getElementById('ground-distance-output').innerHTML = this.calculatorOutputImperial.groundRunDistance.toString();
+                document.getElementById('accel-distance-output').innerHTML = this.calculatorOutputImperial.accelStopDistance.toString();
+                document.getElementById('speed-over-obstacle-output').innerHTML = this.calculatorOutputImperial.speedOverObstacle.toString();
+                document.getElementById('approach-speed-output').innerHTML = this.calculatorOutputImperial.approachSpeed.toString();
+                document.getElementById('touch-down-speed-output').innerHTML = this.calculatorOutputImperial.touchDownSpeed.toString();
+                document.getElementById('landing-distance-output').innerHTML = this.calculatorOutputImperial.landingDistance.toString();
+                document.getElementById('vs1-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS1.toString();
+                document.getElementById('vs0-gu-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS0GU.toString();
+                document.getElementById('vs0-gd-output').innerHTML =this.calculatorOutputImperial.stallSpeedVS0GD.toString();
+            }
         })
 
         metricButton.addEventListener('click', (e) => {
-            metricButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
-            imperialButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
 
-            document.getElementById('takeoff-speed-unit').innerHTML = 'km/h';
-            document.getElementById('takeoff-distance-unit').innerHTML = 'm';
-            document.getElementById('ground-run-unit').innerHTML = 'm';
-            document.getElementById('accel-stop-unit').innerHTML = 'm';
-            document.getElementById('speed-over-unit').innerHTML = 'km/h';
-            document.getElementById('landing-distance-unit').innerHTML = 'm';
-            document.getElementById('approach-speed-unit').innerHTML = 'km/h';
-            document.getElementById('touch-down-unit').innerHTML = 'km/h';
-            document.getElementById('vs1-unit').innerHTML = 'km/h';
-            document.getElementById('vs0-gu-unit').innerHTML = 'km/h';
-            document.getElementById('vs0-gd-unit').innerHTML = 'km/h';
+            if(!metricButton.className.match('btn-dark')) {
+                metricButton.className = metricButton.className.replace('btn-outline-dark', 'btn-dark');
+                imperialButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
 
-            var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
-            bigUnit1.style.paddingInlineEnd = "1.45%";
-            bigUnit1.style.paddingInlineStart = "1.45%";
+                document.getElementById('takeoff-speed-unit').innerHTML = 'km/h';
+                document.getElementById('takeoff-distance-unit').innerHTML = 'm';
+                document.getElementById('ground-run-unit').innerHTML = 'm';
+                document.getElementById('accel-stop-unit').innerHTML = 'm';
+                document.getElementById('speed-over-unit').innerHTML = 'km/h';
+                document.getElementById('landing-distance-unit').innerHTML = 'm';
+                document.getElementById('approach-speed-unit').innerHTML = 'km/h';
+                document.getElementById('touch-down-unit').innerHTML = 'km/h';
+                document.getElementById('vs1-unit').innerHTML = 'km/h';
+                document.getElementById('vs0-gu-unit').innerHTML = 'km/h';
+                document.getElementById('vs0-gd-unit').innerHTML = 'km/h';
 
-            var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
-            bigUnit2.style.paddingInlineEnd = "1.45%";
-            bigUnit2.style.paddingInlineStart = "1.45%";
+                var bigUnit1 = document.getElementsByClassName('unit-block-big').item(0) as HTMLElement;
+                bigUnit1.style.paddingInlineEnd = "1.45%";
+                bigUnit1.style.paddingInlineStart = "1.45%";
 
-            var speedUnits = document.getElementsByClassName('speed-unit-block');
-            var curElement;
-            
-            for(var i = 0; i < speedUnits.length; i++) {
+                var bigUnit2 = document.getElementsByClassName('unit-block-big').item(1) as HTMLElement;
+                bigUnit2.style.paddingInlineEnd = "1.45%";
+                bigUnit2.style.paddingInlineStart = "1.45%";
 
-                curElement = speedUnits.item(i) as HTMLElement;
-                console.log(curElement);
-                curElement.style.paddingInlineEnd = '0%';
-                curElement.style.paddingInlineStart = '0%';
+                var speedUnits = document.getElementsByClassName('speed-unit-block');
+                var curElement;
+                
+                for(var i = 0; i < speedUnits.length; i++) {
+
+                    curElement = speedUnits.item(i) as HTMLElement;
+                    curElement.style.paddingInlineEnd = '0%';
+                    curElement.style.paddingInlineStart = '0%';
+                }
+
+                document.getElementById('takeoff-speed-output').innerHTML = this.calculatorOutputMetric.takeoffSpeed.toString();
+                document.getElementById('takeoff-distance-output').innerHTML =this.calculatorOutputMetric.takeoffDistance.toString();
+                document.getElementById('ground-distance-output').innerHTML = this.calculatorOutputMetric.groundRunDistance.toString();
+                document.getElementById('accel-distance-output').innerHTML = this.calculatorOutputMetric.accelStopDistance.toString();
+                document.getElementById('speed-over-obstacle-output').innerHTML = this.calculatorOutputMetric.speedOverObstacle.toString();
+                document.getElementById('approach-speed-output').innerHTML = this.calculatorOutputMetric.approachSpeed.toString();
+                document.getElementById('touch-down-speed-output').innerHTML = this.calculatorOutputMetric.touchDownSpeed.toString();
+                document.getElementById('landing-distance-output').innerHTML = this.calculatorOutputMetric.landingDistance.toString();
+                document.getElementById('vs1-output').innerHTML = this.calculatorOutputMetric.stallSpeedVS1.toString();
+                document.getElementById('vs0-gu-output').innerHTML = this.calculatorOutputMetric.stallSpeedVS0GU.toString();
+                document.getElementById('vs0-gd-output').innerHTML =this.calculatorOutputMetric.stallSpeedVS0GD.toString();
             }
 
         });
@@ -311,29 +351,78 @@ export class CalculatorComponent implements OnInit {
                         const calculatorInput = new CalculatorInput(mass, Number(missionTime.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
                         this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
          
-                        this.restClassifier.post(`calculate`, calculatorInput).subscribe(res => {
-                            console.log(res.data.calculatorOutput);
-                            const calculatorOutput = res.data.calculatorOutput
-                            document.getElementById('takeoff-speed-output').innerHTML = (calculatorOutput.takeoffSpeed*0.539957).toString()
-                            document.getElementById('takeoff-distance-output').innerHTML = (calculatorOutput.takeoffDistance*.3048).toString()
-                            document.getElementById('ground-distance-output').innerHTML = (calculatorOutput.groundRunDistance*.3048).toString()
-                            document.getElementById('accel-distance-output').innerHTML = (calculatorOutput.accelStopDistance*.3048).toString()
-                            document.getElementById('speed-over-obstacle-output').innerHTML = (calculatorOutput.speedOverObstacle*0.539957).toString()
-                            document.getElementById('approach-speed-output').innerHTML = (calculatorOutput.approachSpeed*0.539957).toString()
-                            document.getElementById('touch-down-speed-output').innerHTML = (calculatorOutput.touchDownSpeed*0.539957).toString()
-                            document.getElementById('landing-distance-output').innerHTML = (calculatorOutput.landingDistance*.3048).toString()
-                            document.getElementById('vs1-output').innerHTML = (calculatorOutput.stallSpeedVS1*0.539957).toString()
-                            document.getElementById('vs0-gu-output').innerHTML = (calculatorOutput.stallSpeedVS0GU*0.539957).toString()
-                            document.getElementById('vs0-gd-output').innerHTML = (calculatorOutput.stallSpeedVS0GD*0.539957).toString()
+                        this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
+                        .subscribe(
+                            res => {
+                           
+                            this.calculatorOutputMetric.takeoffSpeed = Math.round(res.data.calculatorOutput.takeoffSpeed*100)/100
+                            this.calculatorOutputMetric.takeoffDistance = Math.round(res.data.calculatorOutput.takeoffDistance*100)/100
+                            this.calculatorOutputMetric.groundRunDistance = Math.round(res.data.calculatorOutput.groundRunDistance*100)/100
+                            this.calculatorOutputMetric.accelStopDistance = Math.round(res.data.calculatorOutput.accelStopDistance*100)/100
+                            this.calculatorOutputMetric.speedOverObstacle = Math.round(res.data.calculatorOutput.speedOverObstacle*100)/100
+                            this.calculatorOutputMetric.approachSpeed = Math.round(res.data.calculatorOutput.approachSpeed*100)/100
+                            this.calculatorOutputMetric.touchDownSpeed = Math.round(res.data.calculatorOutput.touchDownSpeed*100)/100
+                            this.calculatorOutputMetric.landingDistance = Math.round(res.data.calculatorOutput.landingDistance*100)/100
+                            this.calculatorOutputMetric.stallSpeedVS1 = Math.round(res.data.calculatorOutput.stallSpeedVS1*100)/100
+                            this.calculatorOutputMetric.stallSpeedVS0GU = Math.round(res.data.calculatorOutput.stallSpeedVS0GU*100)/100
+                            this.calculatorOutputMetric.stallSpeedVS0GD = Math.round(res.data.calculatorOutput.stallSpeedVS0GD*100)/100
+
+                            this.calculatorOutputImperial.takeoffSpeed = Math.round(this.calculatorOutputMetric.takeoffSpeed*0.539957*100)/100;
+                            this.calculatorOutputImperial.takeoffDistance = Math.round(this.calculatorOutputMetric.takeoffDistance*3.28084*100)/100;
+                            this.calculatorOutputImperial.groundRunDistance = Math.round(this.calculatorOutputMetric.groundRunDistance*3.28084*100)/100;
+                            this.calculatorOutputImperial.accelStopDistance = Math.round(this.calculatorOutputMetric.accelStopDistance*3.28084*100)/100;
+                            this.calculatorOutputImperial.speedOverObstacle = Math.round(this.calculatorOutputMetric.speedOverObstacle*0.539957*100)/100;
+                            this.calculatorOutputImperial.approachSpeed = Math.round(this.calculatorOutputMetric.approachSpeed*0.539957*100)/100;
+                            this.calculatorOutputImperial.touchDownSpeed = Math.round(this.calculatorOutputMetric.touchDownSpeed*0.539957*100)/100;
+                            this.calculatorOutputImperial.landingDistance = Math.round(this.calculatorOutputMetric.landingDistance*3.28084*100)/100;
+                            this.calculatorOutputImperial.stallSpeedVS1 = Math.round(this.calculatorOutputMetric.stallSpeedVS1*0.539957*100)/100;
+                            this.calculatorOutputImperial.stallSpeedVS0GU = Math.round(this.calculatorOutputMetric.stallSpeedVS0GU*0.539957*100)/100;
+                            this.calculatorOutputImperial.stallSpeedVS0GD = Math.round(this.calculatorOutputMetric.stallSpeedVS0GD*0.539957*100)/100;
+
+                            document.getElementById('takeoff-speed-output').innerHTML = this.calculatorOutputImperial.takeoffSpeed.toString();
+                            document.getElementById('takeoff-distance-output').innerHTML =this.calculatorOutputImperial.takeoffDistance.toString();
+                            document.getElementById('ground-distance-output').innerHTML = this.calculatorOutputImperial.groundRunDistance.toString();
+                            document.getElementById('accel-distance-output').innerHTML = this.calculatorOutputImperial.accelStopDistance.toString();
+                            document.getElementById('speed-over-obstacle-output').innerHTML = this.calculatorOutputImperial.speedOverObstacle.toString();
+                            document.getElementById('approach-speed-output').innerHTML = this.calculatorOutputImperial.approachSpeed.toString();
+                            document.getElementById('touch-down-speed-output').innerHTML = this.calculatorOutputImperial.touchDownSpeed.toString();
+                            document.getElementById('landing-distance-output').innerHTML = this.calculatorOutputImperial.landingDistance.toString();
+                            document.getElementById('vs1-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS1.toString();
+                            document.getElementById('vs0-gu-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS0GU.toString();
+                            document.getElementById('vs0-gd-output').innerHTML =this.calculatorOutputImperial.stallSpeedVS0GD.toString();
 
                             this.calculateLoading = false;
                             this.notCalculated = false;
+
+                            const takeoffLineDistance = 100*(this.calculatorOutputMetric.takeoffDistance/this.runwayConditions.runwayLength);
+
+                            const takeoffLine = document.getElementById('takeoff-red-line') as HTMLImageElement;
+                            takeoffLine.style.width = takeoffLineDistance.toString() + "%";
+                            takeoffLine.style.right = (100-takeoffLineDistance).toString() + "%";
+
+                            const takeoffPlane = document.getElementById('takeoff-plane') as HTMLImageElement;
+                            takeoffPlane.style.right = (100-takeoffLineDistance-14).toString() + "%";
+
+                            const landingLineDistance = 100*(this.calculatorOutputMetric.landingDistance/this.runwayConditions.runwayLength);
+
+                            console.log(this.calculatorOutputMetric.landingDistance);
+                            console.log(this.runwayConditions.runwayLength);
+
+                            const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
+                            landingLine.style.width = landingLineDistance.toString() + "%";
+                            landingLine.style.left = (100-landingLineDistance).toString() + "%";
+
+                            const landingPlane = document.getElementById('landing-plane') as HTMLImageElement;
+                            landingPlane.style.left = (100-landingLineDistance-14).toString() + "%";
+
+                            this.displayPlanes = 'block';
                         },
                         error => {
                             this.alertService.error("Conditions could not be calculated.")
                             this.calculateLoading = false;
                             return;
-                        });
+                        })
+                        
                     });
                 }
                 else {
@@ -341,22 +430,67 @@ export class CalculatorComponent implements OnInit {
                     this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
            
                     this.restClassifier.post(`calculate`, calculatorInput).subscribe(res => { 
-                        console.log(res.data.calculatorOutput);
-                        const calculatorOutput = res.data.calculatorOutput
-                        document.getElementById('takeoff-speed-output').innerHTML = (calculatorOutput.takeoffSpeed*0.539957).toString()
-                            document.getElementById('takeoff-distance-output').innerHTML = (calculatorOutput.takeoffDistance*.3048).toString()
-                            document.getElementById('ground-distance-output').innerHTML = (calculatorOutput.groundRunDistance*.3048).toString()
-                            document.getElementById('accel-distance-output').innerHTML = (calculatorOutput.accelStopDistance*.3048).toString()
-                            document.getElementById('speed-over-obstacle-output').innerHTML = (calculatorOutput.speedOverObstacle*0.539957).toString()
-                            document.getElementById('approach-speed-output').innerHTML = (calculatorOutput.approachSpeed*0.539957).toString()
-                            document.getElementById('touch-down-speed-output').innerHTML = (calculatorOutput.touchDownSpeed*0.539957).toString()
-                            document.getElementById('landing-distance-output').innerHTML = (calculatorOutput.landingDistance*.3048).toString()
-                            document.getElementById('vs1-output').innerHTML = (calculatorOutput.stallSpeedVS1*0.539957).toString()
-                            document.getElementById('vs0-gu-output').innerHTML = (calculatorOutput.stallSpeedVS0GU*0.539957).toString()
-                            document.getElementById('vs0-gd-output').innerHTML = (Math.round(calculatorOutput.stallSpeedVS0GD*0.539957*100)/100).toString()
+
+                        this.calculatorOutputMetric.takeoffSpeed = Math.round(res.data.calculatorOutput.takeoffSpeed*100)/100
+                        this.calculatorOutputMetric.takeoffDistance = Math.round(res.data.calculatorOutput.takeoffDistance*100)/100
+                        this.calculatorOutputMetric.groundRunDistance = Math.round(res.data.calculatorOutput.groundRunDistance*100)/100
+                        this.calculatorOutputMetric.accelStopDistance = Math.round(res.data.calculatorOutput.accelStopDistance*100)/100
+                        this.calculatorOutputMetric.speedOverObstacle = Math.round(res.data.calculatorOutput.speedOverObstacle*100)/100
+                        this.calculatorOutputMetric.approachSpeed = Math.round(res.data.calculatorOutput.approachSpeed*100)/100
+                        this.calculatorOutputMetric.touchDownSpeed = Math.round(res.data.calculatorOutput.touchDownSpeed*100)/100
+                        this.calculatorOutputMetric.landingDistance = Math.round(res.data.calculatorOutput.landingDistance*100)/100
+                        this.calculatorOutputMetric.stallSpeedVS1 = Math.round(res.data.calculatorOutput.stallSpeedVS1*100)/100
+                        this.calculatorOutputMetric.stallSpeedVS0GU = Math.round(res.data.calculatorOutput.stallSpeedVS0GU*100)/100
+                        this.calculatorOutputMetric.stallSpeedVS0GD = Math.round(res.data.calculatorOutput.stallSpeedVS0GD*100)/100
+
+                        this.calculatorOutputImperial.takeoffSpeed = Math.round(this.calculatorOutputMetric.takeoffSpeed*0.539957*100)/100;
+                        this.calculatorOutputImperial.takeoffDistance = Math.round(this.calculatorOutputMetric.takeoffDistance*3.28084*100)/100;
+                        this.calculatorOutputImperial.groundRunDistance = Math.round(this.calculatorOutputMetric.groundRunDistance*3.28084*100)/100;
+                        this.calculatorOutputImperial.accelStopDistance = Math.round(this.calculatorOutputMetric.accelStopDistance*3.28084*100)/100;
+                        this.calculatorOutputImperial.speedOverObstacle = Math.round(this.calculatorOutputMetric.speedOverObstacle*0.539957*100)/100;
+                        this.calculatorOutputImperial.approachSpeed = Math.round(this.calculatorOutputMetric.approachSpeed*0.539957*100)/100;
+                        this.calculatorOutputImperial.touchDownSpeed = Math.round(this.calculatorOutputMetric.touchDownSpeed*0.539957*100)/100;
+                        this.calculatorOutputImperial.landingDistance = Math.round(this.calculatorOutputMetric.landingDistance*3.28084*100)/100;
+                        this.calculatorOutputImperial.stallSpeedVS1 = Math.round(this.calculatorOutputMetric.stallSpeedVS1*0.539957*100)/100;
+                        this.calculatorOutputImperial.stallSpeedVS0GU = Math.round(this.calculatorOutputMetric.stallSpeedVS0GU*0.539957*100)/100;
+                        this.calculatorOutputImperial.stallSpeedVS0GD = Math.round(this.calculatorOutputMetric.stallSpeedVS0GD*0.539957*100)/100;
+
+                        document.getElementById('takeoff-speed-output').innerHTML = this.calculatorOutputImperial.takeoffSpeed.toString();
+                        document.getElementById('takeoff-distance-output').innerHTML =this.calculatorOutputImperial.takeoffDistance.toString();
+                        document.getElementById('ground-distance-output').innerHTML = this.calculatorOutputImperial.groundRunDistance.toString();
+                        document.getElementById('accel-distance-output').innerHTML = this.calculatorOutputImperial.accelStopDistance.toString();
+                        document.getElementById('speed-over-obstacle-output').innerHTML = this.calculatorOutputImperial.speedOverObstacle.toString();
+                        document.getElementById('approach-speed-output').innerHTML = this.calculatorOutputImperial.approachSpeed.toString();
+                        document.getElementById('touch-down-speed-output').innerHTML = this.calculatorOutputImperial.touchDownSpeed.toString();
+                        document.getElementById('landing-distance-output').innerHTML = this.calculatorOutputImperial.landingDistance.toString();
+                        document.getElementById('vs1-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS1.toString();
+                        document.getElementById('vs0-gu-output').innerHTML = this.calculatorOutputImperial.stallSpeedVS0GU.toString();
+                        document.getElementById('vs0-gd-output').innerHTML =this.calculatorOutputImperial.stallSpeedVS0GD.toString();
 
                         this.calculateLoading = false;
                         this.notCalculated = false;
+
+                        const takeoffLineDistance = 100*(this.calculatorOutputMetric.takeoffDistance/this.runwayConditions.runwayLength);
+
+                        const takeoffLine = document.getElementById('takeoff-red-line') as HTMLImageElement;
+
+                        takeoffLine.style.width = takeoffLineDistance.toString() + "%";
+                        takeoffLine.style.right = (100-takeoffLineDistance).toString() + "%";
+
+                        const takeoffPlane = document.getElementById('takeoff-plane') as HTMLImageElement;
+                        takeoffPlane.style.right = (100-takeoffLineDistance-14).toString() + "%";
+
+                        const landingLineDistance = 100*(this.calculatorOutputMetric.landingDistance/this.runwayConditions.runwayLength);
+    
+                        const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
+
+                        landingLine.style.width = landingLineDistance.toString() + "%";
+                        landingLine.style.left = (100-landingLineDistance).toString() + "%";
+
+                        const landingPlane = document.getElementById('landing-plane') as HTMLImageElement;
+                        landingPlane.style.left = (100-landingLineDistance-14).toString() + "%";
+
+                        this.displayPlanes = 'block';
                     },
                     error => {
                         this.alertService.error("Conditions could not be calculated.")
@@ -418,6 +552,10 @@ export class CalculatorComponent implements OnInit {
             const manualButton = document.getElementById('ManualButton') as HTMLButtonElement;
             manualButton.innerHTML = "Manual &#x2713;"
             manualButton.className = manualButton.className.replace('btn-dark', 'btn-success')
+
+            const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
+            automaticButton.innerHTML = "Automatic"
+            automaticButton.className = automaticButton.className.replace('btn-success', 'btn-dark')
         }
     }
 
@@ -442,28 +580,31 @@ export class CalculatorComponent implements OnInit {
         }
 
         const runwayReplace = runwayNumber.innerHTML.replace("/", "_")
-        this.restClassifier
-            .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
-            .subscribe(res => {
-                this.runwayConditions = res.data.runwayCondition
+        this.restClassifier.get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
+        .subscribe(res => {
+            this.runwayConditions = res.data.runwayCondition
 
-                if(this.runwayConditions.runwayType.toUpperCase() === "CONC" || this.runwayConditions.runwayType.toUpperCase() === "ASPH") {
-                    this.runwayConditions.runwayType = "Concrete"
-                }
-                else if(this.runwayConditions.runwayType.toUpperCase() === "BRICK") {
-                    this.runwayConditions.runwayType = "Brick"
-                }
-                else if(this.runwayConditions.runwayType.toUpperCase() === "WOOD") {
-                    this.runwayConditions.runwayType = "Wood"
-                }
-                else {
-                    this.runwayConditions.runwayType = "Grass"
-                }
+            if(this.runwayConditions.runwayType.toUpperCase() === "CONC" || this.runwayConditions.runwayType.toUpperCase() === "ASPH") {
+                this.runwayConditions.runwayType = "Concrete"
+            }
+            else if(this.runwayConditions.runwayType.toUpperCase() === "BRICK") {
+                this.runwayConditions.runwayType = "Brick"
+            }
+            else if(this.runwayConditions.runwayType.toUpperCase() === "WOOD") {
+                this.runwayConditions.runwayType = "Wood"
+            }
+            else {
+                this.runwayConditions.runwayType = "Grass"
+            }
 
-                const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
-                automaticButton.innerHTML = "Automatic &#x2713;"
-                automaticButton.className = automaticButton.className.replace('btn-dark', 'btn-success')
-            });
+            const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
+            automaticButton.innerHTML = "Automatic &#x2713;"
+            automaticButton.className = automaticButton.className.replace('btn-dark', 'btn-success')
+
+            const manualButton = document.getElementById('ManualButton') as HTMLButtonElement;
+            manualButton.innerHTML = "Manual"
+            manualButton.className = manualButton.className.replace('btn-success', 'btn-dark')
+        });
     
     }
 
@@ -597,6 +738,28 @@ export class CalculatorComponent implements OnInit {
         sideButton1.innerHTML=sides[0];
         sideButton2.innerHTML=sides[1];
         sideButton1.className = sideButton1.className.replace('btn-outline-dark', 'btn-dark');
+    }
+
+    getProfileInfo() {
+
+        const aircraftProfileName = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
+        const username = localStorage.getItem('username');
+
+        this.restClassifier.get(`profiles/${username}/${aircraftProfileName.value}`).pipe(first())
+        .subscribe( res => {
+            this.currentProfile = res.data.profile;
+            this.displayProfileInfo = 'block';
+            document.getElementById('main-container').style.opacity = '40%';
+        })
+    }
+
+    attachmentToString(attachment: Attachment) {
+        return attachment.name + ' - Weight: ' + attachment.mass + ' kg'
+    }
+
+    closeProfileModal() {
+        this.displayProfileInfo = 'none';
+        document.getElementById('main-container').style.opacity = '100%';
     }
 
     logout() {
