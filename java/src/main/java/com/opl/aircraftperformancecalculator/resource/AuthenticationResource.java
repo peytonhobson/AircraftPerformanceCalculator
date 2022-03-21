@@ -53,7 +53,7 @@ public class AuthenticationResource {
             );
         }
 
-        User newUser = new User(user.getUsername(), user.getPassword());
+        User newUser = new User(user.getUsername(), user.getPassword(), user.getRole());
         userService.saveUser(newUser);
 
         // TODO: This is only temporary. Set actual API values.

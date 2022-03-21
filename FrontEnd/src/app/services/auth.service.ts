@@ -45,7 +45,7 @@ export class AuthenticationService {
   authenticate(authenicationCode: AuthenticationCode, user : User): Observable<AuthenticationResponse>{
     
     return this.http.post<AuthenticationResponse>(`${environment.apiUrl}register/authentication`, 
-    JSON.stringify({"code":authenicationCode.code, "username": user.username, "password":user.password}), httpOptions)
+    JSON.stringify({"code":authenicationCode.code, "username": user.username, "password":user.password, "role":user.role}), httpOptions)
             .pipe(map(decision => {
 
                 if(decision.data.invalidAuthenticationCode) {

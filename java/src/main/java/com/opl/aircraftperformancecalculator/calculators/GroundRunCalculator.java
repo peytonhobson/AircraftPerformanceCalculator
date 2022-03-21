@@ -14,8 +14,6 @@ public class GroundRunCalculator {
 
     public static Double getGroundRun(double psi, double temp, double mass, double wind, double slope, double rollingFriction) throws FileNotFoundException {
 
-        log.info("groundrun");
-
         // Names of the csv file names that contain the coefficients
         String[] files = {"temp", "mass", "wind", "slopes", "friction"};
 
@@ -95,7 +93,6 @@ public class GroundRunCalculator {
             tempOutput = actualGraph;
         }
 
-        log.info("massList");
 
         // massLists is the entire file for mass
         List<List<Double>> massLists = polyList.get(1);
@@ -141,7 +138,6 @@ public class GroundRunCalculator {
                 + windLists.get(graph).get(2) * wind + windLists.get(graph).get(3) + yDifference;
 
 
-        log.info("slopeList");
 
         List<List<Double>> slopeLists = polyList.get(4);
         min = Integer.MAX_VALUE;
@@ -160,7 +156,6 @@ public class GroundRunCalculator {
         double slopeOutput = slopeLists.get(graph).get(0) * (Math.pow(slope, 3)) + slopeLists.get(graph).get(1) * (Math.pow(slope, 2))
                 + slopeLists.get(graph).get(2) * slope + slopeLists.get(graph).get(3) + yDifference;
 
-        log.info("fricList");
 
         List<List<Double>> fricLists = polyList.get(4);
         min = Integer.MAX_VALUE;

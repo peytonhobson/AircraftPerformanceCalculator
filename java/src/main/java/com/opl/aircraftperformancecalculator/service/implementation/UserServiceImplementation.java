@@ -24,7 +24,6 @@ import java.util.List;
 public class UserServiceImplementation implements UserService, UserDetailsService {
 
     private final UserRepo userRepo;
-    private final AuthenticationRepo authenticationRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -36,7 +35,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         }
 
         Collection<SimpleGrantedAuthority> authorities  = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 

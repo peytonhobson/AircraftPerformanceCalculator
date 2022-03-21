@@ -14,7 +14,6 @@ public class AccelStopCalculator {
 
     public static Double getAccelStop(double mass, String runwayType, double friction) throws FileNotFoundException {
 
-        log.info("accel-stop");
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 

@@ -20,7 +20,12 @@ export class SideNavComponent implements OnInit, OnDestroy {
 
     constructor(public navigationService: NavigationService, public userService: UserService) {}
 
-    ngOnInit() {}
+    user: string;
+
+    ngOnInit() {
+
+        this.user = localStorage.getItem('username');
+    }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();

@@ -2,10 +2,13 @@ package com.opl.aircraftperformancecalculator;
 
 import com.opl.aircraftperformancecalculator.models.*;
 import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
+import com.opl.aircraftperformancecalculator.security.SecurityConfig;
 import com.opl.aircraftperformancecalculator.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,7 +59,8 @@ public class AircraftPerformanceCalculatorApplication {
 			profile.setDropTank(50);
 			profile.setTipTank(50);
 			profileService.save(profile);
-			userService.saveUser(new User("peytonhobson", "password"));
+			userService.saveUser(new User("peytonhobson", "password", "ROLE_USER"));
+			userService.saveUser(new User("admin", "password", "ROLE_ADMIN"));
 
 			pilotService.save(new Pilot("peytonhobson_peyton", "peytonhobson", "peyton", 100));
 			pilotService.save(new Pilot("peytonhobson_asdfdf", "peytonhobson", "asdfdf", 100));

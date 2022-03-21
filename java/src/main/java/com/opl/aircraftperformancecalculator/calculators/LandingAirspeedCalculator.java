@@ -14,8 +14,6 @@ public class LandingAirspeedCalculator {
 
     public static List<Double> getLandingAirspeed(double mass) throws FileNotFoundException {
 
-        log.info("landingspeed");
-
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 

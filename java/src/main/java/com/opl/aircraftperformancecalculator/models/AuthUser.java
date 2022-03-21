@@ -12,4 +12,5 @@ public class AuthUser {
     String code;
     String username;
     String password;
+    String role;
 }

@@ -8,6 +8,7 @@ import { first, map } from "rxjs/operators";
 import { Profile } from "@app/models/profile.model";
 import { NgbProgressbar } from "@ng-bootstrap/ng-bootstrap";
 import { Pilot } from "@app/models/pilot";
+import { AlertService } from "@app/services/alert.service";
 
 @Component({
     selector: 'add-profiles',
@@ -16,7 +17,8 @@ import { Pilot } from "@app/models/pilot";
 })
 export class AddProfilesComponent implements OnInit {
     
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,
+    private alertService: AlertService) {}
 
   Attachments = [];
   AttachmentsUsed = [];
@@ -172,7 +174,12 @@ export class AddProfilesComponent implements OnInit {
     const profile = new Profile(user,profileName.value, Number(internalTankVal.value),
       Number(dropTankVal.value), Number(tipTankVal.value), this.AttachmentsUsed);
 
-    this.apiService.post('profiles/save',profile).subscribe();
+    this.apiService.post('profiles/save',profile).pipe(first())
+    .subscribe(
+      res => {
+        this.alertService.success("Aircraft profile saved!")
+      }
+    );
   }
 
   createAttachment() {
@@ -202,10 +209,20 @@ export class AddProfilesComponent implements OnInit {
     const imperialButton = document.getElementById('ImperialButton');
 
     if(imperialButton.className.match('btn-dark')) {
-      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value)/2.20462)).subscribe();
+      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value)/2.20462)).pipe(first())
+      .subscribe(
+        res => {
+          this.alertService.success("Pilot profile saved!")
+        }
+      );
     }
     else {
-      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).subscribe();
+      this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).pipe(first())
+      .subscribe(
+        res => {
+          this.alertService.success("Pilot profile saved!")
+        }
+      );
     }
 
     name.value = "";

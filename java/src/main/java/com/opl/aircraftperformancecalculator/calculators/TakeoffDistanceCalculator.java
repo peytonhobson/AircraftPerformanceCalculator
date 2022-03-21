@@ -14,8 +14,6 @@ public class TakeoffDistanceCalculator {
 
     public static Double getTakeoffDistance(double mass, String runwayType) throws FileNotFoundException {
 
-        log.info("takleoffdist");
-
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 

@@ -1,11 +1,13 @@
-<li class="nav-item dropdown dropdown-user no-caret" *ngIf="userService.user$ | async as user" ngbDropdown placement="bottom-right" display="dynamic">
+<li class="nav-item dropdown dropdown-user no-caret" ngbDropdown placement="bottom-right" display="dynamic">
     <a class="nav-link dropdown-toggle" id="userDropdown" ngbDropdownToggle data-cy="userMenu" role="button" aria-haspopup="true" aria-expanded="false"><fa-icon [icon]='["fas", "user"]'></fa-icon></a>
     <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownUser">
         <h6 class="dropdown-header">
-            <div class="dropdown-user-details"><h3 class="dropdown-user-details-name">{{ user.username }}</h3></div>
+            <div class="dropdown-user-details"><h3 class="dropdown-user-details-name">{{ user }}</h3></div>
         </h6>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" routerLink="/dashboard">Settings</a><a class="dropdown-item" routerLink="/dashboard">Activity Log</a>
+        <a class="dropdown-item" [ngStyle]="{'display':displayAdmin}" routerLink="/dashboard/admin">Admin</a>
+        <a class="dropdown-item" routerLink="/dashboard">Settings</a>
+        <a class="dropdown-item" routerLink="/dashboard">Activity Log</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (click)="logout()" routerLink="/auth/login">Logout</a>
     </div>

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.key.name",
+      "type": "java.lang.String",
+      "description": "Description for spring.key.name."
+    }
+  ] }

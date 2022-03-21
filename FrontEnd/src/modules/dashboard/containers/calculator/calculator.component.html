@@ -1,5 +1,5 @@
-<layout-dashboard><sb-dashboard-head title="Calculator" [hideBreadcrumbs]="true"></sb-dashboard-head>
-
+<layout-dashboard id="Layout" class="hide-print">
+  <sb-dashboard-head title="Calculator" [hideBreadcrumbs]="true"></sb-dashboard-head>
   <div class="container" id="main-container">
     <div class="row">
       <div class="col-lg-5 text-center">
@@ -56,8 +56,15 @@
       <div class="col-lg-6 text-center" id="RightColumn">
         <div class="row d-flex justify-content-center">
           <div class="card performance-card">
-            <div class="card-header text-center">
-                Performance Parameters
+            <div class="card-header p-2 text-center">
+              <div class="row d-flex justify-content-center">
+                <div class="col-lg-5 my-auto text-center performance-header-col">
+                  <span>Performance Parameters</span>
+                </div>
+                <div class="text-right col-lg-1 print-button-column">
+                  <button class="btn btn-sm btn-dark" id="PrintButton" (click)="printCard()">Print</button>
+                </div>
+                </div>
             </div>
             <ul class="list-group list-group-flush align-center">
               <li class="list-group-item">
@@ -409,5 +416,163 @@
       </div>
     </div>
   </div>
-
 </layout-dashboard>
+
+<div id="PrintCard" #PrintCard [ngStyle]="{'display':'none'}" class="show-print">
+  <!-- Takeoff output list -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Takeoff Speed</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="takeoff-speed-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark speed-unit-block text-center">
+          <h4 class="output-label" id="takeoff-speed-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Takeoff Distance</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="takeoff-distance-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="takeoff-distance-print-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Ground-Run Distance</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="ground-distance-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="ground-run-print-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Accel-Stop Distance</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="accel-distance-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="accel-stop-print-unit">ft</h4>
+        </div>
+      </div> 
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Speed Over Obstacle</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="speed-over-obstacle-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="speed-over-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+
+  <!-- Landing Output List -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Landing Distance</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="landing-distance-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="landing-distance-print-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Approach Speed</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="approach-speed-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="approach-speed-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Touch-Down Speed</h2>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="touch-down-speed-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="touch-down-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+
+  <!-- Stall speed output list -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
+        </div>
+        <div class="shadow-lg output-block bg-white p-2">
+          <h3 id="vs1-print" >&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="vs1-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
+        </div>
+        <div class="shadow-lg output-block bg-white p-4">
+          <h3 id="vs0-gu-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+          <h4 class="output-label" id="vs0-gu-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
+        </div>
+        <div class="shadow-lg output-block bg-white p-4">
+          <h3 id="vs0-gd-print">&nbsp;</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+          <h4 class="output-label" id="vs0-gd-print-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</div>

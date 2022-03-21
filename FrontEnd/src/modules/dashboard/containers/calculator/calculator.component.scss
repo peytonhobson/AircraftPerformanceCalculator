@@ -187,3 +187,27 @@ li {
 .border-td {
     border: black 2px solid;
 }
+
+
+@media print {
+    .hide-print {
+      display: none !important;
+    }
+
+    .show-print {
+        display: block !important
+    }
+}
+
+.print-button-column {
+    margin-left: 15%;
+}
+
+.print-button-column, #PrintButton {
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+
+.performance-header-col {
+    margin-left: 25%;
+}

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { User } from '@app/models/user';
 import { AccountService } from '@app/services/account.service';
+import { ApiService } from '@app/services/api.service';
 import { UserService } from '@modules/auth/services';
 
 @Component({
@@ -9,8 +11,21 @@ import { UserService } from '@modules/auth/services';
     styleUrls: ['top-nav-user.component.scss'],
 })
 export class TopNavUserComponent implements OnInit {
-    constructor(public userService: UserService, private accountService: AccountService) {}
-    ngOnInit() {}
+    constructor(private accountService: AccountService, private apiService: ApiService, private userService: UserService) {}
+
+    displayAdmin = 'none';
+    user: string;
+
+    ngOnInit() {
+        this.apiService.get(`users/${localStorage.getItem('username')}`).subscribe(res => {
+ 
+            if(res.data.user.role === "ROLE_ADMIN") {
+                this.displayAdmin = 'block';
+            }
+        });
+
+        this.user = localStorage.getItem('username')
+    }
 
     logout() {
         this.accountService.logout();

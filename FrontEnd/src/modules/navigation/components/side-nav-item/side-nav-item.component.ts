@@ -15,5 +15,7 @@ export class SideNavItemComponent implements OnInit {
     routeData!: SBRouteData;
 
     constructor() {}
-    ngOnInit() {}
+    ngOnInit() {
+
+    }
 }

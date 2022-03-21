@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
-        var user = new User(this.form.get('username').value, this.form.get('password').value);
+        var user = new User(this.form.get('username').value, this.form.get('password').value, "ROLE_USER");
         var authenticationCode = new AuthenticationCode(this.form.get('authenticationCode').value);
 
         this.loading = true;

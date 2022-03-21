@@ -14,8 +14,6 @@ public class LandingDistanceCalculator {
 
     public static Double getLandingDistance(double mass, double friction) throws FileNotFoundException {
 
-        log.info("landingdist");
-
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 

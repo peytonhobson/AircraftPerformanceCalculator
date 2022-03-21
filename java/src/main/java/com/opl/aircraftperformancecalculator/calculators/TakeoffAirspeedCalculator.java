@@ -14,8 +14,6 @@ public class TakeoffAirspeedCalculator {
 
     public static List<Double> getTakeoffAirspeed(double mass) throws FileNotFoundException {
 
-        log.info("takeoffSpeed");
-
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
