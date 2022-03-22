@@ -30,7 +30,6 @@ export class AccountService {
                 this.authenticationService.accessToken = token.access_token;
                 localStorage.setItem('token', this.authenticationService.accessToken)
                 localStorage.setItem('username', username)
-                console.log(localStorage.getItem('username'))
                 return token;
             }));
     }

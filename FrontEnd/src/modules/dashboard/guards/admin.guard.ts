@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { JwtDecodeOptions } from 'jwt-decode';
+import { User } from '@app/models/user';
 
 
-import { AccountService } from '../services/account.service';
-import { ApiService } from '../services/api.service';
-import { AuthenticationService } from '../services/auth.service';
+import { AccountService } from '@services/account.service';
+import { ApiService } from '@services/api.service';
+import { AuthenticationService } from '@services/auth.service';
 import jwtDecode from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
     constructor(
         private router: Router,
         private accountService: AccountService,
@@ -19,16 +19,14 @@ export class AuthGuard implements CanActivate {
         private apiService: ApiService
     ) {}
 
-    // TODO: Maybe do verify request where function doesnt do anything but automatically checks token,
-    // or check with database on part of token that verifies password
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         const decode = jwtDecode(localStorage.getItem('token'))
-        if (decode['roles'][0] === "ROLE_USER" || decode['roles'][0] === "ROLE_ADMIN") {
+        if (decode['roles'][0] === "ROLE_ADMIN") {
             return true;
         }
 
-        this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+        this.router.navigate(['/dashboard'], { queryParams: { returnUrl: state.url } });
         return false;
     }
 }

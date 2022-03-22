@@ -17,11 +17,14 @@ export class TopNavUserComponent implements OnInit {
     user: string;
 
     ngOnInit() {
-        this.apiService.get(`users/${localStorage.getItem('username')}`).subscribe(res => {
- 
+        this.apiService.get(`users/${localStorage.getItem('username')}`).subscribe(
+            res => {
             if(res.data.user.role === "ROLE_ADMIN") {
                 this.displayAdmin = 'block';
             }
+        },
+        error => {
+            console.log("User is not Admin")
         });
 
         this.user = localStorage.getItem('username')

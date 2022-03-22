@@ -10,6 +10,7 @@ import * as dashboardContainers from './containers';
 
 /* Guards */
 import { AuthGuard } from '@app/helpers/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 /* Routes */
 export const ROUTES: Routes = [
@@ -38,6 +39,11 @@ export const ROUTES: Routes = [
         path: 'airports',
         canActivate: [AuthGuard],
         component: dashboardContainers.QueryAirportComponent,
+    },
+    {
+        path: 'admin',
+        canActivate: [AdminGuard],
+        component: dashboardContainers.AdminComponent,
     },
  
 ];

@@ -1,3 +1,4 @@
+import { ActivityLog } from "@modules/dashboard/models/activity-log";
 import { Attachment } from "./attachment";
 import { CalculatorOutput } from "./calculator-output";
 import { Pilot } from "./pilot";
@@ -14,7 +15,7 @@ export interface CustomResponse {
     developerMessage: string;
     data: {profiles?: Profile[], profile?: Profile, runwayCondition? : RunwayConditions, airportRunways? : string[], 
         runwayError?: string, attachments?: Attachment[], pilots: Pilot[], pilot: Pilot, calculatorOutput: CalculatorOutput,
-    user: User};
+    user: User, activityLogs: ActivityLog[]};
 }
 
 export interface CalculatorResponse {
