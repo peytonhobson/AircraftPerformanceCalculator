@@ -23,3 +23,21 @@ td,th {
     table-layout: fixed;
     width:18%;
 }
+
+.modal {
+    position: absolute;
+    bottom: 0;
+    left: 300px;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+    max-width: 80% !important;
+}
+
+.modal-dialog {
+    max-width: 80% !important;
+}
+
+.card-header, .modal-header {
+    color: white;
+}
