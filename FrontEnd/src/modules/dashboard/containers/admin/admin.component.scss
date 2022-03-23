@@ -1,2 +1,25 @@
 @import 'styles/variables.scss';
 
+.activity-log-button {
+    width: 30%;
+}
+
+.shadow-md {
+    width: 100%;
+    min-height: 300px;
+    margin-top: 3%;
+}
+
+table{
+    overflow-y:scroll;
+    display:block;
+    width:100%;
+    table-layout: fixed;
+}
+
+td,th {
+    border: black 1px solid;
+    text-align: center;
+    table-layout: fixed;
+    width:18%;
+}

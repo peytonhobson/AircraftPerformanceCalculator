@@ -1,5 +1,43 @@
 <layout-dashboard><sb-dashboard-head title="Admin" [hideBreadcrumbs]="true">
 </sb-dashboard-head>
 
+<div class="row" id="firstrow">
+    <div class="col-lg-5">
+        <div class="row d-flex justify-content-center">
+            <button class="btn btn-dark activity-log-button" id="AllButton">All</button>
+            <button class="btn btn-secondary activity-log-button" id="UsernameButton" >By Username</button>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <input class="mt-3" type="text" id="UsernameInput">
+        </div>
+        <div class="row d-flex justify-content-center">
+            <button class="btn btn-dark mt-3 activity-log-button" id="SubmitButton">Submit</button>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="shadow-md border" id="activity-log-output"></div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8" id="pdfData">
+    <table class="table table-bordered">
+        <tr class="table-primary">
+            <th>Id</th>
+            <th>Username</th>
+            <th>Time</th>
+            <th>Action</th>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        <tr *ngFor="let log of LOG">
+            <th>{{log.id}}</th>
+            <td>{{log.username}}</td>
+            <td>{{log.time}}</td>
+            <td>{{log.action}}</td>
+            <td>{{log.input}}</td>
+            <td>{{log.output}}</td>
+        </tr>
+    </table>
+</div>
 
 </layout-dashboard>
