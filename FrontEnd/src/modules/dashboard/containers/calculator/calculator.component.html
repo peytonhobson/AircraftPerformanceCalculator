@@ -1,8 +1,8 @@
 <layout-dashboard id="Layout" class="hide-print">
   <sb-dashboard-head title="Calculator" [hideBreadcrumbs]="true"></sb-dashboard-head>
   <div class="container" id="main-container">
-    <div class="row">
-      <div class="col-lg-5 text-center">
+    <div class="row d-flex justify-content-left p-0" id="main-row">
+      <div class="col-lg-3 text-center" id="left-column p-0 m-0">
         <div class="card left-card text-center">
           <div class="card-header text-center">
             Runway Conditions
@@ -20,18 +20,18 @@
             <div class="row d-flex justify-content-center">
               <div class="col-lg-6">
                 <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
-                  <option>Choose Pilot 1</option>
+                  <option>Pilot 1</option>
                 </select>
                 <select [disabled] = "pilot1NotSelected" class="btn btn-dark pilot-input" id="Pilot2ProfileSelect">
-                  <option>Choose Pilot 2</option>
+                  <option>Pilot 2</option>
                   <option>None</option>
                 </select>
               </div>  
               <div class="col-lg-6 my-auto">
-                <label>Approximate Flight Time:</label>
-                <div class="row text-left">
+                <label>Landing Weight:</label>
+                <div class="row d-flex justify-content-center">
                   <input type="text" class="time-item text-right" id="MissionTimeInput" value="">
-                  <label class="time-item">&nbsp;minutes</label>
+                  <label class="time-label">&nbsp;lbs</label>
                 </div>
               </div>
             </div>  
@@ -53,12 +53,15 @@
           Calculate
         </button>
       </div>  
-      <div class="col-lg-6 text-center" id="RightColumn">
+
+
+      <!-- Performance Column -->
+      <div class="col-lg-5 text-center" id="RightColumn">
         <div class="row d-flex justify-content-center">
           <div class="card performance-card">
             <div class="card-header p-2 text-center">
               <div class="row d-flex justify-content-center">
-                <div class="col-lg-5 my-auto text-center performance-header-col">
+                <div class="col-lg-6 my-auto text-center performance-header-col">
                   <span>Performance Parameters</span>
                 </div>
                 <div class="text-right col-lg-1 print-button-column">
@@ -67,14 +70,14 @@
                 </div>
             </div>
             <ul class="list-group list-group-flush align-center">
-              <li class="list-group-item">
+              <li class="list-group-item p-2">
                 <button class="btn btn-dark performance-selection" id="DisplayTakeoffButton">Takeoff</button>
                 <button class="btn btn-outline-dark performance-selection" id="DisplayLandingButton">Landing</button>
                 <button class="btn btn-outline-dark performance-selection" id="DisplayStallSpeedButton">Stall Speeds</button>
               </li>
             </ul>
             <ul class="list-group list-group-flush align-center">
-              <li class="list-group-item">
+              <li class="list-group-item p-2">
                   <button class="btn btn-dark measurement-button" id="ImperialButton" [disabled]="notCalculated">Imperial</button>
                   <button class="btn btn-outline-dark measurement-button" id="MetricButton" [disabled]="notCalculated">Metric</button>
               </li>
@@ -198,10 +201,10 @@
                   <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
                     <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
                   </div>
-                  <div class="shadow-lg output-block bg-white p-2">
+                  <div class="shadow-lg output-block bg-white p-4">
                     <h3 id="vs1-output" >&nbsp;</h3>
                   </div>
-                  <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+                  <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                     <h4 class="output-label" id="vs1-unit">kts</h4>
                   </div>
                 </div> 
@@ -214,7 +217,7 @@
                   <div class="shadow-lg output-block bg-white p-4">
                     <h3 id="vs0-gu-output">&nbsp;</h3>
                   </div>
-                  <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+                  <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                     <h4 class="output-label" id="vs0-gu-unit">kts</h4>
                   </div>
                 </div> 
@@ -227,7 +230,7 @@
                   <div class="shadow-lg output-block bg-white p-4">
                     <h3 id="vs0-gd-output">&nbsp;</h3>
                   </div>
-                  <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+                  <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                     <h4 class="output-label" id="vs0-gd-unit">kts</h4>
                   </div>
                 </div> 
@@ -251,6 +254,9 @@
     </div>
   </div>
 
+
+
+<!-- Start of Modals -->
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -553,7 +559,7 @@
         <div class="shadow-lg output-block bg-white p-4">
           <h3 id="vs0-gu-print">&nbsp;</h3>
         </div>
-        <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
           <h4 class="output-label" id="vs0-gu-print-unit">kts</h4>
         </div>
       </div> 
@@ -566,7 +572,7 @@
         <div class="shadow-lg output-block bg-white p-4">
           <h3 id="vs0-gd-print">&nbsp;</h3>
         </div>
-        <div class="shadow-lg bg-dark m-0 unit-block-big text-center">
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
           <h4 class="output-label" id="vs0-gd-print-unit">kts</h4>
         </div>
       </div> 

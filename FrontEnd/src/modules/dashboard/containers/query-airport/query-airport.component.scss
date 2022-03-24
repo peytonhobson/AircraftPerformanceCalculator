@@ -10,12 +10,12 @@
 }
 
 h3, h2{
-    vertical-align:middle; /*middle centred*/
-    display:table-cell; /*acts like a table cell*/
+    vertical-align: middle; /*middle centred*/
+    display: table-cell; /*acts like a table cell*/
 }
 
 .output-label {
-    color: fade-out($white, 0.5)
+    color: white;
 }
 
 #runway-button-group {
@@ -27,6 +27,19 @@ h3, h2{
 }
 
 form, input {
-    width: 30%;
+    width: 35%;
     display: table-cell;
+}
+
+.card-header {
+    color: white;
+}
+
+#IDContainer {
+    margin-top: 1%;
+}
+
+#QueryButton {
+    margin-bottom: 3%;
+    margin-top: 5%;
 }

@@ -1,5 +1,21 @@
 @import 'styles/variables.scss';
 
+#main-container {
+    margin-left: 0%;
+    margin-right: 0% !important;
+    max-width: 10000px;
+    text-align: left;
+}
+
+.container-fluid {
+    max-width: 10000px;
+}
+
+#third-col {
+    max-width: 50%;
+}
+
+
 #FindRunwaysButton {
     margin: 6%;
 }
@@ -22,7 +38,6 @@ form {
     bottom: 0;
     left: 0;
     z-index: 10040;
-    width:max-content;
     overflow-y: auto;
 }
 
@@ -44,8 +59,8 @@ form {
     color: white;
 }
 .performance-selection {
-    width: 25%;
-    margin-inline: 3%;
+    width: 32%;
+    margin-inline: 0.5%;
 }
 
 .output-label-block {
@@ -60,18 +75,19 @@ form {
     display: table;
 }
 
-.unit-block, .speed-unit-block {
+.unit-block, .speed-unit-block, .unit-block-big {
     width: 10%;
     display: table;
     padding: 2%;
+    align-items: center;
+}
+
+.speed-unit-block {
+    padding-top: 2%;
 }
 
 .unit-block-big {
-    width: 5%;
-    padding-top: 4%;
-    padding-bottom: 4%;
-    padding-inline: 2.95%;
-    display: table;
+    padding-top: 5%;
 }
 
 h2, h3, h4 {
@@ -80,12 +96,12 @@ h2, h3, h4 {
 }
 
 #RunwayPicture {
-    size: 80%;
+    size: 70%;
     margin-top: 1%;
 }
 
 #RightColumn {
-    margin-left: 3%;
+    margin-left: 1%;
 }
 
 #CalculateButton {
@@ -96,12 +112,11 @@ h2, h3, h4 {
 #AircraftProfileSelect {
     margin-right: 5%;
     height: 100%;
-    width: 50%;
+    width: 60%;
 }
 
-.parameter-button {
+.parameter-selection {
     width: 40%;
-    margin-inline: 5%;
 }
 
 .performance-card {
@@ -111,11 +126,6 @@ h2, h3, h4 {
 }
 
 .card, .left-card{
-    border-color: black;
-}
-
-li {
-    border-width: 100px;
     border-color: black;
 }
 
@@ -133,9 +143,12 @@ li {
 }
 
 .time-item {
-    width:40%;
-    margin: 0%;
-    padding: 0%;
+    width: 40%;
+    margin-left: 100px;
+}
+
+.time-label {
+    margin-right: 15%;
 }
 
 .measurement-button {
@@ -147,13 +160,17 @@ li {
   position: relative;
   top: 0;
   left: 0;
+  max-width: 100px;
   margin-top: 1%;
 }
+
 .runway-picture {
   position: relative;
   top: 0;
   left: 0;
+  max-width: 90px;
 }
+
 #takeoff-red-line {
   position: absolute;
   top: 47%; 
@@ -200,7 +217,7 @@ li {
 }
 
 .print-button-column {
-    margin-left: 15%;
+    margin-left: 10%;
 }
 
 .print-button-column, #PrintButton {
@@ -208,6 +225,20 @@ li {
     margin-bottom: 0%;
 }
 
+#PrintButton {
+    border: 1px solid white;
+}
+
 .performance-header-col {
-    margin-left: 25%;
+    margin-left: 17%;
+}
+
+.parameter-button {
+    width: 40%;
+    margin-inline: 5%;
+}
+
+.left-column {
+    margin-left: 0;
+    max-width: 5%;
 }
