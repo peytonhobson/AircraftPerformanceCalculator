@@ -1,3 +1,4 @@
+import { query } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RunwayConditions } from "@app/models/runway-conditions";
@@ -76,26 +77,12 @@ export class QueryAirportComponent implements OnInit {
                 let runwayConditions = res.data.runwayCondition
 
                 document.getElementById('AirportIDLabel').innerHTML += runwayConditions.airportID.toUpperCase();
-                document.getElementById('temp-output').innerHTML = (Math.round(runwayConditions.temp * 100) / 100).toFixed(1).toString() + " &degC";
-                document.getElementById('pressure-altitude-output').innerHTML = (Math.round(runwayConditions.pressureAltitude * 100) / 100).toFixed(3).toString() + " m"
-                document.getElementById('precipitation-output').innerHTML = (Math.round(runwayConditions.precipitation * 100) / 100).toFixed(3).toString() + " inches"
-                document.getElementById('headwind-output').innerHTML = (Math.round(runwayConditions.headWind * 100) / 100).toFixed(3).toString() + " m/s"
-                document.getElementById('runway-length-output').innerHTML = (Math.round(runwayConditions.runwayLength * 100) / 100).toFixed(1).toString() + " ft"
-
-                if(runwayConditions.runwayType.toUpperCase() === "CONC" || runwayConditions.runwayType.toUpperCase() === "ASPH") {
-                    document.getElementById('runway-type-output').innerHTML = "Concrete"
-                }
-                else if(runwayConditions.runwayType.toUpperCase() === "BRICK") {
-                    document.getElementById('runway-type-output').innerHTML = "Brick"
-                }
-                else if(runwayConditions.runwayType.toUpperCase() === "WOOD") {
-                    document.getElementById('runway-type-output').innerHTML = "Wood"
-                }
-                else {
-                    document.getElementById('runway-type-output').innerHTML = "Grass"
-                }
-            
-                document.getElementById('slope-output').innerHTML = (Math.round(runwayConditions.slope * 100) / 100).toFixed(3).toString() + "&deg"
+                document.getElementById('temp-output').innerHTML = runwayConditions.temp.toFixed(1).toString() + " &degC";
+                document.getElementById('pressure-altitude-output').innerHTML = runwayConditions.pressureAltitude.toFixed(2).toString() + " ft"
+                document.getElementById('precipitation-output').innerHTML = runwayConditions.precipitation.toFixed(2).toString() + " inches"
+                document.getElementById('headwind-output').innerHTML = runwayConditions.headWind.toFixed(2).toString() + " kts"
+                document.getElementById('runway-length-output').innerHTML = runwayConditions.runwayLength.toFixed(1).toString() + " ft"
+                document.getElementById('slope-output').innerHTML = runwayConditions.slope.toFixed(2).toString() + "&deg"
             });
     }
 
@@ -153,6 +140,7 @@ export class QueryAirportComponent implements OnInit {
 
         const sideButton1 = document.getElementById('RunwaySideButton1') as HTMLButtonElement;
         sideButton1.disabled = false;
+        sideButton1.className = sideButton1.className.replace('btn-outline-dark', 'btn-dark');
 
         const sideButton2 = document.getElementById('RunwaySideButton2') as HTMLButtonElement;
         sideButton2.disabled = false;
@@ -160,6 +148,9 @@ export class QueryAirportComponent implements OnInit {
         const sides = button.innerHTML.split("/");
         sideButton1.innerHTML=sides[0];
         sideButton2.innerHTML=sides[1];
+
+        const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
+        queryButton.disabled = false;
     }
 
     runwaySideClick(id: string) {
@@ -173,8 +164,5 @@ export class QueryAirportComponent implements OnInit {
 
         button.className = button.className.replace('btn-outline-dark', 'btn-dark')
         button.className += ' active'
-
-        const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
-        queryButton.disabled = false;
     }
 }

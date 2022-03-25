@@ -1,7 +1,7 @@
 export class CalculatorInput {
     
     public takeoffMass: number;
-    public flightTime: number;
+    public landingWeight: number;
     public pressureAltitude: number;
     public headwind: number;
     public temperature: number;
@@ -10,10 +10,10 @@ export class CalculatorInput {
     public brakingFriction: number;
     public runwayType: string;
 
-    constructor(takeoffMass: number, flightTime: number, pressureAltitude: number, headwind: number, temperature: number, slope: number, rollingFriction: number, 
+    constructor(takeoffMass: number, landingWeight: number, pressureAltitude: number, headwind: number, temperature: number, slope: number, rollingFriction: number, 
         brakingFriction: number, runwayType: string) {
         this.takeoffMass = takeoffMass;
-        this.flightTime = flightTime;
+        this.landingWeight = landingWeight;
         this.pressureAltitude = pressureAltitude;
         this.headwind = headwind;
         this.temperature = temperature;

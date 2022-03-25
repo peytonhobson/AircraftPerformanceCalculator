@@ -120,7 +120,7 @@ ul {
     padding-top: 5%;
 }
 
-h2, h3, h4 {
+h2, h3 {
     display: table-cell;
     align-items: center;
 }
@@ -168,7 +168,7 @@ h2, h3, h4 {
     width: 85%;
 }
 
-#MissionTimeInput {
+#LandingWeightInput {
     margin-left: 14%
 }
 
@@ -264,8 +264,8 @@ h2, h3, h4 {
 }
 
 .parameter-button {
-    width: 40%;
-    margin-inline: 5%;
+    width: 45%;
+    margin-inline: 1%;
 }
 
 .left-column {
@@ -277,9 +277,26 @@ h2, h3, h4 {
     width: 66.7%;
 }
 
-.shadow-lg {
+.airport-output {
     width:100%; /*full width*/
     display:table; /*acts like a table*/
+}
+
+.airport-output-white {
+    width:65%;
+    display:table;
+}
+
+.airport-output-unit {
+    width:30%; /*full width*/
+    display:table; /*acts like a table*/
+    padding-top: 1%;
+}
+
+.airport-output-unit-sm {
+    width: 33.5%;
+    padding-left: 10%;
+    height: 2%;
 }
 
 table, tr {
@@ -287,4 +304,12 @@ table, tr {
     min-width: 160%;
     min-height: 50%;
     margin-top: 10%;
+}
+
+// #AirportHeadwindUnit {
+//     display: table;
+// }
+
+#KTSUnitBlock {
+    width: 33.5%;
 }

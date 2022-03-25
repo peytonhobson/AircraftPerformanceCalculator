@@ -31,7 +31,16 @@ export class CalculatorComponent implements OnInit {
     form: FormGroup;
     formManualModal: FormGroup;
     formAutomaticModal: FormGroup;
-    runwayConditions: RunwayConditions;
+    runwayConditions = {
+        "airportID": null,
+        "temp": null,
+        "pressureAltitude": null,
+        "precipitation": null,
+        "headWind": null,
+        "runwayLength": null,
+        "runwayType": null,
+        "slope": null,
+    };
     runwayButtonNumber: number;
     airportID: string;
 
@@ -352,9 +361,9 @@ export class CalculatorComponent implements OnInit {
             return;
         }
 
-        const missionTime = document.getElementById('MissionTimeInput') as HTMLInputElement;
+        const landingWeight = document.getElementById('LandingWeightInput') as HTMLInputElement;
 
-        if(missionTime.value == "" || !missionTime.value.match(/^[0-9]/)) {
+        if(landingWeight.value == "" || !landingWeight.value.match(/^[0-9]/)) {
             this.alertService.error("Please input correct flight time.")
             this.calculateLoading = false;
             return;
@@ -410,7 +419,7 @@ export class CalculatorComponent implements OnInit {
                     this.restClassifier.get(`pilots/${username}_${pilot2Name.value}`).subscribe(res => {
                         mass += Number(res.data.pilot.mass);
         
-                        const calculatorInput = new CalculatorInput(mass, Number(missionTime.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
+                        const calculatorInput = new CalculatorInput(mass, Number(landingWeight.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
                         this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
          
                         this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
@@ -453,7 +462,7 @@ export class CalculatorComponent implements OnInit {
                     });
                 }
                 else {
-                    const calculatorInput = new CalculatorInput(mass, Number(missionTime.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
+                    const calculatorInput = new CalculatorInput(mass, Number(landingWeight.value), this.runwayConditions.pressureAltitude, this.runwayConditions.headWind,
                     this.runwayConditions.temp, this.runwayConditions.slope, rollingFriction, brakingFriction, this.runwayConditions.runwayType)
            
                     this.restClassifier.post(`calculate`, calculatorInput).subscribe(res => { 
@@ -524,10 +533,10 @@ export class CalculatorComponent implements OnInit {
                 precipitation = 1;
             }
             
-            let runwayType = "Grass"
+            let runwayType = "TURF"
 
             if(this.fManual['concreteRunway']) {
-                runwayType = "Concrete"
+                runwayType = "CONC"
             }
 
             const pressureAltitude = this.fManual['pressureAltitude'].value
@@ -578,19 +587,6 @@ export class CalculatorComponent implements OnInit {
         this.restClassifier.get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
         .subscribe(res => {
             this.runwayConditions = res.data.runwayCondition
-
-            if(this.runwayConditions.runwayType.toUpperCase() === "CONC" || this.runwayConditions.runwayType.toUpperCase() === "ASPH") {
-                this.runwayConditions.runwayType = "Concrete"
-            }
-            else if(this.runwayConditions.runwayType.toUpperCase() === "BRICK") {
-                this.runwayConditions.runwayType = "Brick"
-            }
-            else if(this.runwayConditions.runwayType.toUpperCase() === "WOOD") {
-                this.runwayConditions.runwayType = "Wood"
-            }
-            else {
-                this.runwayConditions.runwayType = "Grass"
-            }
 
             const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
             automaticButton.innerHTML = "Automatic &#x2713;"
