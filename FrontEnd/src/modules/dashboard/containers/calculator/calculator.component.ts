@@ -331,12 +331,26 @@ export class CalculatorComponent implements OnInit {
                 }
             }
 
-            if(pilot1ProfileSelect.value !== "Choose Pilot 1") {
+            if(pilot1ProfileSelect.value !== "Pilot 1") {
                 this.pilot1NotSelected = false;
+                document.getElementById("PilotBox1Text").innerHTML = pilot1ProfileSelect.value;
             }
             else {
                 this.pilot1NotSelected = true;
+                document.getElementById("PilotBox1Text").innerHTML = "";
+                document.getElementById("PilotBox2Text").innerHTML = "";
             }
+        });
+
+        pilot2ProfileSelect.addEventListener('change', (e) => {
+
+            if(pilot2ProfileSelect.value !== "Pilot 2" && pilot2ProfileSelect.value !== "None") {
+                document.getElementById("PilotBox2Text").innerHTML = pilot2ProfileSelect.value;
+            }
+            else {
+                document.getElementById("PilotBox2Text").innerHTML = "";
+            }
+
         });
     }
 

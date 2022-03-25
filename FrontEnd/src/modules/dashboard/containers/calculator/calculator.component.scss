@@ -49,8 +49,97 @@ ul {
 
 #CockpitPicture {
     width: 100%;
+    margin-top: 50%;
     margin-bottom: 5%;
     margin-left: 10%;
+}
+
+#FullPlanePicture {
+    position: relative;
+    width: 140%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+
+.attachment-box {
+    color: white;
+}
+
+#AttachmentBox1 {
+    color: white;
+    position: fixed;
+    left: 71%;
+    top: 86%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#AttachmentBox2 {
+    color: white;
+    position: fixed;
+    left: 77%;
+    top: 86%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#AttachmentBox3 {
+    color: white;
+    position: fixed;
+    left: 83%;
+    top: 86%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#AttachmentBox4 {
+    color: white;
+    position: fixed;
+    left: 89%;
+    top: 86%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#AttachmentBox5 {
+    color: white;
+    position: fixed;
+    left: 94.5%;
+    top: 86%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#PilotBox1 {
+    color: white;
+    position: fixed;
+    left: 20%;
+    top: 30%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
+}
+
+#PilotBox2 {
+    color: white;
+    position: fixed;
+    left: 31%;
+    top: 28%;
+    display: block;
+    z-index: 2;
+    min-width: 5%;
+    max-height: 3%;
 }
 
 #performance-modal {
