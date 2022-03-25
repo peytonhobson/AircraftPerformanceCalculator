@@ -43,6 +43,16 @@ ul {
     overflow-y: auto;
 }
 
+#PictureColumn {
+    margin-right: 16%;
+}
+
+#CockpitPicture {
+    width: 100%;
+    margin-bottom: 5%;
+    margin-left: 10%;
+}
+
 #performance-modal {
     position: absolute;
     bottom: 0;
@@ -261,4 +271,20 @@ h2, h3, h4 {
 .left-column {
     margin-left: 0;
     max-width: 28%;
+}
+
+#airportID-output{
+    width: 66.7%;
+}
+
+.shadow-lg {
+    width:100%; /*full width*/
+    display:table; /*acts like a table*/
+}
+
+table, tr {
+    border: black solid 1px;
+    min-width: 160%;
+    min-height: 50%;
+    margin-top: 10%;
 }
