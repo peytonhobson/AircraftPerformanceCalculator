@@ -9,7 +9,7 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    title = 'Aircraft Performance Calculator';
+    title = 'TOLD Calculator';
     constructor(public router: Router, private titleService: Title) {
         this.router.events
             .pipe(filter(event => event instanceof ChildActivationEnd))
@@ -18,7 +18,7 @@ export class AppComponent {
                 while (snapshot.firstChild !== null) {
                     snapshot = snapshot.firstChild;
                 }
-                this.titleService.setTitle(snapshot.data.title || 'Aircraft Performance Calculator');
+                this.titleService.setTitle(snapshot.data.title || 'TOLD Calculator');
             });
     }
 }

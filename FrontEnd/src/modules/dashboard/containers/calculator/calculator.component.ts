@@ -45,6 +45,7 @@ export class CalculatorComponent implements OnInit {
     displaySpeeds = 'none';
     displayPlanes = 'none';
     displayProfileInfo = 'none';
+    displayPerformance = 'none';
 
     runwaysLoading = false;
     calculateLoading = false;
@@ -467,9 +468,6 @@ export class CalculatorComponent implements OnInit {
 
                             const landingLineDistance = 100*(this.calculatorOutputMetric.landingDistance/this.runwayConditions.runwayLength);
 
-                            console.log(this.calculatorOutputMetric.landingDistance);
-                            console.log(this.runwayConditions.runwayLength);
-
                             const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
                             landingLine.style.width = landingLineDistance.toString() + "%";
                             landingLine.style.left = (100-landingLineDistance).toString() + "%";
@@ -478,6 +476,8 @@ export class CalculatorComponent implements OnInit {
                             landingPlane.style.left = (100-landingLineDistance-14).toString() + "%";
 
                             this.displayPlanes = 'block';
+                            this.displayPerformance = 'block';
+                            document.getElementById('main-container').style.opacity = '40%';
                         },
                         error => {
                             this.alertService.error("Conditions could not be calculated.")
@@ -565,6 +565,8 @@ export class CalculatorComponent implements OnInit {
                         landingPlane.style.left = (100-landingLineDistance-14).toString() + "%";
 
                         this.displayPlanes = 'block';
+                        this.displayPerformance = 'block';
+                        document.getElementById('main-container').style.opacity = '40%';
                     },
                     error => {
                         this.alertService.error("Conditions could not be calculated.")
@@ -739,6 +741,11 @@ export class CalculatorComponent implements OnInit {
 
             this.submittedManualModal=false;
         }
+    }
+
+    closePerformanceModal() {
+        this.displayPerformance = 'none';
+        document.getElementById('main-container').style.opacity = '100%';
     }
 
     findRunways() {

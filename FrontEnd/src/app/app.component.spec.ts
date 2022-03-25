@@ -17,9 +17,9 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'sb-admin-angular'`, () => {
+    it(`should have as title 'TOLD Calculator'`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual('sb-admin-angular');
+        expect(app.title).toEqual('TOLD Calculator');
     });
 });

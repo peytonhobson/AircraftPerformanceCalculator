@@ -20,6 +20,7 @@ export class QueryAirportComponent implements OnInit {
     airportID: string;
     form: FormGroup;
     submitted = false;
+    runwaysLoading = false;
 
     ngOnInit() {
 
@@ -102,6 +103,8 @@ export class QueryAirportComponent implements OnInit {
 
     findRunways() {
 
+        this.runwaysLoading = true;
+
         this.submitted = true;
 
         if (this.form.invalid) {
@@ -131,6 +134,8 @@ export class QueryAirportComponent implements OnInit {
                     runwayButtonGroup.appendChild(newButton);
                 });
             }
+
+            this.runwaysLoading = false;
         });
     }
 

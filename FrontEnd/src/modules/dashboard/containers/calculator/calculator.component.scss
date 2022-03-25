@@ -3,13 +3,11 @@
 #main-container {
     margin-left: 0%;
     margin-right: 0% !important;
+    text-align: right;
     max-width: 10000px;
-    text-align: left;
 }
 
-.container-fluid {
-    max-width: 10000px;
-}
+
 
 #third-col {
     max-width: 50%;
@@ -33,12 +31,34 @@ form {
     width: 30%;
 }
 
+ul {
+    border: black solid 1px;
+}
+
 .modal {
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 10040;
     overflow-y: auto;
+}
+
+#performance-modal {
+    position: absolute;
+    bottom: 0;
+    left: 300px;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+    max-width: 80% !important;
+}
+
+#performance-modal-dialog {
+    max-width: 80% !important;
+}
+
+#performance-column {
+    max-width: 100%;
 }
 
 .radio-label{
@@ -160,15 +180,15 @@ h2, h3, h4 {
   position: relative;
   top: 0;
   left: 0;
-  max-width: 100px;
-  margin-top: 1%;
+  align-items: center;
+  max-width: 70%;
 }
 
 .runway-picture {
   position: relative;
   top: 0;
   left: 0;
-  max-width: 90px;
+  max-width: 130%;
 }
 
 #takeoff-red-line {
@@ -240,5 +260,5 @@ h2, h3, h4 {
 
 .left-column {
     margin-left: 0;
-    max-width: 5%;
+    max-width: 28%;
 }

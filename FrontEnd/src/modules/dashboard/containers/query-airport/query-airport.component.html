@@ -21,7 +21,10 @@
                 </div>
               </div> 
               <div class="form-group justify-content-center" [formGroup]="form">
-                <button type="submit" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >Find Runways</button>
+                <button type="submit" [disabled]="runwaysLoading"  id="FindRunwaysButton" class="btn btn-outline-dark active text-center">
+                <span *ngIf="runwaysLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Find Runways
+                  </button>
               </div>  
             </form>
             </div>

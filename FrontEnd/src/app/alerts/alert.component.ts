@@ -87,8 +87,6 @@ export class AlertComponent implements OnInit, OnDestroy {
             [AlertType.Warning]: 'alert alert-warning'
         }
 
-        console.log(alert.type)
-
         classes.push(alertTypeClass[alert.type]);
 
         if (alert.fade) {
