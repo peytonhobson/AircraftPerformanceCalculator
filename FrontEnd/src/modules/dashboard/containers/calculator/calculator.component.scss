@@ -7,8 +7,6 @@
     max-width: 10000px;
 }
 
-
-
 #third-col {
     max-width: 50%;
 }
@@ -48,10 +46,11 @@ ul {
 }
 
 #CockpitPicture {
-    width: 100%;
-    margin-top: 50%;
+    width: 150%;
+    margin-top: 20%;
     margin-bottom: 5%;
     margin-left: 10%;
+    position: relative;
 }
 
 #FullPlanePicture {
@@ -67,79 +66,79 @@ ul {
 
 #AttachmentBox1 {
     color: white;
-    position: fixed;
-    left: 71%;
-    top: 86%;
+    position: absolute;
+    left: -5%;
+    top: 95%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 25%;
+    max-height: 15%;
 }
 
 #AttachmentBox2 {
     color: white;
-    position: fixed;
-    left: 77%;
-    top: 86%;
+    position: absolute;
+    left: 30%;
+    top: 95%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 25%;
+    max-height: 15%;
 }
 
 #AttachmentBox3 {
     color: white;
-    position: fixed;
-    left: 83%;
-    top: 86%;
+    position: absolute;
+    left: 60%;
+    top: 95%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 25%;
+    max-height: 15%;
 }
 
 #AttachmentBox4 {
     color: white;
-    position: fixed;
-    left: 89%;
-    top: 86%;
+    position: absolute;
+    left: 95%;
+    top: 95%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 25%;
+    max-height: 15%;
 }
 
 #AttachmentBox5 {
     color: white;
-    position: fixed;
-    left: 94.5%;
-    top: 86%;
+    position: absolute;
+    left: 125%;
+    top: 95%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 25%;
+    max-height: 15%;
 }
 
 #PilotBox1 {
     color: white;
-    position: fixed;
-    left: 20%;
-    top: 30%;
+    position: absolute;
+    left: 45%;
+    top: 14%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 30%;
+    height: 15%;
 }
 
 #PilotBox2 {
     color: white;
-    position: fixed;
-    left: 31%;
-    top: 28%;
+    position: absolute;
+    left: 110%;
+    top: 0%;
     display: block;
     z-index: 2;
-    min-width: 5%;
-    max-height: 3%;
+    min-width: 30%;
+    height: 15%;
 }
 
 #performance-modal {
@@ -401,4 +400,8 @@ table, tr {
 
 #KTSUnitBlock {
     width: 33.5%;
+}
+
+td, th {
+    border: black solid 1px;
 }

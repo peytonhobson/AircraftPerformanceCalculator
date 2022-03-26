@@ -23,6 +23,17 @@ export class QueryAirportComponent implements OnInit {
     submitted = false;
     runwaysLoading = false;
 
+    runwayConditions = {
+        "airportID": null,
+        "temp": null,
+        "pressureAltitude": null,
+        "precipitation": null,
+        "headWind": null,
+        "runwayLength": null,
+        "runwayType": null,
+        "slope": null,
+    };
+
     ngOnInit() {
 
         this.form = this.formBuilder.group({
@@ -74,15 +85,7 @@ export class QueryAirportComponent implements OnInit {
         this.apiService
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
-                let runwayConditions = res.data.runwayCondition
-
-                document.getElementById('AirportIDLabel').innerHTML += runwayConditions.airportID.toUpperCase();
-                document.getElementById('temp-output').innerHTML = runwayConditions.temp.toFixed(1).toString() + " &degC";
-                document.getElementById('pressure-altitude-output').innerHTML = runwayConditions.pressureAltitude.toFixed(2).toString() + " ft"
-                document.getElementById('precipitation-output').innerHTML = runwayConditions.precipitation.toFixed(2).toString() + " inches"
-                document.getElementById('headwind-output').innerHTML = runwayConditions.headWind.toFixed(2).toString() + " kts"
-                document.getElementById('runway-length-output').innerHTML = runwayConditions.runwayLength.toFixed(1).toString() + " ft"
-                document.getElementById('slope-output').innerHTML = runwayConditions.slope.toFixed(2).toString() + "&deg"
+                this.runwayConditions = res.data.runwayCondition
             });
     }
 
