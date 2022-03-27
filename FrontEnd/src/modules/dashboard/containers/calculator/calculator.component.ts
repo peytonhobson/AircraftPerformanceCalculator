@@ -419,9 +419,9 @@ export class CalculatorComponent implements OnInit {
         var mass= 3544; // Basic empty aircraft in kg
 
         this.restClassifier.get(`profiles/${username}/${aircraftProfileName.value}`).subscribe((res) => {
-            res.data.profile.attachments.forEach(element => {
-                mass += Number(element.mass);
-            });
+            // res.data.profile.attachments.forEach(element => {
+            //     mass += Number(element.mass);
+            // });
             mass += Number((res.data.profile.internalTank/100)*1100*0.818);
             mass += Number((res.data.profile.dropTank/100)*300*0.818);
             mass += Number((res.data.profile.tipTank/100)*200*0.818);

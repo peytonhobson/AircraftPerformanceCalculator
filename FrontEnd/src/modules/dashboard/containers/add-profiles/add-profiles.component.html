@@ -13,7 +13,7 @@
                         <label for="InternalTankCheck">Internal Tanks</label>
                         <div class="row d-flex">
                             <input type="range" class="range-input" id="InternalTankRange" value ="0">
-                            <label class="rangeVal" id="InternalTankVal">&nbsp;0 gal</label>
+                            <label class="rangeVal" id="InternalTankVal">&nbsp;60 gal</label>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -87,14 +87,14 @@
                 <div class="card-body p-4">
                     <div class="row mt-1">
                         <div class="col-lg-6">
-                            <label for="precipitation">Agile Pod:</label>
-                            <input type="radio" formControlName="precipitationYes" class="radio ml-2"/>
-                            <label for="precipitationYes" class="radio-label ml-1">Yes</label>
-                            <input type="radio" formControlName="precipitationNo" class="radio ml-2"/>
-                            <label for="precipitationNo" class="radio-label ml-1">No</label>
+                            <label>Agile Pod:</label>
+                            <input type="radio" class="radio ml-2" id="AgileYesRadio"/>
+                            <label  class="radio-label ml-1">Yes</label>
+                            <input type="radio" class="radio ml-2" id="AgileNoRadio" checked/>
+                            <label class="radio-label ml-1">No</label>
                         </div>
                         <label>Payload Weight:</label>
-                        <input type="text" class="weight-input ml-2" value="">
+                        <input type="text" class="weight-input ml-2" value="" id="AgileWeightInput">
                         <label>&nbsp;lbs</label>
                     </div>
                 </div>
@@ -104,11 +104,15 @@
                     Pylon 1
                 </div>
                 <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon1Select">
                         <option>Choose Attachment</option>
                         <option>None</option>
+                        <option *ngFor="let attachment of Attachments" 
+                            [value]="attachment.name" >
+                        {{attachment.name}}
+                        </option>
                     </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon1WeightInput">
                     <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
@@ -117,11 +121,15 @@
                     Pylon 2
                 </div>
                 <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon2Select">
                         <option>Choose Attachment</option>
                         <option>None</option>
+                        <option *ngFor="let attachment of Attachments" 
+                            [value]="attachment.name" >
+                        {{attachment.name}}
+                        </option>
                     </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon2WeightInput">
                     <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
@@ -130,11 +138,15 @@
                     Pylon 3
                 </div>
                 <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon3Select">
                         <option>Choose Attachment</option>
                         <option>None</option>
+                        <option *ngFor="let attachment of Attachments" 
+                            [value]="attachment.name" >
+                        {{attachment.name}}
+                        </option>
                     </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon3WeightInput">
                     <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
@@ -143,18 +155,22 @@
                     Pylon 4
                 </div>
                 <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon4Select">
                         <option>Choose Attachment</option>
                         <option>None</option>
+                        <option *ngFor="let attachment of Attachments" 
+                            [value]="attachment.name" >
+                        {{attachment.name}}
+                        </option>
                     </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon4WeightInput">
                     <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
         </div>  
         <div class="col-lg-1 text-center align-self-center">
             <div class="row">
-                <button class="btn btn-dark w-100 save-button">Save Profile</button>
+                <button class="btn btn-dark w-100 save-button" (click)="openSaveModal()">Save Profile</button>
             </div>
         </div>  
     </div>
