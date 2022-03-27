@@ -98,8 +98,22 @@ input[type="range"]::-ms-fill-lower {
 
 .unit-input {
     height: 50%;
-    width: 69%;
+    width: 67%;
 }
 
+#TankCard {
+    max-height: 43%;
+}
 
+li {
+    max-height: 30%;
+}
+
+.new-card {
+    max-height: 28%;
+}
+
+.new-card-body {
+    padding: 3%;
+}
 

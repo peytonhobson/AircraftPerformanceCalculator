@@ -33,108 +33,27 @@ export class AddProfilesComponent implements OnInit {
             this.Attachments.push(e);
           });
       })
-         
+      
+      //TODO: Might need to change to input instead of slider
       const rangeInternal = document.getElementById('InternalTankRange') as HTMLInputElement;
       const internalVal = document.getElementById('InternalTankVal') as HTMLInputElement;
       rangeInternal.addEventListener('change', (e) => {
-          internalVal.innerHTML = rangeInternal.value + "%"
-        }); 
-      const rangeDropTank = document.getElementById('DropTankRange') as HTMLInputElement;
-      const dropTankVal = document.getElementById('DropTankVal') as HTMLInputElement;
-      rangeDropTank.disabled = true;
-      rangeDropTank.addEventListener('change', (e) => {
-          dropTankVal.innerHTML = "&nbsp;" + rangeDropTank.value + "%"
-        }); 
+          internalVal.innerHTML = (Number(rangeInternal.value)*2.88).toFixed(0) + " gal"
+      }); 
 
-      const dropTankCheck = document.getElementById("DropTankCheck") as HTMLInputElement;
-
-      dropTankCheck.addEventListener('change', (e) => {
-         if(dropTankCheck.checked) {
-            rangeDropTank.disabled = false;
-        }
-           else {
-            rangeDropTank.value = '0';
-            dropTankVal.innerHTML = '&nbsp0%'
-            rangeDropTank.disabled = true;
-        }
-      })
       const rangeTipTank = document.getElementById('TipTankRange') as HTMLInputElement;
       const TipTankVal = document.getElementById('TipTankVal') as HTMLInputElement;
-      rangeTipTank.disabled = true;
       rangeTipTank.addEventListener('change', (e) => {
-          TipTankVal.innerHTML = "&nbsp;" + rangeTipTank.value + "%"
-        }); 
+          TipTankVal.innerHTML = "&nbsp;" + (Number(rangeTipTank.value)*0.52).toFixed(0) + " gal"
+      }); 
 
-      const tipTankCheck = document.getElementById("TipTankCheck") as HTMLInputElement;
-
-      tipTankCheck.addEventListener('change', (e) => {
-         if(tipTankCheck.checked) {
-            rangeTipTank.disabled = false;
-        }
-           else {
-            rangeTipTank.value = '0';
-            TipTankVal.innerHTML = '&nbsp0%'
-            rangeTipTank.disabled = true;
-        }
-      })
-
-      const imperialButton = document.getElementById('ImperialButton') as HTMLButtonElement;
-      const metricButton = document.getElementById('MetricButton') as HTMLButtonElement;
-
-      imperialButton.addEventListener('click', (e) => {
-
-        if(!imperialButton.className.match('btn-dark')) {
-            imperialButton.className = imperialButton.className.replace('btn-outline-dark', 'btn-dark');
-            metricButton.className = metricButton.className.replace('btn-dark', 'btn-outline-dark');
-
-            const unitLabels = document.getElementsByClassName('unit-label');
-
-            for(let index = 0; index < unitLabels.length; index++) {
-              unitLabels[index].innerHTML = 'lbs';
-            }
-
-            const unusedList = document.getElementsByClassName('unused-attachment-block');
-
-            for(let index = 0; index < unusedList.length; index++) {
-              unusedList[index].innerHTML=this.toImperialString(this.Attachments[index]);
-            }
-            
-            const usedList = document.getElementsByClassName('used-attachment-block');
-
-            for(let index = 0; index < usedList.length; index++) {
-              usedList[index].innerHTML=this.toImperialString(this.AttachmentsUsed[index]);
-            }
-        }
-      });
-
-      metricButton.addEventListener('click', (e) => {
-
-        if(!metricButton.className.match('btn-dark')) {
-            metricButton.className = metricButton.className.replace('btn-outline-dark', 'btn-dark');
-            imperialButton.className = imperialButton.className.replace('btn-dark', 'btn-outline-dark');
-
-            const unitLabels = document.getElementsByClassName('unit-label');
-
-            for(let index = 0; index < unitLabels.length; index++) {
-              unitLabels[index].innerHTML = 'kgs';
-            }
-
-            const unusedList = document.getElementsByClassName('unused-attachment-block');
-
-            for(let index = 0; index < unusedList.length; index++) {
-              unusedList[index].innerHTML=this.toMetricString(this.Attachments[index]);
-            }
-            
-            const usedList = document.getElementsByClassName('used-attachment-block');
-
-            for(let index = 0; index < usedList.length; index++) {
-              usedList[index].innerHTML=this.toMetricString(this.AttachmentsUsed[index]);
-            }
-            
-        }
-      });
+      const rangeDropTank = document.getElementById('DropTankRange') as HTMLInputElement;
+      const dropTankVal = document.getElementById('DropTankVal') as HTMLInputElement;
+      rangeDropTank.addEventListener('change', (e) => {
+          dropTankVal.innerHTML = "&nbsp;" + (Number(rangeDropTank.value)*0.8).toFixed(0) + " gal"
+      }); 
     }
-
+      
     onDrop(event: CdkDragDrop<string[]>) {
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

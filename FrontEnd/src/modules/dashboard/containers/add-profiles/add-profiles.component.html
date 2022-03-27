@@ -4,71 +4,42 @@
 <div class="container" id="main-container">
     <div class="row d-flex justify-content-center ">
         <div class="col-lg-5">
-            <div class="card">
-                <div class="card-header text-center">
-                    Choose Measurement System
-                </div>
-                <div class="btn-group">
-                    <button id="ImperialButton" class="btn btn-dark border border-dark measurement-button">Imperial</button>
-                    <button id="MetricButton" class="btn btn-outline-dark border border-dark measurement-button">Metric</button>
-                </div>
-            </div>
-            <div class="card top-card-left">
+            <div class="card top-card-left" id="TankCard">
                 <div class="card-header text-center">
                     Specify Tank Fill
                 </div>
                 <ul class="list-group list-group-flush align-center">
                     <li class="list-group-item">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                              Internal Tanks
-                              <input class="form-check-input" type="checkbox" value="" id="internalCheck">
-                              <span class="checkmark"></span>
-                            </label>
-                        </div>
+                        <label for="InternalTankCheck">Internal Tanks</label>
                         <div class="row d-flex">
-                            <input type="range" class="range-input" id="InternalTankRange">
-                            <label class="rangeVal" id="InternalTankVal">&nbsp;50%</label>
+                            <input type="range" class="range-input" id="InternalTankRange" value ="0">
+                            <label class="rangeVal" id="InternalTankVal">&nbsp;0 gal</label>
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" name="DropTankCheck" id="DropTankCheck">
-                            <span class="checkmark"></span>
-                            <label class="form-check-label" for="DropTankCheck">Drop Tanks
-                                
-                            
-                            </label>
-                        </div>
-                        <div class="row d-flex">
-                            <input type="range" class="range-input" id="DropTankRange" value="0">
-                            <label class="rangeVal" id="DropTankVal" value = "0">&nbsp;0%</label>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="TipTankCheck">
-                            <label class="form-check-label" for="TipTankCheck">
-                                Tip Tanks
-                            </label>
-                        </div>
+                        <label for="TipTankCheck">Tip Tanks</label>
                         <div class="row d-flex">
                             <input type="range" class="range-input" id="TipTankRange" value ="0">
-                            <label class="rangeVal" id="TipTankVal">&nbsp;0%</label>
+                            <label class="rangeVal" id="TipTankVal">&nbsp;0 gal</label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <label for="DropTankCheck">Drop Tanks</label>
+                        <div class="row d-flex">
+                            <input type="range" class="range-input" id="DropTankRange" value="0">
+                            <label class="rangeVal" id="DropTankVal" value = "0">&nbsp;0 gal</label>
                         </div>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="card top-card h-50 right-card">
+            <div class="card new-card">
                 <div class="card-header text-center">
                     Add New Pilot
                 </div>
-                <div class="card-body">
+                <div class="card-body new-card-body">
                     <div class="row d-flex justify-content-center">
                         <div class="col-lg-6 text-center">
-                                <label for="PilotName">Name:</label>
+                                <label for="PilotName" class="mt-0">Name:</label>
                                 <input type="text" id="PilotName" name="PilotName" value="">
                                 <label for="PilotMass">Weight:</label>
                                 <div class="row d-flex justify-content-center">
@@ -84,14 +55,14 @@
                     </div> 
                 </div>
             </div>
-            <div class="card new-component-card h-50 right-card">
+            <div class="card new-card">
                 <div class="card-header text-center">
-                    Add new attachment
+                    Add New Pylon Attachment
                 </div>
-                <div class="card-body">
+                <div class="card-body new-card-body">
                     <div class="row d-flex justify-content-center">
                         <div class="col-lg-6 text-center">
-                            <label for="AttachmentName">Name:</label>
+                            <label for="AttachmentName" class="mt-0">Name:</label>
                             <input type="text" id="AttachmentName" name="AttachmentName" value="">
                             <label for="AttachmentMass">Weight:</label>
                             <div class="row d-flex justify-content-center">
@@ -108,44 +79,48 @@
                 </div>  
             </div>
         </div>
-    </div>
-    <div class ="row d-flex justify-content-center">
-        <div class="col-lg-10">
-            <div class="card text-center">
-                <div class="card-header">
-                    Select Attachments
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header text-center">
+                    Centerline Store
                 </div>
-                <div class="row text-center">
-                    <div class="col-lg-4">
-                            <h2>Unused Attachments</h2>
-                            <div 
-                            cdkDropList 
-                            #attachmentList="cdkDropList" 
-                            [cdkDropListData]="Attachments"
-                            [cdkDropListConnectedTo]="[doneAttachmentList]" 
-                            class="attachment-list" 
-                            (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block unused-attachment-block" *ngFor="let attachmentList of Attachments" cdkDrag>{{toImperialString(attachmentList)}}</div>
-                            </div>
-                    </div>
-                    <div class="col-lg-4">
-                            <h2>Attachments Used</h2>
-                            <div 
-                            cdkDropList 
-                            #doneAttachmentList="cdkDropList" 
-                            [cdkDropListData]="AttachmentsUsed"
-                            [cdkDropListConnectedTo]="[attachmentList]" 
-                            class="attachment-list" 
-                            (cdkDropListDropped)="onDrop($event)">
-                                <div class="attachment-block used-attachment-block" *ngFor="let attachmentsUsed of AttachmentsUsed" cdkDrag>{{toImperialString(attachmentsUsed)}}</div>
-                            </div>
-                    </div>
-                    <div class="col-lg-3 text-center my-auto">
-                        <button class = "btn btn-outline-dark active" (click)="openSaveModal()" id="SaveProfileButton">Save Profile</button>
-                    </div>
+                <div class="card-body">
+
                 </div>
-            </div>  
-        </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-center">
+                    Pylon 1
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-center">
+                    Pylon 2
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-center">
+                    Pylon 3
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-center">
+                    Pylon 4
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>  
     </div>
 </div>
 
