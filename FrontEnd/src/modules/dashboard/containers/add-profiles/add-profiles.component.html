@@ -84,41 +84,77 @@
                 <div class="card-header text-center">
                     Centerline Store
                 </div>
-                <div class="card-body">
-
+                <div class="card-body p-4">
+                    <div class="row mt-1">
+                        <div class="col-lg-6">
+                            <label for="precipitation">Agile Pod:</label>
+                            <input type="radio" formControlName="precipitationYes" class="radio ml-2"/>
+                            <label for="precipitationYes" class="radio-label ml-1">Yes</label>
+                            <input type="radio" formControlName="precipitationNo" class="radio ml-2"/>
+                            <label for="precipitationNo" class="radio-label ml-1">No</label>
+                        </div>
+                        <label>Payload Weight:</label>
+                        <input type="text" class="weight-input ml-2" value="">
+                        <label>&nbsp;lbs</label>
+                    </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header text-center">
                     Pylon 1
                 </div>
-                <div class="card-body">
-
+                <div class="card-body d-flex justify-content-center p-4">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                        <option>Choose Attachment</option>
+                        <option>None</option>
+                    </select>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header text-center">
                     Pylon 2
                 </div>
-                <div class="card-body">
-
+                <div class="card-body d-flex justify-content-center p-4">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                        <option>Choose Attachment</option>
+                        <option>None</option>
+                    </select>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header text-center">
                     Pylon 3
                 </div>
-                <div class="card-body">
-
+                <div class="card-body d-flex justify-content-center p-4">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                        <option>Choose Attachment</option>
+                        <option>None</option>
+                    </select>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <label class="mt-2">&nbsp;lbs</label>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header text-center">
                     Pylon 4
                 </div>
-                <div class="card-body">
-
+                <div class="card-body d-flex justify-content-center p-4">
+                    <select type="Select" value="Choose Attachment" class="btn btn-dark">
+                        <option>Choose Attachment</option>
+                        <option>None</option>
+                    </select>
+                    <input type="text" class="weight-input ml-4" value="" readonly disabled>
+                    <label class="mt-2">&nbsp;lbs</label>
                 </div>
+            </div>
+        </div>  
+        <div class="col-lg-1 text-center align-self-center">
+            <div class="row">
+                <button class="btn btn-dark w-100 save-button">Save Profile</button>
             </div>
         </div>  
     </div>
