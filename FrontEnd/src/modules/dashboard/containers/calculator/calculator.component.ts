@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Attachment } from '@app/models/attachment';
 import { CalculatorInput } from '@app/models/calculator-input';
 import { CalculatorOutput } from '@app/models/calculator-output';
+import { Constants } from '@app/models/constants';
 import { Pilot } from '@app/models/pilot';
 import { Profile } from '@app/models/profile.model';
 import { RunwayConditions } from '@app/models/runway-conditions';
@@ -75,6 +76,12 @@ export class CalculatorComponent implements OnInit {
     userAttachments = [];
     pilot1: Pilot;
     pilot2: Pilot;
+    pylon1: Attachment;
+    pylon2: Attachment;
+    pylon3: Attachment;
+    pylon4: Attachment;
+    constants: Constants;
+    weightSum: number;
 
     calculatorOutputImperial = new CalculatorOutput();
     calculatorOutputMetric = new CalculatorOutput();
@@ -86,6 +93,11 @@ export class CalculatorComponent implements OnInit {
         this.form = this.formBuilder.group({
             airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
         });
+
+        this.restClassifier.get('constants').subscribe(res => {
+            this.constants = res.data.constants;
+            this.weightSum = res.data.constants.basicEmptyAircraftWeight;
+        })
 
         // TODO: More validators needed
         this.formManualModal = this.formBuilder.group({
@@ -120,9 +132,29 @@ export class CalculatorComponent implements OnInit {
 
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AttachmentBox3').innerHTML = "Agile Pod";
+                            this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
                         }
                         document.getElementById('AttachmentBox4').innerHTML = this.currentProfile.pylon3;
                         document.getElementById('AttachmentBox5').innerHTML = this.currentProfile.pylon4;
+
+                        this.userAttachments.forEach(attachment => {
+                            if(this.currentProfile.pylon1 === attachment.name) {
+                                this.pylon1 = attachment;
+                                this.weightSum +=  attachment.mass;
+                            }
+                            if(this.currentProfile.pylon2 === attachment.name) {
+                                this.pylon2 = attachment;
+                                this.weightSum +=  attachment.mass;
+                            }
+                            if(this.currentProfile.pylon3 === attachment.name) {
+                                this.pylon3 = attachment;
+                                this.weightSum +=  attachment.mass;
+                            }
+                            if(this.currentProfile.pylon4 === attachment.name) {
+                                this.pylon4 = attachment;
+                                this.weightSum +=  attachment.mass;
+                            }
+                        })
                     }
                 )
             }
@@ -132,6 +164,8 @@ export class CalculatorComponent implements OnInit {
                 document.getElementById('AttachmentBox3').innerHTML = "&nbsp;";
                 document.getElementById('AttachmentBox4').innerHTML = "&nbsp;";
                 document.getElementById('AttachmentBox5').innerHTML = "&nbsp;";
+
+                this.currentProfile = undefined;
             }
         });
 
@@ -232,12 +266,14 @@ export class CalculatorComponent implements OnInit {
                 this.restClassifier.get(`pilots/${localStorage.getItem('username')}_${pilot1ProfileSelect.value}`)
                 .subscribe( res => {
                     this.pilot1 = res.data.pilot;
+                    this.weightSum +=  this.pilot1.mass;
                 });
             }
             else {
                 this.pilot1NotSelected = true;
                 document.getElementById("PilotBox1Text").innerHTML = "";
                 document.getElementById("PilotBox2Text").innerHTML = "";
+                this.pilot1 = undefined;
             }
         });
 
@@ -245,13 +281,15 @@ export class CalculatorComponent implements OnInit {
 
             if(pilot2ProfileSelect.value !== "Pilot 2" && pilot2ProfileSelect.value !== "None") {
                 document.getElementById("PilotBox2Text").innerHTML = pilot2ProfileSelect.value;
-                this.restClassifier.get(`pilots/${localStorage.getItem('username')}_${pilot2ProfileSelect.value}}`)
+                this.restClassifier.get(`pilots/${localStorage.getItem('username')}_${pilot2ProfileSelect.value}`)
                 .subscribe( res => {
                     this.pilot2 = res.data.pilot;
+                    this.weightSum +=  this.pilot2.mass;
                 });
             }
             else {
                 document.getElementById("PilotBox2Text").innerHTML = "";
+                this.pilot2 = undefined;
             }
 
         });
@@ -297,7 +335,6 @@ export class CalculatorComponent implements OnInit {
         var attachments = [];
 
         this.userAttachments.forEach(attachment => {
-            console.log(attachment.name)
             if(this.currentProfile.pylon1 === attachment.name) {
                 attachments.push(attachment);
             }

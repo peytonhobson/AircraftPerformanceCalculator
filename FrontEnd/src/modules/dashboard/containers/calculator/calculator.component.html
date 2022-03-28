@@ -14,24 +14,118 @@
             <th colspan="6">L39 Loading</th>
           </tr>
           <tr><th></th><th>Gallons</th><th>Pounds</th><th>ARM</th><th>Moment</th><th>%MAC</th>
-          <tr><th>Basic Empty Aircraft</th><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pilot (1)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Parachute (1)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pilot (2)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Parachute (2)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Baggage (1)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Baggage (2)</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pylon 1</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pylon 2</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pylon 3</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Pylon 4</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>Centerline Store</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Zero Fuel C.G.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Minimum Fuselage Fuel</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Full Fuselage Fuel</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Tip Tanks</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Underwing Tanks</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td class ="font-weight-bold">Total</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr>
+            <th>Basic Empty Aircraft</th>
+            <td></td>
+            <td><span *ngIf="this.constants">{{this.constants.basicEmptyAircraftWeight}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pilot (1)</td>
+            <td></td>
+            <td><span *ngIf="this.pilot1">{{this.pilot1.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pilot (2)</td>
+            <td></td>
+            <td><span *ngIf="this.pilot2">{{this.pilot2.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Baggage (1)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Baggage (2)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pylon 1</td>
+            <td></td>
+            <td><span *ngIf="this.pylon1">{{this.pylon1.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pylon 2</td>
+            <td></td>
+            <td><span *ngIf="this.pylon2">{{this.pylon2.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pylon 3</td>
+            <td></td>
+            <td><span *ngIf="this.pylon3">{{this.pylon3.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Pylon 4</td>
+            <td></td>
+            <td><span *ngIf="this.pylon4">{{this.pylon4.mass}}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Centerline Store</td>
+            <td></td>
+            <td><span *ngIf="this.currentProfile">{{this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight }}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Full Fuselage Fuel</td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.internalTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.internalTank*6.815 }}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Tip Tanks</td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.tipTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.tipTank*6.815 }}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Underwing Tanks</td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.dropTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{this.currentProfile.dropTank*6.815 }}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Total</td>
+            <td></td>
+            <td><span>{{ this.weightSum }}</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
         </table>
       </div>
       <div class="col-lg-3 text-center left-column p-0 ml-2">
