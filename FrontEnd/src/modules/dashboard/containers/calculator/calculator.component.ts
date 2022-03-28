@@ -319,22 +319,26 @@ export class CalculatorComponent implements OnInit {
             res => {
            
             this.performanceOutput = res.data.calculatorOutput;
+
             this.calculateLoading = false;
             this.notCalculated = false;
-            const takeoffLineDistance = 100*(this.calculatorOutputMetric.takeoffDistance/this.runwayConditions.runwayLength);
+
+            const takeoffLineDistance = 100*(this.performanceOutput.takeoffDistance/(this.runwayConditions.runwayLength*3.28084));
             const takeoffLine = document.getElementById('takeoff-red-line') as HTMLImageElement;
+
             takeoffLine.style.width = takeoffLineDistance.toString() + "%";
-            takeoffLine.style.right = (100-takeoffLineDistance).toString() + "%";
+
             const takeoffPlane = document.getElementById('takeoff-plane') as HTMLImageElement;
-            takeoffPlane.style.right = (100-takeoffLineDistance-14).toString() + "%";
-            const landingLineDistance = 100*(this.calculatorOutputMetric.landingDistance/this.runwayConditions.runwayLength);
+            takeoffPlane.style.left = takeoffLineDistance.toString() + "%";
+
+            const landingLineDistance = 100*(this.performanceOutput.landingDistance/(this.runwayConditions.runwayLength*3.28084));
             const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
+
             landingLine.style.width = landingLineDistance.toString() + "%";
-            landingLine.style.left = (100-landingLineDistance).toString() + "%";
-            const landingPlane = document.getElementById('landing-plane') as HTMLImageElement;
-            landingPlane.style.left = (100-landingLineDistance-14).toString() + "%";
+
             this.displayPlanes = 'block';
             this.displayPerformance = 'block';
+
             document.getElementById('main-container').style.opacity = '40%';
             },
             error => {
@@ -343,10 +347,6 @@ export class CalculatorComponent implements OnInit {
                 return;
             }
         )
-                    
- 
-
-
     }
 
     saveManualModal() {

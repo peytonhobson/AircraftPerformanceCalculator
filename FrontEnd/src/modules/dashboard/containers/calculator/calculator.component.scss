@@ -213,10 +213,7 @@ h2, h3 {
     align-items: center;
 }
 
-#RunwayPicture {
-    size: 70%;
-    margin-top: 1%;
-}
+
 
 #RightColumn {
     margin-left: 1%;
@@ -287,33 +284,38 @@ h2, h3 {
   top: 0;
   left: 0;
   max-width: 130%;
+  min-height: 130%;
+}
+
+.runway-parent {
+    margin-top: 10%;
 }
 
 #takeoff-red-line {
   position: absolute;
-  top: 47%; 
+  top: 63%; 
+  left: 0%;
   height: 4%;
 }
 
 #landing-red-line {
   position: absolute;
-  top: 47%; 
-  right: 60%;
-  width: 40%;
+  top: 63%; 
+  left: 0%;
   height: 4%;
 }
 
 #takeoff-plane {
   position: absolute;
-  bottom: 30%;
+  bottom: 10%;
   max-width: 15%;
   height: auto;
 }
 
 #landing-plane {
     position: absolute;
-    left: 58%;
-    bottom: 40%;
+    left: -15%;
+    bottom: 25%;
     max-width: 15%;
     height: auto;
     transform: rotate(40deg);
