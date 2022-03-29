@@ -32,7 +32,7 @@ export class CalculatorComponent implements OnInit {
     formManualModal: FormGroup;
     formAutomaticModal: FormGroup;
     runwayConditions = {
-        "airportID": null,
+        "airportID": "",
         "temp": null,
         "pressureAltitude": null,
         "precipitation": null,
@@ -82,6 +82,11 @@ export class CalculatorComponent implements OnInit {
     pylon4: Attachment;
     constants: Constants;
     weightSum: number;
+    momentSum: number;
+    agilePodARM: number;
+
+    emptyAircraftMAC: number;
+    totalMAC: number;
 
     calculatorOutputImperial = new CalculatorOutput();
     calculatorOutputMetric = new CalculatorOutput();
@@ -97,6 +102,9 @@ export class CalculatorComponent implements OnInit {
         this.restClassifier.get('constants').subscribe(res => {
             this.constants = res.data.constants;
             this.weightSum = res.data.constants.basicEmptyAircraftWeight;
+            this.momentSum = res.data.constants.basicEmptyAircraftWeight*res.data.constants.basicEmptyAircraft;
+            this.emptyAircraftMAC = ((this.constants.basicEmptyAircraft-this.constants.macrefDatum)*100)/this.constants.macl39;
+            this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
         })
 
         // TODO: More validators needed
@@ -133,28 +141,40 @@ export class CalculatorComponent implements OnInit {
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AttachmentBox3').innerHTML = "Agile Pod";
                             this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
+                            this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+
+                            this.agilePodARM = (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail
+                                + this.constants.podPayload*this.currentProfile.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.currentProfile.agileWeight);
                         }
+
                         document.getElementById('AttachmentBox4').innerHTML = this.currentProfile.pylon3;
                         document.getElementById('AttachmentBox5').innerHTML = this.currentProfile.pylon4;
 
+                        //TODO: Update momentSum once more info known
                         this.userAttachments.forEach(attachment => {
                             if(this.currentProfile.pylon1 === attachment.name) {
                                 this.pylon1 = attachment;
-                                this.weightSum +=  attachment.mass;
+                                // this.weightSum +=  attachment.mass;
                             }
                             if(this.currentProfile.pylon2 === attachment.name) {
                                 this.pylon2 = attachment;
-                                this.weightSum +=  attachment.mass;
+                                // this.weightSum +=  attachment.mass;
                             }
                             if(this.currentProfile.pylon3 === attachment.name) {
                                 this.pylon3 = attachment;
-                                this.weightSum +=  attachment.mass;
+                                // this.weightSum +=  attachment.mass;
                             }
                             if(this.currentProfile.pylon4 === attachment.name) {
                                 this.pylon4 = attachment;
-                                this.weightSum +=  attachment.mass;
+                                // this.weightSum +=  attachment.mass;
                             }
                         })
+
+                        this.weightSum += this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
+                        this.momentSum += (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
+
+                        this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
+                        console.log(this.momentSum/this.weightSum)
                     }
                 )
             }
@@ -165,7 +185,36 @@ export class CalculatorComponent implements OnInit {
                 document.getElementById('AttachmentBox4').innerHTML = "&nbsp;";
                 document.getElementById('AttachmentBox5').innerHTML = "&nbsp;";
 
+                if(this.currentProfile.agilePod) {
+                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
+                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+                }
+
+                this.userAttachments.forEach(attachment => {
+                    if(this.currentProfile.pylon1 === attachment.name) {
+                        // this.weightSum -=  attachment.mass;
+                    }
+                    if(this.currentProfile.pylon2 === attachment.name) {
+                        // this.weightSum -=  attachment.mass;
+                    }
+                    if(this.currentProfile.pylon3 === attachment.name) {
+                        // this.weightSum -=  attachment.mass;
+                    }
+                    if(this.currentProfile.pylon4 === attachment.name) {
+                        // this.weightSum -=  attachment.mass;
+                    }
+                })
+
+                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
+                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
+
+                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
+
                 this.currentProfile = undefined;
+                this.pylon1 = undefined;
+                this.pylon2 = undefined;
+                this.pylon3 = undefined;
+                this.pylon4 = undefined;
             }
         });
 
@@ -267,12 +316,17 @@ export class CalculatorComponent implements OnInit {
                 .subscribe( res => {
                     this.pilot1 = res.data.pilot;
                     this.weightSum +=  this.pilot1.mass;
+                    this.momentSum += this.pilot1.mass*this.constants.pilot1;
+                    this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
                 });
             }
             else {
                 this.pilot1NotSelected = true;
                 document.getElementById("PilotBox1Text").innerHTML = "";
                 document.getElementById("PilotBox2Text").innerHTML = "";
+                this.weightSum -=  this.pilot1.mass;
+                this.momentSum -= this.pilot1.mass*this.constants.pilot1;
+                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
                 this.pilot1 = undefined;
             }
         });
@@ -285,10 +339,15 @@ export class CalculatorComponent implements OnInit {
                 .subscribe( res => {
                     this.pilot2 = res.data.pilot;
                     this.weightSum +=  this.pilot2.mass;
+                    this.momentSum += this.pilot2.mass*this.constants.pilot2;
+                    this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
                 });
             }
             else {
                 document.getElementById("PilotBox2Text").innerHTML = "";
+                this.weightSum -=  this.pilot2.mass;
+                this.momentSum -= this.pilot2.mass*this.constants.pilot2;
+                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
                 this.pilot2 = undefined;
             }
 

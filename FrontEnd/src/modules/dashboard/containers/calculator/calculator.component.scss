@@ -176,6 +176,12 @@ ul {
     background-color: $gray-800;
     color: white;
 }
+
+.output-label {
+    display: table-cell;
+    align-items: center;
+}
+
 .performance-selection {
     width: 32%;
     margin-inline: 0.5%;
@@ -212,8 +218,6 @@ h2, h3 {
     display: table-cell;
     align-items: center;
 }
-
-
 
 #RightColumn {
     margin-left: 1%;
