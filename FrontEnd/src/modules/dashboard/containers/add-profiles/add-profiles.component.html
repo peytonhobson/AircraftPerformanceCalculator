@@ -4,34 +4,91 @@
 <div class="container" id="main-container">
     <div class="row d-flex justify-content-center ">
         <div class="col-lg-5">
-            <div class="card top-card-left" id="TankCard">
+            <div class="card">
                 <div class="card-header text-center">
-                    Specify Tank Fill
+                    Aircraft Profile
                 </div>
-                <ul class="list-group list-group-flush align-center">
-                    <li class="list-group-item">
-                        <label for="InternalTankCheck">Internal Tanks</label>
-                        <div class="row d-flex">
-                            <input type="range" class="range-input" id="InternalTankRange" value ="0">
-                            <label class="rangeVal" id="InternalTankVal">&nbsp;60 gal</label>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Specify Tank Fill
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <label for="TipTankCheck">Tip Tanks</label>
-                        <div class="row d-flex">
-                            <input type="range" class="range-input" id="TipTankRange" value ="0">
-                            <label class="rangeVal" id="TipTankVal">&nbsp;0 gal</label>
+                        <ul class="list-group list-group-flush align-center">
+                            <li class="list-group-item p-1">
+                                <div class="row d-flex justify-content-left">
+                                    <div class="col-md-5">
+                                        <h3 class="mt-3 ml-1">Internal Tanks:</h3>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="row d-flex justify-content-left">
+                                            <input type="number" class="tank-input mt-3" min="60" max="288" id="InternalTankInput" value ="60">
+                                            <h4 class="mt-3 ml-2">gal</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item p-1">
+                                <div class="row d-flex justify-content-left">
+                                    <div class="col-md-5">
+                                        <h3 class="mt-3 ml-1">Tip Tanks:</h3>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="row d-flex justify-content-left">
+                                            <input type="number" class="tank-input mt-3" min="0" max="52" id="TipTankInput" value ="0">
+                                            <h4 class="mt-3 ml-2">gal</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item p-1">
+                                <div class="row d-flex justify-content-left">
+                                    <div class="col-md-5">
+                                        <h3 class="mt-3 ml-1">Underwing Tanks:</h3>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="row d-flex justify-content-left">
+                                            <input type="number" class="tank-input mt-3" min="0" max="80" id="UnderwingTankInput" value ="0">
+                                            <h4 class="mt-3 ml-2">gal</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Centerline Store
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <label for="DropTankCheck">Drop Tanks</label>
-                        <div class="row d-flex">
-                            <input type="range" class="range-input" id="DropTankRange" value="0">
-                            <label class="rangeVal" id="DropTankVal" value = "0">&nbsp;0 gal</label>
+                        <div class="card-body p-3">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-lg-6 mt-2">
+                                    <label>Agile Pod:</label>
+                                    <input type="radio" class="radio ml-2" id="AgileYesRadio"/>
+                                    <label  class="radio-label ml-1">Yes</label>
+                                    <input type="radio" class="radio ml-2" id="AgileNoRadio" checked/>
+                                    <label class="radio-label ml-1">No</label>
+                                </div>
+                                <label class="mt-2">Payload Weight:</label>
+                                <input type="text" class="ml-2" value="" id="AgileWeightInput">
+                                <label class="mt-2">&nbsp;lbs</label>
+                            </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Outboard
+                        </div>
+                        <div class="card-body d-flex justify-content-center p-2">
+                            <label class="mt-2">Weight:</label>
+                            <input type="number" class="weight-input ml-2" value="" id="OutboardInput">
+                            <label class="mt-2">&nbsp;lbs</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-lg btn-dark" (click)="openSaveModal()">Save</button>
             </div>
+        </div>
+        <div class="col-lg-5">
             <div class="card new-card">
                 <div class="card-header text-center">
                     Add New Pilot
@@ -54,123 +111,6 @@
                         </div>
                     </div> 
                 </div>
-            </div>
-            <div class="card new-card">
-                <div class="card-header text-center">
-                    Add New Pylon Attachment
-                </div>
-                <div class="card-body new-card-body">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-lg-6 text-center">
-                            <label for="AttachmentName" class="mt-0">Name:</label>
-                            <input type="text" id="AttachmentName" name="AttachmentName" value="">
-                            <label for="AttachmentMass">Weight:</label>
-                            <div class="row d-flex justify-content-center">
-                                <input type="text" class="unit-input" id="AttachmentMass" name="AttachmentMass" value="">
-                                <div class="bg-dark rounded unit-block">
-                                    <h4 class="unit-label m-0">lbs</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 my-auto">
-                            <button class = "btn btn-outline-dark active create-button" (click)="createAttachment()" id="CreateNewAttachmentButton">Create Attachment</button>
-                        </div>
-                    </div>
-                </div>  
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="card right-card">
-                <div class="card-header text-center">
-                    Centerline Store
-                </div>
-                <div class="card-body p-4">
-                    <div class="row mt-1">
-                        <div class="col-lg-6">
-                            <label>Agile Pod:</label>
-                            <input type="radio" class="radio ml-2" id="AgileYesRadio"/>
-                            <label  class="radio-label ml-1">Yes</label>
-                            <input type="radio" class="radio ml-2" id="AgileNoRadio" checked/>
-                            <label class="radio-label ml-1">No</label>
-                        </div>
-                        <label>Payload Weight:</label>
-                        <input type="text" class="weight-input ml-2" value="" id="AgileWeightInput">
-                        <label>&nbsp;lbs</label>
-                    </div>
-                </div>
-            </div>
-            <div class="card right-card">
-                <div class="card-header text-center">
-                    Pylon 1
-                </div>
-                <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon1Select">
-                        <option>Choose Attachment</option>
-                        <option>None</option>
-                        <option *ngFor="let attachment of Attachments" 
-                            [value]="attachment.name" >
-                        {{attachment.name}}
-                        </option>
-                    </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon1WeightInput">
-                    <label class="mt-2">&nbsp;lbs</label>
-                </div>
-            </div>
-            <div class="card right-card">
-                <div class="card-header text-center">
-                    Pylon 2
-                </div>
-                <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon2Select">
-                        <option>Choose Attachment</option>
-                        <option>None</option>
-                        <option *ngFor="let attachment of Attachments" 
-                            [value]="attachment.name" >
-                        {{attachment.name}}
-                        </option>
-                    </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon2WeightInput">
-                    <label class="mt-2">&nbsp;lbs</label>
-                </div>
-            </div>
-            <div class="card right-card">
-                <div class="card-header text-center">
-                    Pylon 3
-                </div>
-                <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon3Select">
-                        <option>Choose Attachment</option>
-                        <option>None</option>
-                        <option *ngFor="let attachment of Attachments" 
-                            [value]="attachment.name" >
-                        {{attachment.name}}
-                        </option>
-                    </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon3WeightInput">
-                    <label class="mt-2">&nbsp;lbs</label>
-                </div>
-            </div>
-            <div class="card right-card">
-                <div class="card-header text-center">
-                    Pylon 4
-                </div>
-                <div class="card-body d-flex justify-content-center p-4">
-                    <select type="Select" value="Choose Attachment" class="btn btn-dark" id="Pylon4Select">
-                        <option>Choose Attachment</option>
-                        <option>None</option>
-                        <option *ngFor="let attachment of Attachments" 
-                            [value]="attachment.name" >
-                        {{attachment.name}}
-                        </option>
-                    </select>
-                    <input type="text" class="weight-input ml-4" value="" readonly disabled id="Pylon4WeightInput">
-                    <label class="mt-2">&nbsp;lbs</label>
-                </div>
-            </div>
-        </div>  
-        <div class="col-lg-1 text-center align-self-center">
-            <div class="row">
-                <button class="btn btn-dark w-100 save-button" (click)="openSaveModal()">Save Profile</button>
             </div>
         </div>  
     </div>

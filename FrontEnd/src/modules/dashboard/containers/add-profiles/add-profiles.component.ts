@@ -32,25 +32,6 @@ export class AddProfilesComponent implements OnInit {
             this.Attachments.push(e);
           });
       })
-      
-      //TODO: Might need to change to input instead of slider
-      const rangeInternal = document.getElementById('InternalTankRange') as HTMLInputElement;
-      const internalVal = document.getElementById('InternalTankVal') as HTMLInputElement;
-      rangeInternal.addEventListener('change', (e) => {
-          internalVal.innerHTML = (Number(rangeInternal.value)*2.22+60).toFixed(0) + " gal"
-      }); 
-
-      const rangeTipTank = document.getElementById('TipTankRange') as HTMLInputElement;
-      const TipTankVal = document.getElementById('TipTankVal') as HTMLInputElement;
-      rangeTipTank.addEventListener('change', (e) => {
-          TipTankVal.innerHTML = "&nbsp;" + (Number(rangeTipTank.value)*0.52).toFixed(0) + " gal"
-      }); 
-
-      const rangeDropTank = document.getElementById('DropTankRange') as HTMLInputElement;
-      const dropTankVal = document.getElementById('DropTankVal') as HTMLInputElement;
-      rangeDropTank.addEventListener('change', (e) => {
-          dropTankVal.innerHTML = "&nbsp;" + (Number(rangeDropTank.value)*0.8).toFixed(0) + " gal"
-      }); 
 
       const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
       const agileNoRadio = document.getElementById("AgileNoRadio") as HTMLInputElement;
@@ -68,75 +49,6 @@ export class AddProfilesComponent implements OnInit {
         agileYesRadio.checked = false;
         agileWeightInput.disabled = true;
         agileWeightInput.value = "";
-      })
-
-      const pylon1Select = document.getElementById('Pylon1Select') as HTMLSelectElement;
-      const pylon2Select = document.getElementById('Pylon2Select') as HTMLSelectElement;
-      const pylon3Select = document.getElementById('Pylon3Select') as HTMLSelectElement;
-      const pylon4Select = document.getElementById('Pylon4Select') as HTMLSelectElement;
-
-      pylon1Select.addEventListener('change', (e) => {
-
-        const weightInput = document.getElementById('Pylon1WeightInput') as HTMLInputElement;
-
-        if(pylon1Select.value !== "Choose Attachment" && pylon1Select.value !== "None") {
-          this.Attachments.forEach(element => {
-            if(element.name === pylon1Select.value) {
-              weightInput.value = element.mass;
-            }
-          })
-        }
-        else {
-          weightInput.value = "";
-        }
-      })
-
-      pylon2Select.addEventListener('change', (e) => {
-
-        const weightInput = document.getElementById('Pylon2WeightInput') as HTMLInputElement;
-
-        if(pylon2Select.value !== "Choose Attachment" && pylon2Select.value !== "None") {
-          this.Attachments.forEach(element => {
-            if(element.name === pylon2Select.value) {
-              weightInput.value = element.mass;
-            }
-          })
-        }
-        else {
-          weightInput.value = "";
-        }
-      })
-
-      pylon3Select.addEventListener('change', (e) => {
-
-        const weightInput = document.getElementById('Pylon3WeightInput') as HTMLInputElement;
-
-        if(pylon3Select.value !== "Choose Attachment" && pylon3Select.value !== "None") {
-          this.Attachments.forEach(element => {
-            if(element.name === pylon3Select.value) {
-              weightInput.value = element.mass;
-            }
-          })
-        }
-        else {
-          weightInput.value = "";
-        }
-      })
-
-      pylon4Select.addEventListener('change', (e) => {
-
-        const weightInput = document.getElementById('Pylon4WeightInput') as HTMLInputElement;
-
-        if(pylon4Select.value !== "Choose Attachment" && pylon4Select.value !== "None") {
-          this.Attachments.forEach(element => {
-            if(element.name === pylon4Select.value) {
-              weightInput.value = element.mass;
-            }
-          })
-        }
-        else {
-          weightInput.value = "";
-        }
       })
 
     }
@@ -162,29 +74,10 @@ export class AddProfilesComponent implements OnInit {
 
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
     const user = localStorage.getItem('username');
-    const internalTankVal = parseInt(document.getElementById('InternalTankVal').innerHTML.replace(/\D/g, ""));
-    const dropTankVal = parseInt(document.getElementById('DropTankVal').innerHTML.replace(/\D/g, ""));
-    const tipTankVal = parseInt(document.getElementById('TipTankRange').innerHTML.replace(/\D/g, ""));
-
-    console.log(document.getElementById('InternalTankVal').innerHTML)
-
-    const pylon1Select = document.getElementById('Pylon1Select') as HTMLSelectElement;
-    const pylon2Select = document.getElementById('Pylon2Select') as HTMLSelectElement;
-    const pylon3Select = document.getElementById('Pylon3Select') as HTMLSelectElement;
-    const pylon4Select = document.getElementById('Pylon4Select') as HTMLSelectElement;
-
-    if(pylon1Select.value === "Choose Attachment") {
-      this.alertService.error("Please specify attachments for pylon 1.")
-    }
-    if(pylon2Select.value === "Choose Attachment") {
-      this.alertService.error("Please specify attachments for pylon 2.")
-    }
-    if(pylon3Select.value === "Choose Attachment") {
-      this.alertService.error("Please specify attachments for pylon 3.")
-    }
-    if(pylon4Select.value === "Choose Attachment") {
-      this.alertService.error("Please specify attachments for pylon 4.")
-    }
+    const internalTankVal = document.getElementById('InternalTankInput') as HTMLInputElement;
+    const dropTankVal = document.getElementById('DropTankInput') as HTMLInputElement;
+    const tipTankVal = document.getElementById('TipTankInput') as HTMLInputElement;
+    const outboard = document.getElementById('OutboardInput') as HTMLInputElement;
 
     const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
     var agileWeight = 0;
@@ -195,9 +88,8 @@ export class AddProfilesComponent implements OnInit {
       agilePod = true;
     }
 
-    const profile = new Profile(user,profileName.value, internalTankVal,
-      dropTankVal, tipTankVal, pylon1Select.value, pylon2Select.value, pylon3Select.value,
-      pylon4Select.value, agilePod, agileWeight);
+    const profile = new Profile(user,profileName.value, Number(internalTankVal.value),
+      Number(dropTankVal.value), Number(tipTankVal.value), outboard.value, agilePod, agileWeight);
 
     this.apiService.post('profiles/save',profile).pipe(first())
     .subscribe(

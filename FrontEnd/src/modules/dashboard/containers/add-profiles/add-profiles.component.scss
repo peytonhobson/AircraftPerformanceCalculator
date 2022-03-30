@@ -27,45 +27,11 @@
     margin-top: 2%;
 }
 
-.range-input {
-    margin-left: 3%;
-    width: 70%;
+.tank-input {
+    width: 40%;
+    height: 35% !important;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    input[type='range'] {
-        overflow: hidden;
-        -webkit-appearance: none;
-    }
-    
-    input[type='range']::-webkit-slider-runnable-track {
-      height: 10px;
-      color: #13bba4;
-      margin-top: -1px;
-      -webkit-appearance: none;
-    }
-    
-    input[type='range']::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      cursor: ew-resize;
-      background: black;
-      box-shadow: -80px 0 0 80px #43e5f7;
-    }
-
-}
-/** FF*/
-input[type="range"]::-moz-range-progress {
-    background-color: black; 
-}
-input[type="range"]::-moz-range-track {  
-    border: 1px;
-    background-color: lightgray;
-}
-
-/* IE*/
-input[type="range"]::-ms-fill-lower {
-  background-color: gray; 
-}
 
 #internalCheck {
     visibility: hidden;
@@ -118,6 +84,10 @@ li {
 }
 
 .weight-input {
+    max-width: 25%;
+}
+
+#AgileWeightInput {
     max-width: 15%;
 }
 
