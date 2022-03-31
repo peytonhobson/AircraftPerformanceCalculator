@@ -11,6 +11,7 @@ import { RunwayConditions } from '@app/models/runway-conditions';
 import { AccountService } from '@app/services/account.service';
 import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
+import { faUnderline } from '@fortawesome/free-solid-svg-icons';
 import { first} from 'rxjs/operators';
   
 
@@ -20,12 +21,6 @@ import { first} from 'rxjs/operators';
     styleUrls: ['calculator.component.scss'],
 })
 export class CalculatorComponent implements OnInit {
-    constructor(
-        private restClassifier: ApiService,
-        private accountService: AccountService,
-        private formBuilder: FormBuilder,
-        private alertService: AlertService,
-    ) {}
     title = 'FrontEnd';
 
     form: FormGroup;
@@ -73,25 +68,34 @@ export class CalculatorComponent implements OnInit {
             "stallSpeedVS0GD": 0,
             "stallSpeedVS0GU": 0
     };
-    userAttachments = [];
     pilot1: Pilot;
     pilot2: Pilot;
-    pylon1: Attachment;
-    pylon2: Attachment;
-    pylon3: Attachment;
-    pylon4: Attachment;
+    outboard: number;
     constants: Constants;
     weightSum: number;
     momentSum: number;
+    zeroWeightSum: number;
+    zeroMomentSum: number;
     agilePodARM: number;
+    baggage1 = 0;
+    baggage2 = 0;
 
     emptyAircraftMAC: number;
-    totalMAC: number;
 
     calculatorOutputImperial = new CalculatorOutput();
     calculatorOutputMetric = new CalculatorOutput();
 
     currentProfile: Profile;
+
+    constructor(
+        private restClassifier: ApiService,
+        private accountService: AccountService,
+        private formBuilder: FormBuilder,
+        private alertService: AlertService,
+    ) {
+        this.pilot1 = new Pilot(null, null, 0);
+        this.pilot2 = new Pilot(null, null, 0);
+    }
 
     ngOnInit() {
 
@@ -103,8 +107,9 @@ export class CalculatorComponent implements OnInit {
             this.constants = res.data.constants;
             this.weightSum = res.data.constants.basicEmptyAircraftWeight;
             this.momentSum = res.data.constants.basicEmptyAircraftWeight*res.data.constants.basicEmptyAircraft;
+            this.zeroWeightSum = res.data.constants.basicEmptyAircraftWeight+409;
+            this.zeroMomentSum = (res.data.constants.basicEmptyAircraftWeight+409)*res.data.constants.basicEmptyAircraft;
             this.emptyAircraftMAC = ((this.constants.basicEmptyAircraft-this.constants.macrefDatum)*100)/this.constants.macl39;
-            this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
         })
 
         // TODO: More validators needed
@@ -145,14 +150,15 @@ export class CalculatorComponent implements OnInit {
                                 + this.constants.podPayload*this.currentProfile.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.currentProfile.agileWeight);
                         }
 
+                        this.outboard = this.currentProfile.outboard;
+
                         this.weightSum += this.currentProfile.outboard;
                         this.momentSum += this.currentProfile.outboard*this.constants.tanks;
 
-                        this.weightSum += this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
-                        this.momentSum += (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
+                        this.weightSum += this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815;
+                        this.momentSum += (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
 
-                        this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
-                        console.log(this.momentSum/this.weightSum)
+      
                     }
                 )
             }
@@ -166,28 +172,17 @@ export class CalculatorComponent implements OnInit {
                 this.weightSum -= this.currentProfile.outboard;
                 this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
 
-                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
-                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
-
-                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
+                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815;
+                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
 
                 this.currentProfile = undefined;
-                this.pylon1 = undefined;
-                this.pylon2 = undefined;
-                this.pylon3 = undefined;
-                this.pylon4 = undefined;
+                this.outboard = undefined;
             }
         });
 
         this.restClassifier.get(`profiles/${localStorage.getItem('username')}/all`).subscribe(res => {
             res.data.profiles.forEach((profile) => {
                 aircraftProfileSelect.add(new Option(profile.name, profile.name), undefined)
-            });
-        });
-
-        this.restClassifier.get(`attachments/${localStorage.getItem('username')}/all`).subscribe(res => {
-            res.data.attachments.forEach((attachment) => {
-                this.userAttachments.push(attachment);
             });
         });
 
@@ -278,17 +273,21 @@ export class CalculatorComponent implements OnInit {
                     this.pilot1 = res.data.pilot;
                     this.weightSum +=  this.pilot1.mass;
                     this.momentSum += this.pilot1.mass*this.constants.pilot1;
-                    this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
+                    this.zeroWeightSum += this.pilot1.mass;
+                    this.zeroMomentSum += this.pilot1.mass*this.constants.pilot1;
                 });
             }
             else {
                 this.pilot1NotSelected = true;
                 document.getElementById("PilotBox1Text").innerHTML = "";
                 document.getElementById("PilotBox2Text").innerHTML = "";
-                this.weightSum -=  this.pilot1.mass;
-                this.momentSum -= this.pilot1.mass*this.constants.pilot1;
-                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
-                this.pilot1 = undefined;
+                if(this.pilot1) {
+                    this.weightSum -=  this.pilot1.mass;
+                    this.momentSum -= this.pilot1.mass*this.constants.pilot1;
+                    this.zeroWeightSum -= this.pilot1.mass;
+                    this.zeroMomentSum -= this.pilot1.mass*this.constants.pilot1;
+                    this.pilot1 = undefined;
+                }
             }
         });
 
@@ -296,23 +295,70 @@ export class CalculatorComponent implements OnInit {
 
             if(pilot2ProfileSelect.value !== "Pilot 2" && pilot2ProfileSelect.value !== "None") {
                 document.getElementById("PilotBox2Text").innerHTML = pilot2ProfileSelect.value;
+
+                const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
+                baggage2.disabled = false;
+
                 this.restClassifier.get(`pilots/${localStorage.getItem('username')}_${pilot2ProfileSelect.value}`)
                 .subscribe( res => {
                     this.pilot2 = res.data.pilot;
                     this.weightSum +=  this.pilot2.mass;
                     this.momentSum += this.pilot2.mass*this.constants.pilot2;
-                    this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
+                    this.zeroWeightSum += this.pilot2.mass;
+                    this.zeroMomentSum += this.pilot2.mass*this.constants.pilot2;
                 });
             }
             else {
                 document.getElementById("PilotBox2Text").innerHTML = "";
-                this.weightSum -=  this.pilot2.mass;
-                this.momentSum -= this.pilot2.mass*this.constants.pilot2;
-                this.totalMAC = (((this.momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39;
-                this.pilot2 = undefined;
+                if(this.pilot2) {
+                    this.weightSum -=  this.pilot2.mass;
+                    this.momentSum -= this.pilot2.mass*this.constants.pilot2;
+                    this.zeroWeightSum -= this.pilot2.mass;
+                    this.zeroMomentSum -= this.pilot2.mass*this.constants.pilot2;
+                    this.pilot2 = undefined;
+                    const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
+                }
+                baggage2.disabled = true;
             }
 
         });
+
+        const baggage1 = document.getElementById('Baggage1') as HTMLInputElement;
+        const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
+
+        baggage1.addEventListener('change', (e) => {
+            if(baggage1.value.match(/^[0-9]/g)) {
+                this.baggage1 = Number(baggage1.value);
+                this.weightSum += this.baggage1;
+                this.momentSum += this.baggage1*this.constants.baggage1;
+                this.zeroWeightSum += this.baggage1;
+                this.zeroMomentSum += this.baggage1*this.constants.baggage1;
+            }
+            else {
+                this.weightSum -= this.baggage1;
+                this.momentSum -= this.baggage1*this.constants.baggage1;
+                this.zeroWeightSum -= this.baggage1;
+                this.zeroMomentSum -= this.baggage1*this.constants.baggage1;
+                this.baggage1 = undefined;
+            }
+        })
+
+        baggage2.addEventListener('change', (e) => {
+            if(baggage2.value.match(/^[0-9]/g)) {
+                this.baggage2 = Number(baggage2.value);
+                this.weightSum += this.baggage2;
+                this.momentSum += this.baggage2*this.constants.baggage2;
+                this.zeroWeightSum += this.baggage2;
+                this.zeroMomentSum += this.baggage2*this.constants.baggage2;
+            }
+            else {
+                this.weightSum -= this.baggage2;
+                this.momentSum -= this.baggage2*this.constants.baggage2;
+                this.zeroWeightSum -= this.baggage2;
+                this.zeroMomentSum -= this.baggage2*this.constants.baggage2;
+                this.baggage2 = undefined;
+            }
+        })
     }
 
     calculate() {
@@ -339,7 +385,7 @@ export class CalculatorComponent implements OnInit {
         const landingWeight = document.getElementById('LandingWeightInput') as HTMLInputElement;
 
         if(landingWeight.value == "" || !landingWeight.value.match(/^[0-9]/)) {
-            this.alertService.error("Please input correct flight time.")
+            this.alertService.error("Please input landing weight.")
             this.calculateLoading = false;
             return;
         }
@@ -619,10 +665,6 @@ export class CalculatorComponent implements OnInit {
             this.displayProfileInfo = 'block';
             document.getElementById('main-container').style.opacity = '40%';
         })
-    }
-
-    attachmentToString(attachment: Attachment) {
-        return attachment.name + ' - Weight: ' + attachment.mass + ' kg'
     }
 
     closeProfileModal() {

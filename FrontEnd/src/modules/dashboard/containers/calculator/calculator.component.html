@@ -10,7 +10,6 @@
           <img src="assets/img/black-line.jpg" id="BlackLine1" />
           <img src="assets/img/black-line.jpg" id="BlackLine2" />
         </div>
-        <!-- TODO: Make not hardcoded -->
         <table>
           <tr>
             <th colspan="6">L39 Loading</th>
@@ -19,114 +18,114 @@
           <tr>
             <th>Basic Empty Aircraft</th>
             <td></td>
-            <td><span *ngIf="this.constants">{{this.constants.basicEmptyAircraftWeight}}</span></td>
-            <td><span *ngIf="this.constants">{{this.constants.basicEmptyAircraft}}</span></td>
-            <td><span *ngIf="this.constants">{{ (this.constants.basicEmptyAircraftWeight*this.constants.basicEmptyAircraft).toFixed(0) }}</span></td>
-            <td><span class="text-primary" *ngIf="this.emptyAircraftMAC">{{ this.emptyAircraftMAC.toFixed(1) }}%</span></td>
+            <td><span *ngIf="this.constants">{{ constants.basicEmptyAircraftWeight }}</span></td>
+            <td><span *ngIf="this.constants">{{ constants.basicEmptyAircraft.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.constants">{{ (constants.basicEmptyAircraftWeight*constants.basicEmptyAircraft).toFixed(0) }}</span></td>
+            <td><span class="text-primary" *ngIf="this.emptyAircraftMAC">{{ emptyAircraftMAC.toFixed(0) }}%</span></td>
           </tr>
           <tr>
             <td>Pilot (1)</td>
             <td></td>
-            <td><span *ngIf="this.pilot1">{{this.pilot1.mass}}</span></td>
-            <td><span *ngIf="this.constants && this.pilot1">{{this.constants.pilot1}}</span></td>
-            <td><span *ngIf="this.pilot1 && this.constants">{{ (this.constants.pilot1*this.pilot1.mass).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.pilot1.mass > 0">{{ pilot1.mass }}</span></td>
+            <td><span *ngIf="this.constants && this.pilot1.mass > 0">{{ constants.pilot1.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.pilot1.mass > 0 && this.constants">{{ (constants.pilot1*pilot1.mass).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
             <td>Pilot (2)</td>
             <td></td>
-            <td><span *ngIf="this.pilot2">{{this.pilot2.mass}}</span></td>
-            <td><span *ngIf="this.constants && this.pilot2">{{this.constants.pilot2}}</span></td>
-            <td><span *ngIf="this.pilot2 && this.constants">{{ (this.constants.pilot2*this.pilot2.mass).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.pilot2.mass > 0">{{ pilot2.mass }}</span></td>
+            <td><span *ngIf="this.constants && this.pilot2.mass > 0">{{ constants.pilot2.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.pilot2.mass > 0 && this.constants">{{ (constants.pilot2*pilot2.mass).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
             <td>Baggage (1)</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td><span *ngIf="this.baggage1">{{ baggage1 }}</span></td>
+            <td><span *ngIf="this.baggage1 && this.constants">{{ constants.baggage1 }}</span></td>
+            <td><span *ngIf="this.baggage1 && this.constants">{{ constants.baggage1*baggage1 }}</span></td>
             <td></td>
           </tr>
           <tr>
             <td>Baggage (2)</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Pylon 1</td>
-            <td></td>
-            <td><span *ngIf="this.pylon1">{{this.pylon1.mass}}</span></td>
-            <td></td>
-            <td></td>
+            <td><span *ngIf="this.baggage2">{{ baggage2 }}</span></td>
+            <td><span *ngIf="this.baggage2 && this.constants">{{ constants.baggage2.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.baggage2 && this.constants">{{ (constants.baggage2*baggage2).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
-            <td>Pylon 2</td>
-            <td></td>
-            <td><span *ngIf="this.pylon2">{{this.pylon2.mass}}</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Pylon 3</td>
-            <td></td>
-            <td><span *ngIf="this.pylon3">{{this.pylon3.mass}}</span></td>
-            <td></td>
-            <td></td>
+            <td class ="font-weight-bold">Minimum Fuselage Fuel</td>
+            <td><span>60</span></td>
+            <td><span>409</span></td>
+            <td><span *ngIf="this.constants">{{ this.constants.tanks.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.zeroMomentSum">{{ (this.constants.tanks*409).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
-            <td>Pylon 4</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><span *ngIf="this.zeroWeightSum">{{zeroWeightSum.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.zeroMomentSum && this.zeroWeightSum">{{ (zeroMomentSum/(zeroWeightSum+60)).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.zeroMomentSum">{{ zeroMomentSum.toFixed(0) }}</span></td>
+            <td><span class="text-primary" *ngIf="this.zeroMomentSum && this.zeroWeightSum">{{ ((((zeroMomentSum/this.zeroWeightSum)-this.constants.macrefDatum)*100)/this.constants.macl39).toFixed(1) }}%</span></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Actual Fuselage Fuel</td>
+            <td><span *ngIf="this.currentProfile">{{ currentProfile.internalTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{ (currentProfile.internalTank*6.815).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.internalTank*6.815).toFixed(0) }}</span></td>
             <td></td>
-            <td><span *ngIf="this.pylon4">{{this.pylon4.mass}}</span></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Tip Tanks</td>
+            <td><span *ngIf="this.currentProfile">{{ currentProfile.tipTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{ (currentProfile.tipTank*6.815).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.tipTank*6.815).toFixed(0) }}</span></td>
             <td></td>
+          </tr>
+          <tr>
+            <td class ="font-weight-bold">Underwing Tanks</td>
+            <td><span *ngIf="this.currentProfile">{{ currentProfile.underwingTank }}</span></td>
+            <td><span *ngIf="this.currentProfile">{{ (currentProfile.underwingTank*6.815).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.underwingTank*6.815).toFixed(0) }}</span></td>
             <td></td>
+          </tr>
+          <tr>
+            <td>Outboard</td>
+            <td></td>
+            <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
             <td>Centerline Store</td>
             <td></td>
-            <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{this.agilePodARM.toFixed(1)}}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{ ((this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight)*this.agilePodARM).toFixed(0) }}</span></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class ="font-weight-bold">Full Fuselage Fuel</td>
-            <td><span *ngIf="this.currentProfile">{{this.currentProfile.internalTank }}</span></td>
-            <td><span *ngIf="this.currentProfile">{{this.currentProfile.internalTank*6.815 }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{this.constants.tanks }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{ (this.constants.tanks*this.currentProfile.internalTank*6.815).toFixed(0) }}</span></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class ="font-weight-bold">Tip Tanks</td>
-            <td><span *ngIf="this.currentProfile">{{this.currentProfile.tipTank }}</span></td>
-            <td><span *ngIf="this.currentProfile">{{this.currentProfile.tipTank*6.815 }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{this.constants.tanks }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{ (this.constants.tanks*this.currentProfile.tipTank*6.815).toFixed(0) }}</span></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td class ="font-weight-bold">Underwing Tanks</td>
-            <td><span *ngIf="this.currentProfile">{{this.currentProfile.dropTank }}</span></td>
-            <td><span *ngIf="this.currentProfile">{{(this.currentProfile.dropTank*6.815).toFixed(1) }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{this.constants.tanks }}</span></td>
-            <td><span *ngIf="this.currentProfile && this.constants">{{ (this.constants.tanks*this.currentProfile.dropTank*6.815).toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ agilePodARM.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.currentProfile && this.constants">{{ ((constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
             <td class ="font-weight-bold">Total</td>
             <td></td>
-            <td><span *ngIf="this.weightSum">{{ this.weightSum.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.weightSum">{{ weightSum.toFixed(0) }}</span></td>
             <td><span *ngIf="this.momentSum && this.weightSum">{{ (momentSum/weightSum).toFixed(1) }}</span></td>
-            <td><span *ngIf="this.momentSum">{{ this.momentSum.toFixed(0) }}</span></td>
-            <td><span class="text-primary" *ngIf="this.totalMAC">{{ this.totalMAC.toFixed(1) }}%</span></td>
+            <td><span *ngIf="this.momentSum">{{ momentSum.toFixed(0) }}</span></td>
+            <td><span class="text-primary" *ngIf="this.momentSum && this.weightSum">{{ ((((momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39).toFixed(1) }}%</span></td>
           </tr>
         </table>
       </div>
@@ -144,9 +143,9 @@
           <div class="card-header text-center">
             Mission Specific Info
           </div>
-          <div class="card-body">
+          <div class="card-body pl-0 pr-0">
             <div class="row d-flex justify-content-center">
-              <div class="col-lg-6">
+              <div class="col-md-4">
                 <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
                   <option>Pilot 1</option>
                 </select>
@@ -155,10 +154,14 @@
                   <option>None</option>
                 </select>
               </div>  
-              <div class="col-lg-6 my-auto">
+              <div class=col-md-3>
+                <input type="number" class="bag-input" placeholder="Bag weight" id="Baggage1"/>
+                <input type="number" class="bag-input" placeholder="Bag weight" disabled id="Baggage2"/>
+              </div>
+              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
                 <label>Landing Weight:</label>
                 <div class="row d-flex justify-content-center">
-                  <input type="text" class="time-item text-right" id="LandingWeightInput" value="">
+                  <input type="number" class="time-item text-right" id="LandingWeightInput" value="">
                   <label class="time-label">&nbsp;lbs</label>
                 </div>
               </div>
@@ -286,11 +289,19 @@
         </div>
         <div class="parent">
           <img src="assets/img/Full_Plane.jpeg" id="FullPlanePicture"/>
-          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox1"><h5 class="text-center"></h5></div>
-          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox2"><h5 class="text-center"></h5></div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox1">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.outboard/2 }} lbs</h5>
+          </div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox2">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.internalTank/2 }} gal</h5>
+          </div>
           <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox3"><h5 class="text-center"></h5></div>
-          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox4"><h5 class="text-center"></h5></div>
-          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox5"><h5 class="text-center"></h5></div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox4">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.internalTank/2 }} gal</h5>
+          </div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox5">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.outboard/2 }} lbs</h5>
+          </div>
         </div>
       </div>  
     </div>
@@ -625,7 +636,7 @@
 
 <div id="PrintCard" #PrintCard [ngStyle]="{'display':'none'}" class="show-print">
   <!-- Takeoff output list -->
-  <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayTakeoff}">
+  <ul class="list-group list-group-flush align-center">
     <li class="list-group-item p-0">
       <div class="row d-flex justify-content-left m-0">
         <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
@@ -693,7 +704,7 @@
   </ul>
 
   <!-- Landing Output List -->
-  <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayLanding}">
+  <ul class="list-group list-group-flush align-center">
     <li class="list-group-item p-0">
       <div class="row d-flex justify-content-left m-0">
         <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
@@ -736,7 +747,7 @@
   </ul>
 
   <!-- Stall speed output list -->
-  <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displaySpeeds}">
+  <ul class="list-group list-group-flush align-center">
     <li class="list-group-item p-0">
       <div class="row d-flex text-center justify-content-left m-0">
         <div class="shadow-lg bg-dark p-2 m-0 output-label-block">

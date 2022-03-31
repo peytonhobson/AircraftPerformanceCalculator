@@ -9,7 +9,7 @@ export class Profile {
     public username : string;
     public name: string;
     public internalTank: number;
-    public dropTank: number;
+    public underwingTank: number;
     public tipTank: number;
     public outboard: number;
     public agilePod: boolean;
@@ -21,7 +21,7 @@ export class Profile {
         this.username = username;
         this.name = name;
         this.internalTank = internalTank;
-        this.dropTank = dropTank;
+        this.underwingTank = dropTank;
         this.tipTank = tipTank;
         this.outboard = outboard;
         this.agilePod = agilePod;

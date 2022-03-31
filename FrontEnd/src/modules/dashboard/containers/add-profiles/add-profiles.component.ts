@@ -42,7 +42,7 @@ export class AddProfilesComponent implements OnInit {
 
     this.formSaveProfile = this.formBuilder.group({
       internalTank: ['', [Validators.required, Validators.min(60), Validators.max(288), Validators.pattern(/^[0-9]/)]],
-      tipTank: ['', [Validators.required, Validators.min(60), Validators.max(52), Validators.pattern(/^[0-9]/)]],
+      tipTank: ['', [Validators.required, Validators.min(0), Validators.max(52), Validators.pattern(/^[0-9]/)]],
       underwingTank: ['', [Validators.required, Validators.min(0), Validators.max(80), Validators.pattern(/^[0-9]/)]],
       agilePayload: ['', [Validators.required, Validators.min(0), Validators.max(150), Validators.pattern(/^[0-9]/)]],
       outboardWeight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
@@ -138,10 +138,11 @@ export class AddProfilesComponent implements OnInit {
   
   openSaveModal() {
     this.submittedSaveProfile = true;
-
+    console.log(this.formSaveProfile.errors)
     if(this.formSaveProfile.invalid) {
-      console.log(this.submittedSaveProfile && this.fSave['internalTank'].errors && this.fSave['internalTank'].errors['required'])
-      return;
+      if(!(this.fSave['agilePayload'].errors['required'] && !this.agileYes)) {
+        return;
+      }
     }
     this.displaySaveProfile = "block";
     document.getElementById('main-container').style.opacity = '40%';

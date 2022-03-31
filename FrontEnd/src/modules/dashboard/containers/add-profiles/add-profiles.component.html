@@ -145,19 +145,18 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn-lg btn-dark w-100" type="submit">Save</button>
+                    <button type="submit" class="btn-lg btn-dark w-100">Save</button>
                 </form>
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5 text-center">
             <div class="card new-card">
                 <div class="card-header text-center">
                     Add New Pilot
                 </div>
-                <div class="card-body new-card-body">
+                <div class="card-body new-card-body p-3">
                     <form [formGroup]="formSavePilot" (ngSubmit)="createPilot()">
                         <div class="row d-flex justify-content-center">
-                 
                             <div class="col-lg-6 text-center">
                                 <div class="form-group mb-0" [formGroup]="formSavePilot">
                                     <div class="row d-flex justify-content-center">
@@ -203,7 +202,7 @@
                     </form>
                 </div>
             </div>
-            <div class="card mt-5 ">
+            <div class="card mt-1 ">
                 <div class="card-header text-center">
                     Delete Pilot Profile
                 </div>
@@ -218,7 +217,7 @@
                         </div>  
                 </div>
             </div>
-            <div class="card mt-5 ">
+            <div class="card mt-1 ">
                 <div class="card-header text-center">
                     Delete Aircraft Profile
                 </div>
@@ -246,6 +245,68 @@
         <div class="modal-body">
           <label for="ProfileName">Profile Name:</label><br>
           <input type="text" id="ProfileName" name="ProfileName" value=""><br> 
+          <table class="text-center">
+            <tr>
+              <th colspan="6" class="text-center">L39 Loading</th>
+            </tr>
+            <tr><th></th><th>Gallons</th><th>Pounds</th><th>ARM</th><th>Moment</th><th>%MAC</th>
+            <tr>
+              <th>Basic Empty Aircraft</th>
+              <td></td>
+              <td><span *ngIf="this.constants">{{ constants.basicEmptyAircraftWeight }}</span></td>
+              <td><span *ngIf="this.constants">{{ constants.basicEmptyAircraft.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.constants">{{ (constants.basicEmptyAircraftWeight*constants.basicEmptyAircraft).toFixed(0) }}</span></td>
+              <td><span class="text-primary" *ngIf="this.emptyAircraftMAC">{{ emptyAircraftMAC.toFixed(0) }}%</span></td>
+            </tr>
+            <tr>
+              <td class ="font-weight-bold">Actual Fuselage Fuel</td>
+              <td><span *ngIf="this.currentProfile">{{ currentProfile.internalTank }}</span></td>
+              <td><span *ngIf="this.currentProfile">{{ (currentProfile.internalTank*6.815).toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.internalTank*6.815).toFixed(0) }}</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class ="font-weight-bold">Tip Tanks</td>
+              <td><span *ngIf="this.currentProfile">{{ currentProfile.tipTank }}</span></td>
+              <td><span *ngIf="this.currentProfile">{{ (currentProfile.tipTank*6.815).toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.tipTank*6.815).toFixed(0) }}</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class ="font-weight-bold">Underwing Tanks</td>
+              <td><span *ngIf="this.currentProfile">{{ currentProfile.underwingTank }}</span></td>
+              <td><span *ngIf="this.currentProfile">{{ (currentProfile.underwingTank*6.815).toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.underwingTank*6.815).toFixed(0) }}</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Outboard</td>
+              <td></td>
+              <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Centerline Store</td>
+              <td></td>
+              <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ agilePodARM.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.currentProfile && this.constants">{{ ((constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class ="font-weight-bold">Total</td>
+              <td></td>
+              <td><span *ngIf="this.weightSum">{{ weightSum.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.momentSum && this.weightSum">{{ (momentSum/weightSum).toFixed(1) }}</span></td>
+              <td><span *ngIf="this.momentSum">{{ momentSum.toFixed(0) }}</span></td>
+              <td><span class="text-primary" *ngIf="this.momentSum && this.weightSum">{{ ((((momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39).toFixed(1) }}%</span></td>
+            </tr>
+          </table>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>

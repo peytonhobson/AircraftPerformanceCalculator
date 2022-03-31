@@ -133,3 +133,14 @@ li {
     max-height: 70%;
     border: black solid 1px;
 }
+
+td, th {
+    border: black solid 1px;
+}
+
+table, tr {
+    border: black solid 1px;
+    min-width: 100%;
+    min-height: 50%;
+    margin-top: 10%;
+}
