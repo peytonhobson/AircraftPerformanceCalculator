@@ -135,8 +135,6 @@ export class CalculatorComponent implements OnInit {
                 this.restClassifier.get(`profiles/${username}/${aircraftProfileSelect.value}`).subscribe(
                     res => {
                         this.currentProfile = res.data.profile;
-                        document.getElementById('AttachmentBox1').innerHTML = this.currentProfile.pylon1;
-                        document.getElementById('AttachmentBox2').innerHTML = this.currentProfile.pylon2;
 
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AttachmentBox3').innerHTML = "Agile Pod";
@@ -147,28 +145,8 @@ export class CalculatorComponent implements OnInit {
                                 + this.constants.podPayload*this.currentProfile.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.currentProfile.agileWeight);
                         }
 
-                        document.getElementById('AttachmentBox4').innerHTML = this.currentProfile.pylon3;
-                        document.getElementById('AttachmentBox5').innerHTML = this.currentProfile.pylon4;
-
-                        //TODO: Update momentSum once more info known
-                        this.userAttachments.forEach(attachment => {
-                            if(this.currentProfile.pylon1 === attachment.name) {
-                                this.pylon1 = attachment;
-                                // this.weightSum +=  attachment.mass;
-                            }
-                            if(this.currentProfile.pylon2 === attachment.name) {
-                                this.pylon2 = attachment;
-                                // this.weightSum +=  attachment.mass;
-                            }
-                            if(this.currentProfile.pylon3 === attachment.name) {
-                                this.pylon3 = attachment;
-                                // this.weightSum +=  attachment.mass;
-                            }
-                            if(this.currentProfile.pylon4 === attachment.name) {
-                                this.pylon4 = attachment;
-                                // this.weightSum +=  attachment.mass;
-                            }
-                        })
+                        this.weightSum += this.currentProfile.outboard;
+                        this.momentSum += this.currentProfile.outboard*this.constants.tanks;
 
                         this.weightSum += this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
                         this.momentSum += (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
@@ -179,31 +157,14 @@ export class CalculatorComponent implements OnInit {
                 )
             }
             else {
-                document.getElementById('AttachmentBox1').innerHTML = "&nbsp;";
-                document.getElementById('AttachmentBox2').innerHTML = "&nbsp;";
-                document.getElementById('AttachmentBox3').innerHTML = "&nbsp;";
-                document.getElementById('AttachmentBox4').innerHTML = "&nbsp;";
-                document.getElementById('AttachmentBox5').innerHTML = "&nbsp;";
 
                 if(this.currentProfile.agilePod) {
                     this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
                     this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
                 }
 
-                this.userAttachments.forEach(attachment => {
-                    if(this.currentProfile.pylon1 === attachment.name) {
-                        // this.weightSum -=  attachment.mass;
-                    }
-                    if(this.currentProfile.pylon2 === attachment.name) {
-                        // this.weightSum -=  attachment.mass;
-                    }
-                    if(this.currentProfile.pylon3 === attachment.name) {
-                        // this.weightSum -=  attachment.mass;
-                    }
-                    if(this.currentProfile.pylon4 === attachment.name) {
-                        // this.weightSum -=  attachment.mass;
-                    }
-                })
+                this.weightSum -= this.currentProfile.outboard;
+                this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
 
                 this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815;
                 this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.dropTank*6.815)*this.constants.tanks;
@@ -391,24 +352,7 @@ export class CalculatorComponent implements OnInit {
 
         const username = localStorage.getItem('username');
 
-        var attachments = [];
-
-        this.userAttachments.forEach(attachment => {
-            if(this.currentProfile.pylon1 === attachment.name) {
-                attachments.push(attachment);
-            }
-            if(this.currentProfile.pylon2 === attachment.name) {
-                attachments.push(attachment);
-            }
-            if(this.currentProfile.pylon3 === attachment.name) {
-                attachments.push(attachment);
-            }
-            if(this.currentProfile.pylon4 === attachment.name) {
-                attachments.push(attachment);
-            }
-        })
-
-        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions, attachments);
+        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions);
 
         this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
         .subscribe(

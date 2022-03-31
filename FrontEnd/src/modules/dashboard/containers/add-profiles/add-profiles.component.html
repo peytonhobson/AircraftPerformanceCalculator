@@ -8,84 +8,145 @@
                 <div class="card-header text-center">
                     Aircraft Profile
                 </div>
-                <div class="card-body">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            Specify Tank Fill
+                <form [formGroup]="formSaveProfile" (ngSubmit)="openSaveModal()">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                Specify Tank Fill
+                            </div>
+                            <ul class="list-group list-group-flush align-center">
+                                <li class="list-group-item p-1">
+                                    <div class="row d-flex justify-content-left">
+                                        <div class="col-md-5">
+                                            <h3 class="mt-3 ml-1">Internal Tanks:</h3>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row d-flex justify-content-left">
+                                                <div class="form-group" [formGroup]="formSaveProfile">
+                                                    <div class="row d-flex justify-content-left">
+                                                        <input type="number" formControlName="internalTank" class="form-control tank-input mt-2" id="InternalTankInput" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['internalTank'].errors }" />
+                                                        <h4 class="mt-3 ml-2">gal</h4>
+                                                    </div>
+                                                    <div *ngIf="submittedSaveProfile && fSave['internalTank'].errors">
+                                                        <div *ngIf="fSave['internalTank'].errors['required']" class="form-feedback">Internal Tank fill is required</div>
+                                                        <div *ngIf="fSave['internalTank'].errors['max']" class="form-feedback">Internal Tank fill cannot be greater than 288 gals.</div>
+                                                        <div *ngIf="fSave['internalTank'].errors['min']" class="form-feedback">Internal Tank fill cannot be less than 60 gals.</div>
+                                                        <div *ngIf="fSave['internalTank'].errors['pattern']" class="form-feedback">Internal Tank fill must be numeric.</div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item p-1">
+                                    <div class="row d-flex justify-content-left">
+                                        <div class="col-md-5">
+                                            <h3 class="mt-3 ml-1">Tip Tanks:</h3>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row d-flex justify-content-left">
+                                                <div class="form-group" [formGroup]="formSaveProfile">
+                                                    <div class="row d-flex justify-content-left">
+                                                    <input type="number" formControlName="tipTank" class="form-control tank-input mt-2" id="TipTankInput" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['tipTank'].errors }" />
+                                                    <h4 class="mt-3 ml-2">gal</h4>
+                                                    </div>
+                                                    <div *ngIf="submittedSaveProfile && fSave['tipTank'].errors">
+                                                        <div *ngIf="fSave['tipTank'].errors['required']" class="form-feedback">Tip Tank fill is required</div>
+                                                        <div *ngIf="fSave['tipTank'].errors['max']" class="form-feedback">Tip Tank fill cannot be greater than 52 gals.</div>
+                                                        <div *ngIf="fSave['tipTank'].errors['min']" class="form-feedback">Tip Tank fill cannot be less than 0 gals.</div>
+                                                        <div *ngIf="fSave['tipTank'].errors['pattern']" class="form-feedback">Tip Tank fill must be numeric.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item p-1">
+                                    <div class="row d-flex justify-content-left">
+                                        <div class="col-md-5">
+                                            <h3 class="mt-3 ml-1">Underwing Tanks:</h3>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row d-flex justify-content-left">
+                                                <div class="form-group" [formGroup]="formSaveProfile">
+                                                    <div class="row d-flex justify-content-left">
+                                                        <input type="number" formControlName="underwingTank" class="form-control tank-input mt-2" id="UnderwingTankInput" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['underwingTank'].errors }" />
+                                                        <h4 class="mt-3 ml-2">gal</h4>
+                                                    </div>
+                                                    <div *ngIf="submittedSaveProfile && fSave['underwingTank'].errors">
+                                                        <div *ngIf="fSave['underwingTank'].errors['required']" class="form-feedback">Underwing Tank fill is required</div>
+                                                        <div *ngIf="fSave['underwingTank'].errors['max']" class="form-feedback">Underwing Tank fill cannot be greater than 80 gals.</div>
+                                                        <div *ngIf="fSave['underwingTank'].errors['min']" class="form-feedback">Underwing Tank fill cannot be less than 0 gals.</div>
+                                                        <div *ngIf="fSave['underwingTank'].errors['pattern']" class="form-feedback">Underwing Tank fill must be numeric.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="list-group list-group-flush align-center">
-                            <li class="list-group-item p-1">
-                                <div class="row d-flex justify-content-left">
-                                    <div class="col-md-5">
-                                        <h3 class="mt-3 ml-1">Internal Tanks:</h3>
+                        <div class="card">
+                            <div class="card-header text-center">
+                                Centerline Store
+                            </div>
+                            <div class="card-body p-3">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-lg-5 mt-1 mr-0 p-1">
+                                        <label>Agile Pod:</label>
+                                        <input type="radio" class="radio ml-2" id="AgileYesRadio"/>
+                                        <label  class="radio-label ml-1">Yes</label>
+                                        <input type="radio" class="radio ml-2" id="AgileNoRadio" checked/>
+                                        <label class="radio-label ml-1">No</label>
                                     </div>
-                                    <div class="col-md-5">
-                                        <div class="row d-flex justify-content-left">
-                                            <input type="number" class="tank-input mt-3" min="60" max="288" id="InternalTankInput" value ="60">
-                                            <h4 class="mt-3 ml-2">gal</h4>
+                                    <div class="col-lg-7 ml-0 pl-3">
+                                        <div class="row justify-content-center d-flex">
+                                        <div class="col-md-6 p-0 mt-2">
+                                            <label >Payload Weight:</label>
+                                        </div>
+                                        <div class="col-md-6 p-0">
+                                            <div class="form-group" [formGroup]="formSaveProfile">
+                                                <div class="row d-flex justify-content-center">
+                                                    <input type="number" formControlName="agilePayload" class="form-control mt-0" id="AgilePayload" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['agilePayload'].errors }" />
+                                                    <h4 class="ml-2 mt-2">lbs</h4>
+                                                </div>
+                                                <div *ngIf="submittedSaveProfile && fSave['agilePayload'].errors">
+                                                    <div *ngIf="fSave['agilePayload'].errors['required'] && agileYes" class="form-feedback">Agile Pod payload weight is required</div>
+                                                    <div *ngIf="fSave['agilePayload'].errors['max']" class="form-feedback">Agile Pod payload weight cannot be greater than 150 lbs.</div>
+                                                    <div *ngIf="fSave['agilePayload'].errors['min']" class="form-feedback">Agile Pod payload weight cannot be less than 0 lbs.</div>
+                                                    <div *ngIf="fSave['agilePayload'].errors['pattern']" class="form-feedback">Agile Pod payload weight must be numeric.</div>
+                                                </div>
+                                            </div> 
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li class="list-group-item p-1">
-                                <div class="row d-flex justify-content-left">
-                                    <div class="col-md-5">
-                                        <h3 class="mt-3 ml-1">Tip Tanks:</h3>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="row d-flex justify-content-left">
-                                            <input type="number" class="tank-input mt-3" min="0" max="52" id="TipTankInput" value ="0">
-                                            <h4 class="mt-3 ml-2">gal</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item p-1">
-                                <div class="row d-flex justify-content-left">
-                                    <div class="col-md-5">
-                                        <h3 class="mt-3 ml-1">Underwing Tanks:</h3>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="row d-flex justify-content-left">
-                                            <input type="number" class="tank-input mt-3" min="0" max="80" id="UnderwingTankInput" value ="0">
-                                            <h4 class="mt-3 ml-2">gal</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <div class="card-header text-center">
-                            Centerline Store
+                            </div>
                         </div>
-                        <div class="card-body p-3">
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-lg-6 mt-2">
-                                    <label>Agile Pod:</label>
-                                    <input type="radio" class="radio ml-2" id="AgileYesRadio"/>
-                                    <label  class="radio-label ml-1">Yes</label>
-                                    <input type="radio" class="radio ml-2" id="AgileNoRadio" checked/>
-                                    <label class="radio-label ml-1">No</label>
-                                </div>
-                                <label class="mt-2">Payload Weight:</label>
-                                <input type="text" class="ml-2" value="" id="AgileWeightInput">
-                                <label class="mt-2">&nbsp;lbs</label>
+                        <div class="card">
+                            <div class="card-header text-center">
+                                Outboard
+                            </div>
+                            <div class="card-body d-flex justify-content-center p-2">
+                                <div class="form-group mb-0" [formGroup]="formSaveProfile">
+                                    <div class="row d-flex justify-content-center">
+                                        <label class="mt-2 mr-2">Weight:</label>
+                                        <input type="number" formControlName="outboardWeight" class="form-control mt-0" id="OutboardInput" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['outboardWeight'].errors }" />
+                                        <h4 class="ml-2 mt-2">lbs</h4>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div *ngIf="submittedSaveProfile && fSave['outboardWeight'].errors">
+                                            <div *ngIf="fSave['outboardWeight'].errors['required']" class="form-feedback">Outboard weight is required</div>
+                                            <div *ngIf="fSave['outboardWeight'].errors['min']" class="form-feedback">Outboard Pod payload weight cannot be less than 0 lbs.</div>
+                                            <div *ngIf="fSave['outboardWeight'].errors['pattern']" class="form-feedback">Outboard payload must be numeric.</div>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header text-center">
-                            Outboard
-                        </div>
-                        <div class="card-body d-flex justify-content-center p-2">
-                            <label class="mt-2">Weight:</label>
-                            <input type="number" class="weight-input ml-2" value="" id="OutboardInput">
-                            <label class="mt-2">&nbsp;lbs</label>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn-lg btn-dark" (click)="openSaveModal()">Save</button>
+                    <button class="btn-lg btn-dark w-100" type="submit">Save</button>
+                </form>
             </div>
         </div>
         <div class="col-lg-5">
@@ -112,14 +173,44 @@
                     </div> 
                 </div>
             </div>
+            <div class="card mt-5 ">
+                <div class="card-header text-center">
+                    Delete Pilot Profile
+                </div>
+                <div class="card-body d-flex justify-content-center p-3">
+                        <div class="col-md-7 text-center">
+                            <Select class="btn btn-dark h-100" id="PilotSelect">
+                                <option>Choose Pilot</option>
+                            </Select>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <button class="btn btn-dark" (click)="openPilotDeleteModal()">Delete</button>
+                        </div>  
+                </div>
+            </div>
+            <div class="card mt-5 ">
+                <div class="card-header text-center">
+                    Delete Aircraft Profile
+                </div>
+                <div class="card-body d-flex justify-content-center p-3">
+                    <div class="col-md-7 text-center">
+                        <Select class="btn btn-dark h-100" id="AircraftSelect">
+                            <option>Choose Aircraft Profile</option>
+                        </Select>
+                    </div>
+                    <div class="col-md-5 text-center">
+                        <button class="btn btn-dark" (click)="openAircraftDeleteModal()">Delete</button>
+                    </div>
+                </div>
+            </div>
         </div>  
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyle}">
+<div class="modal modal-save" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveProfile}">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-center">
           <h4 class="modal-title">What would you like to name this profile?</h4>
         </div>
         <div class="modal-body">
@@ -127,8 +218,36 @@
           <input type="text" id="ProfileName" name="ProfileName" value=""><br> 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>
-         <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(true)">Save</button>
+            <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(false)">Close</button>
+            <button type="button" class="btn btn-outline-dark active" (click)="closeSaveModal(true)">Save</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-delete" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteAircraft}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h4 class="modal-title text-center">Are you sure you want to delete {{ currentAircraft }}? </h4>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+            <button type="button" class="btn btn-outline-dark active" (click)="closeAircraftDeleteModal()">Cancel</button>
+            <button type="button" class="btn btn-outline-dark active ml-2" (click)="deleteAircraft()">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-delete" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeletePilot}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h4 class="modal-title text-center">Are you sure you want to delete {{ currentPilot }}? </h4>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+            <button type="button" class="btn btn-outline-dark active" (click)="closePilotDeleteModal()">Cancel</button>
+            <button type="button" class="btn btn-outline-dark active ml-2" (click)="deletePilot()">Yes</button>
         </div>
       </div>
     </div>

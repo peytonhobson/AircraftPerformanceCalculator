@@ -12,7 +12,18 @@
     height: 100%;
 }
 
-.modal {
+.modal-save {
+    position: absolute;
+    top: 200px;
+    right: 100px;
+    bottom: 0;
+    left: 0;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+.modal-delete {
     position: absolute;
     top: 200px;
     right: 100px;
@@ -28,10 +39,11 @@
 }
 
 .tank-input {
-    width: 40%;
-    height: 35% !important;
+    max-width: 45%;
+    max-height: 15% !important;
+    border: black solid 1px;
+    margin-bottom: 0;
 }
-
 
 #internalCheck {
     visibility: hidden;
@@ -87,8 +99,14 @@ li {
     max-width: 25%;
 }
 
-#AgileWeightInput {
-    max-width: 15%;
+#AgilePayload {
+    max-width: 60%;
+    border: black solid 1px;
+}
+
+#OutboardInput {
+    max-width: 40%;
+    border: black solid 1px;
 }
 
 .save-button {
@@ -101,3 +119,6 @@ li {
     max-height: 20%;
 }
 
+.form-feedback {
+    color: red;
+}

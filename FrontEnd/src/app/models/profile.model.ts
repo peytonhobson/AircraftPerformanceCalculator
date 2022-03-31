@@ -5,6 +5,7 @@ import { Attachment } from "./attachment";
  */
 export class Profile {
     
+    public id: string;
     public username : string;
     public name: string;
     public internalTank: number;
@@ -16,6 +17,7 @@ export class Profile {
 
     constructor(username?: string, name?: string, internalTank?: number, dropTank?: number, 
         tipTank?: number, outboard?: number, agilePod?: boolean, agileWeight?: number) {
+        this.id = username + "_" + name;
         this.username = username;
         this.name = name;
         this.internalTank = internalTank;

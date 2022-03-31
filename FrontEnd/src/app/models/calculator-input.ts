@@ -7,12 +7,10 @@ export class CalculatorInput {
     public profile: Profile;
     public landingMass: number;
     public runwayConditions: RunwayConditions;
-    public attachments: Attachment[];
 
-    constructor(profile: Profile, landingMass: number, runwayConditions: RunwayConditions, attachments: Attachment[]) {
+    constructor(profile: Profile, landingMass: number, runwayConditions: RunwayConditions) {
         this.profile = profile;
         this.landingMass = landingMass;
         this.runwayConditions = runwayConditions;
-        this.attachments = attachments;
     }
 }
