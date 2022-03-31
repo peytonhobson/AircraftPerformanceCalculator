@@ -69,8 +69,7 @@
 
 .unit-block {
     width: 15%;
-    max-height: 1%;
-    display: table;
+    max-height: 70%;
     color: white;
 }
 
@@ -121,4 +120,16 @@ li {
 
 .form-feedback {
     color: red;
+}
+
+#PilotName {
+    max-width: 80%;
+    max-height: 70%;
+    border: black solid 1px;
+}
+
+#PilotWeight {
+    max-width: 58.5%;
+    max-height: 70%;
+    border: black solid 1px;
 }

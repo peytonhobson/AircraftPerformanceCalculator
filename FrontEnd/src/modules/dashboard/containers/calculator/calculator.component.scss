@@ -400,14 +400,30 @@ table, tr {
     margin-top: 10%;
 }
 
-// #AirportHeadwindUnit {
-//     display: table;
-// }
-
 #KTSUnitBlock {
     width: 33.5%;
 }
 
 td, th {
     border: black solid 1px;
+}
+
+#BlackLine1 {
+    position: absolute;
+    top: 35%; 
+    left: 65%;
+    height: 1.5%;
+    width: 20%;
+    transform: rotate(40deg);
+    opacity: 80%;
+}
+
+#BlackLine2 {
+    position: absolute;
+    top: 20%; 
+    left: 120%;
+    height: 1.5%;
+    width: 15%;
+    transform: rotate(90deg);
+    opacity: 80%;
 }

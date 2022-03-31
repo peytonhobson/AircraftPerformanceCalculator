@@ -30,10 +30,11 @@ export class AddProfilesComponent implements OnInit {
   currentAircraft: String;
   currentPilot: String;
 
-  form: FormGroup;
+  formSavePilot: FormGroup;
   formSaveProfile: FormGroup;
 
   submittedSaveProfile = false;
+  submittedSavePilot = false;
 
   agileYes = false;
 
@@ -43,21 +44,37 @@ export class AddProfilesComponent implements OnInit {
       internalTank: ['', [Validators.required, Validators.min(60), Validators.max(288), Validators.pattern(/^[0-9]/)]],
       tipTank: ['', [Validators.required, Validators.min(60), Validators.max(52), Validators.pattern(/^[0-9]/)]],
       underwingTank: ['', [Validators.required, Validators.min(0), Validators.max(80), Validators.pattern(/^[0-9]/)]],
-      agilePayload: ['', [Validators.min(0), Validators.max(150), Validators.pattern(/^[0-9]/)]],
+      agilePayload: ['', [Validators.required, Validators.min(0), Validators.max(150), Validators.pattern(/^[0-9]/)]],
       outboardWeight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
     });
 
-    let inputs = []
+    this.formSavePilot = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.pattern(/^[a-z0-9]/)]],
+      weight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
+    });
 
-    inputs.push(document.getElementById('InternalTankInput') as HTMLInputElement);
-    inputs.push(document.getElementById('UnderwingTankInput') as HTMLInputElement);
-    inputs.push(document.getElementById('TipTankInput') as HTMLInputElement);
-    inputs.push(document.getElementById('OutboardInput') as HTMLInputElement);
-    inputs.push(document.getElementById('AgilePayload') as HTMLInputElement);
+    let profileInputs = []
 
-    inputs.forEach(input => {
+    profileInputs.push(document.getElementById('InternalTankInput') as HTMLInputElement);
+    profileInputs.push(document.getElementById('UnderwingTankInput') as HTMLInputElement);
+    profileInputs.push(document.getElementById('TipTankInput') as HTMLInputElement);
+    profileInputs.push(document.getElementById('OutboardInput') as HTMLInputElement);
+    profileInputs.push(document.getElementById('AgilePayload') as HTMLInputElement);
+
+    profileInputs.forEach(input => {
       input.addEventListener('click', (e) => {
         this.submittedSaveProfile = false;
+      })
+    });
+
+    let pilotInputs = []
+
+    pilotInputs.push(document.getElementById('PilotName') as HTMLInputElement);
+    pilotInputs.push(document.getElementById('PilotWeight') as HTMLInputElement);
+
+    pilotInputs.forEach(input => {
+      input.addEventListener('click', (e) => {
+        this.submittedSavePilot = false;
       })
     });
   
@@ -249,8 +266,15 @@ export class AddProfilesComponent implements OnInit {
   }
 
   createPilot() {
+
+    this.submittedSavePilot = true;
+
+    if(!this.formSavePilot.valid) {
+      return;
+    }
+
     const name = document.getElementById('PilotName') as HTMLInputElement;
-    const mass = document.getElementById('PilotMass') as HTMLInputElement;
+    const mass = document.getElementById('PilotWeight') as HTMLInputElement;
     const user = localStorage.getItem('username');
 
     const currentName = name.value;
@@ -268,4 +292,6 @@ export class AddProfilesComponent implements OnInit {
     name.value = "";
     mass.value = "";
   }
+
+  get fSavePilot() { return this.formSavePilot.controls; }
 }

@@ -31,7 +31,7 @@
                                                         <div *ngIf="fSave['internalTank'].errors['required']" class="form-feedback">Internal Tank fill is required</div>
                                                         <div *ngIf="fSave['internalTank'].errors['max']" class="form-feedback">Internal Tank fill cannot be greater than 288 gals.</div>
                                                         <div *ngIf="fSave['internalTank'].errors['min']" class="form-feedback">Internal Tank fill cannot be less than 60 gals.</div>
-                                                        <div *ngIf="fSave['internalTank'].errors['pattern']" class="form-feedback">Internal Tank fill must be numeric.</div>
+                                                        <div *ngIf="fSave['internalTank'].errors['pattern'] && !fSave['internalTank'].errors['min']" class="form-feedback">Internal Tank fill must be numeric.</div>
                                                     </div>
                                                 </div> 
                                             </div>
@@ -54,7 +54,7 @@
                                                         <div *ngIf="fSave['tipTank'].errors['required']" class="form-feedback">Tip Tank fill is required</div>
                                                         <div *ngIf="fSave['tipTank'].errors['max']" class="form-feedback">Tip Tank fill cannot be greater than 52 gals.</div>
                                                         <div *ngIf="fSave['tipTank'].errors['min']" class="form-feedback">Tip Tank fill cannot be less than 0 gals.</div>
-                                                        <div *ngIf="fSave['tipTank'].errors['pattern']" class="form-feedback">Tip Tank fill must be numeric.</div>
+                                                        <div *ngIf="fSave['tipTank'].errors['pattern'] && !fSave['tipTank'].errors['min']" class="form-feedback">Tip Tank fill must be numeric.</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,7 +77,7 @@
                                                         <div *ngIf="fSave['underwingTank'].errors['required']" class="form-feedback">Underwing Tank fill is required</div>
                                                         <div *ngIf="fSave['underwingTank'].errors['max']" class="form-feedback">Underwing Tank fill cannot be greater than 80 gals.</div>
                                                         <div *ngIf="fSave['underwingTank'].errors['min']" class="form-feedback">Underwing Tank fill cannot be less than 0 gals.</div>
-                                                        <div *ngIf="fSave['underwingTank'].errors['pattern']" class="form-feedback">Underwing Tank fill must be numeric.</div>
+                                                        <div *ngIf="fSave['underwingTank'].errors['pattern'] && !fSave['underwingTank'].errors['min']" class="form-feedback">Underwing Tank fill must be numeric.</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,14 +107,14 @@
                                         <div class="col-md-6 p-0">
                                             <div class="form-group" [formGroup]="formSaveProfile">
                                                 <div class="row d-flex justify-content-center">
-                                                    <input type="number" formControlName="agilePayload" class="form-control mt-0" id="AgilePayload" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['agilePayload'].errors }" />
+                                                    <input type="number" formControlName="agilePayload" class="form-control mt-0" id="AgilePayload" [ngClass]="{ 'is-invalid': submittedSaveProfile && fSave['agilePayload'].errors && agileYes }" />
                                                     <h4 class="ml-2 mt-2">lbs</h4>
                                                 </div>
-                                                <div *ngIf="submittedSaveProfile && fSave['agilePayload'].errors">
-                                                    <div *ngIf="fSave['agilePayload'].errors['required'] && agileYes" class="form-feedback">Agile Pod payload weight is required</div>
+                                                <div *ngIf="submittedSaveProfile && fSave['agilePayload'].errors && agileYes">
+                                                    <div *ngIf="fSave['agilePayload'].errors['required']" class="form-feedback">Agile Pod payload weight is required</div>
                                                     <div *ngIf="fSave['agilePayload'].errors['max']" class="form-feedback">Agile Pod payload weight cannot be greater than 150 lbs.</div>
                                                     <div *ngIf="fSave['agilePayload'].errors['min']" class="form-feedback">Agile Pod payload weight cannot be less than 0 lbs.</div>
-                                                    <div *ngIf="fSave['agilePayload'].errors['pattern']" class="form-feedback">Agile Pod payload weight must be numeric.</div>
+                                                    <div *ngIf="fSave['agilePayload'].errors['pattern'] && !fSave['agilePayload'].errors['min']" class="form-feedback">Agile Pod payload weight must be numeric.</div>
                                                 </div>
                                             </div> 
                                         </div>
@@ -138,7 +138,7 @@
                                         <div *ngIf="submittedSaveProfile && fSave['outboardWeight'].errors">
                                             <div *ngIf="fSave['outboardWeight'].errors['required']" class="form-feedback">Outboard weight is required</div>
                                             <div *ngIf="fSave['outboardWeight'].errors['min']" class="form-feedback">Outboard Pod payload weight cannot be less than 0 lbs.</div>
-                                            <div *ngIf="fSave['outboardWeight'].errors['pattern']" class="form-feedback">Outboard payload must be numeric.</div>
+                                            <div *ngIf="fSave['outboardWeight'].errors['pattern'] && !fSave['outboardWeight'].errors['min']" class="form-feedback">Outboard payload must be numeric.</div>
                                         </div>
                                     </div>
                                 </div> 
@@ -155,22 +155,52 @@
                     Add New Pilot
                 </div>
                 <div class="card-body new-card-body">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-lg-6 text-center">
-                                <label for="PilotName" class="mt-0">Name:</label>
-                                <input type="text" id="PilotName" name="PilotName" value="">
-                                <label for="PilotMass">Weight:</label>
-                                <div class="row d-flex justify-content-center">
-                                    <input type="text" class="unit-input" id="PilotMass" name="PilotMass" value="">
-                                    <div class="bg-dark rounded unit-block">
-                                        <h4 class="unit-label m-0">lbs</h4>
+                    <form [formGroup]="formSavePilot" (ngSubmit)="createPilot()">
+                        <div class="row d-flex justify-content-center">
+                 
+                            <div class="col-lg-6 text-center">
+                                <div class="form-group mb-0" [formGroup]="formSavePilot">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="row justify-content-center d-flex">
+                                            <label class="mt-0 mr-2">Name:</label>
+                                        </div>
+                                        <div class="row justify-content-center d-flex">
+                                        <input type="text" formControlName="name" class="form-control mt-0" id="PilotName" [ngClass]="{ 'is-invalid': submittedSavePilot && fSavePilot['name'].errors }" />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div *ngIf="submittedSavePilot && fSavePilot['name'].errors">
+                                            <div *ngIf="fSavePilot['name'].errors['required']" class="form-feedback">Pilot name is required</div>
+                                            <div *ngIf="fSavePilot['name'].errors['pattern']" class="form-feedback">Pilot name cannot contain special characters.</div>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="form-group mb-0" [formGroup]="formSavePilot">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="row justify-content-center d-flex">
+                                            <label class="mt-0 mr-2">Weight:</label>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <input type="number" formControlName="weight" class="form-control mt-0" id="PilotWeight" [ngClass]="{ 'is-invalid': submittedSavePilot && fSavePilot['weight'].errors }" />
+                                            <div class="bg-dark rounded unit-block">
+                                                <h4 class="unit-label m-0">lbs</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <div *ngIf="submittedSavePilot && fSavePilot['weight'].errors">
+                                            <div *ngIf="fSavePilot['weight'].errors['required']" class="form-feedback">Pilot weight is required.</div>
+                                            <div *ngIf="fSavePilot['weight'].errors['min']" class="form-feedback">Pilot weight cannot be less than 0.</div>
+                                            <div *ngIf="fSavePilot['weight'].errors['pattern'] && !fSavePilot['weight'].errors['min']" class="form-feedback">Pilot weight must be numeric.</div>
+                                        </div>
                                     </div>
                                 </div>
-                        </div>
-                        <div class="col-lg-6 my-auto">
-                            <button class = "btn btn-outline-dark active create-button" (click)="createPilot()" id="CreateNewPilotButton">Create Pilot Profile</button>
-                        </div>
-                    </div> 
+                            </div>
+                            <div class="col-lg-6 my-auto">
+                                <button class = "btn btn-outline-dark active create-button" type="submit" id="CreateNewPilotButton">Create Pilot Profile</button>
+                            </div>
+                        </div> 
+                    </form>
                 </div>
             </div>
             <div class="card mt-5 ">
