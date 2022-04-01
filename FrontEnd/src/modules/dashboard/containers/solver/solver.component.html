@@ -1,188 +1,676 @@
-<layout-dashboard><sb-dashboard-head title="Solver" [hideBreadcrumbs]="true"></sb-dashboard-head>
-
-    <div class="container" id="main-container">
-        <div class="row">
-          <div class="col-lg-5 text-center">
-            <div class="card left-card text-center">
-              <div class="card-header text-center">
-                Runway Conditions
-              </div>
-              <div class="card-body">
-                <button class="btn btn-dark parameter-button" (click)="openManualModal()" id="ManualButton">Manual</button>
-                <button class="btn btn-dark parameter-button" (click)="openAutomaticModal()" id="AutomaticButton">Automatic</button>
-              </div>
-            </div>
-            <div class="card text-center left-card">
-              <div class="card-header text-center">
-                Mission Specific Info
-              </div>
-              <div class="card-body">
-                <div class="row d-flex justify-content-center">
-                  <div class="col-lg-6">
-                    <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
-                      <option>Choose Pilot 1</option>
-                    </select>
-                    <select [disabled] = "pilot1NotSelected" class="btn btn-dark pilot-input" id="Pilot2ProfileSelect">
-                      <option>Choose Pilot 2</option>
-                      <option>None</option>
-                    </select>
-                  </div>  
-                  <div class="col-lg-6 my-auto">
-                    <label>Approximate Flight Time:</label>
-                    <div class="row text-left">
-                      <input type="text" class="time-item text-right" id="MissionTimeInput" value="">
-                      <label class="time-item">&nbsp;minutes</label>
-                    </div>
-                  </div>
-                </div>  
-              </div>
-            </div>
-            <div class="card text-center left-card">
-              <div class="card-header text-center">
-                Aircraft Profile
-              </div>
-              <div class="card-body">
-                <select class="btn btn-dark" id="AircraftProfileSelect">
-                  <option>Choose Profile</option>
-                </select>
-                <button class="btn btn-dark">Info</button>
-              </div>
-            </div>
-            <button class="btn-lg btn-dark" [disabled]="calculateLoading" id="CalculateButton" (click) = "calculate()">
-              <span *ngIf="calculateLoading" class="spinner-border spinner-border-sm mr-1"></span>
-              Calculate
-            </button>
-          </div>  
+<layout-dashboard id="Layout" class="hide-print">
+  <sb-dashboard-head title="Solver" [hideBreadcrumbs]="true"></sb-dashboard-head>
+  <div class="container p-0" id="main-container">
+    <div class="row d-flex justify-content-center p-0" id="main-row">
+      <div class="col-md-3 text-center" id="PictureColumn">
+        <div class="parent text-center" id="CockpitParent">
+          <img src="assets/img/Cockpit.jpeg" id="CockpitPicture" />
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="PilotBox1"><h5 id="PilotBox1Text" class="text-center"></h5></div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="PilotBox2"><h5 id="PilotBox2Text" class="text-center"></h5></div>
+          <img src="assets/img/black-line.jpg" id="BlackLine1" />
+          <img src="assets/img/black-line.jpg" id="BlackLine2" />
         </div>
-    </div>  
-
-    <!-- Automatic runway condition modal -->
-    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Query Runway</h4>
-            </div>
-            <div class="modal-body">
-              <div class="row d-flex justify-content-center">
-                <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
-                      <div class="row d-flex justify-content-center">
-                        <label for="airportInput">Enter Airport ID:</label>
-                      </div>
-                      <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
-                        <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
-                        <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
-                          <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
-                          <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
-                          <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
-                        </div>
-                      </div>
-                    <div class="row d-flex justify-content-center">
-                      <button type="submit" [disabled]="runwaysLoading" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >
-                        <span *ngIf="runwaysLoading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Find Runways
-                      </button>
-                    </div>
-                </form>
+        <div class="parent text-center" id="FullPlaneParent">
+          <img src="assets/img/Full_Plane.jpeg" id="FullPlanePicture"/>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox1">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.outboard/2 }} lbs</h5>
+          </div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox2">
+            <h5 class="text-center">NA</h5>
+          </div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox3"><h5 class="text-center" id="AgilePodText"></h5></div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox4">
+            <h5 class="text-center">NA</h5>
+          </div>
+          <div class="shadow-md rounded bg-dark attachment-box p-1 d-flex justify-content-center" id="AttachmentBox5">
+            <h5 class="text-center" *ngIf="this.currentProfile">{{ currentProfile.outboard/2 }} lbs</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-center left-column p-0 ml-2">
+        <div class="card left-card text-center">
+          <div class="card-header text-center">
+            Runway Conditions
+          </div>
+          <div class="card-body">
+            <button class="btn btn-dark parameter-button" (click)="openManualModal()" id="ManualButton">Manual</button>
+            <button class="btn btn-dark parameter-button" (click)="openAutomaticModal()" id="AutomaticButton">Automatic</button>
+          </div>
+        </div>
+        <div class="card text-center left-card">
+          <div class="card-header text-center">
+            Mission Specific Info
+          </div>
+          <div class="card-body pl-0 pr-0">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-4">
+                <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
+                  <option>Pilot 1</option>
+                </select>
+                <select [disabled] = "pilot1NotSelected" class="btn btn-dark pilot-input" id="Pilot2ProfileSelect">
+                  <option>Pilot 2</option>
+                  <option>None</option>
+                </select>
+              </div>  
+              <div class=col-md-3>
+                <input type="number" class="bag-input" placeholder="Bag weight" id="Baggage1"/>
+                <input type="number" class="bag-input" placeholder="Bag weight" disabled id="Baggage2"/>
               </div>
-              <div class="row d-flex justify-content-center">
-                  <label>Select Takeoff Runway:</label>
+              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
+                <label>Landing Weight:</label>
+                <div class="row d-flex justify-content-center">
+                  <input type="number" class="time-item text-right" id="LandingWeightInput" value="">
+                  <label class="time-label">&nbsp;lbs</label>
+                </div>
               </div>
-              <div class="row d-flex justify-content-center">
-                  <div class="card border-1 mb-4" id="runway-button-group"></div> 
-              </div>
-              <div class="row d-flex justify-content-center">
-                  <label for=RunwaySideButton1>Select Runway Starting Side: </label>
-              </div>
-              <div class="row d-flex justify-content-center">
-                  <div class="blank-card mt-2">
-                      <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
-                      <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
-                  </div>
-              </div>
-            </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(false)">Close</button>
-                <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(true)">Save</button>
-              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="card text-center left-card">
+          <div class="card-header text-center">
+            Aircraft Profile
+          </div>
+          <div class="card-body">
+            <select class="btn btn-dark" id="AircraftProfileSelect">
+              <option>Choose Profile</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-lg btn-dark" [disabled] = "calculateLoading" id="CalculateButton" (click) = "calculate()">
+          <span *ngIf="calculateLoading" class="spinner-border spinner-border-sm mr-1"></span>
+          Solve
+        </button>
+      </div>
+      <div class="col-md-4">
+        <div class="row d-flex justify-content-center">
+          <div id="airportID-output">
+            <div class="w-100 shadow-lg text-center bg-dark airport-output rounded p-2" id="IDContainer">
+              <h2 class="output-label">Airport ID: {{runwayConditions.airportID.toUpperCase()}}</h2>
             </div>
           </div>
         </div>
-      
-        <!-- Manual runway condition modal -->
-        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleManual}">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header d-flex justify-content-center">
-                <h4 class="modal-title text-center">Input Runway Conditions</h4>
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-4">
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Temperature</h4>
               </div>
-              <div class="modal-body">
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Altitude</h4>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Precipitation</h4>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Head Wind</h4>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Runway Length</h4>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Runway Type</h4>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-md airport-output text-center bg-dark rounded p-3">
+                <h4 class="output-label p-0 m-0">Slope</h4>
+              </div>
+            </div> 
+          </div>
+          <div class="col-lg-4">
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3">
                 <div class="row d-flex justify-content-center">
-                  <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
-                    <div class="form-group" [formGroup]="formManualModal">
-                        <label for="temperature">Temperature</label>
-                        <input type="text" formControlName="temperature" class="form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
-                        <div *ngIf="submittedManualModal && fManual['temperature'].errors" class="invalid-feedback">
-                            <div *ngIf="fManual['temperature'].errors['required']">Temperature is required</div>
-                            <div *ngIf="fManual['temperature'].errors['maxlength'] && !fManual['temperature'].errors['pattern']">Temperature cannot be greater than 3 digits.</div>
-                            <div *ngIf="fManual['temperature'].errors['pattern']">Temperature must be numeric.</div>
-                        </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="slope">Runway Slope</label>
-                      <input type="text" formControlName="slope" class="form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
-                      <div *ngIf="submittedManualModal && fManual['slope'].errors" class="invalid-feedback">
-                          <div *ngIf="fManual['slope'].errors['pattern']">Slope must be numeric.</div>
-                      </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="runwayLength">Runway Length</label>
-                      <input type="text" formControlName="runwayLength" class="form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
-                      <div *ngIf="submittedManualModal && fManual['runwayLength'].errors" class="invalid-feedback">
-                          <div *ngIf="fManual['runwayLength'].errors['pattern']">Slope must be numeric.</div>
-                      </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="precipitation">Is the runway wet?</label>
-                       <div class="row d-flex justify-content-left">
-                        <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
-                        <label for="precipitationYes" class="radio-label">Yes</label>
-                        <input type="radio" formControlName="precipitationNo" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
-                        <label for="precipitationNo" class="radio-label">No</label>
-                      </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="precipitation">What is the runway surface type?</label>
-                       <div class="row d-flex justify-content-left">
-                        <input type="radio" formControlName="concreteRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
-                        <label for="concreteRunway" class="radio-label">Concrete</label>
-                        <input type="radio" formControlName="grassRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
-                        <label for="grassRunway" class="radio-label">Grass</label>
-                      </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="pressureAltitude">PSI</label>
-                      <input type="text" formControlName="pressureAltitude" class="form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
-                      <div *ngIf="submittedManualModal && fManual['pressureAltitude'].errors" class="invalid-feedback">
-                          <div *ngIf="fManual['pressureAltitude'].errors['pattern']">Pressure Altitude must be numeric.</div>
-                      </div>
-                    </div> 
-                    <div class="form-group" [formGroup]="formManualModal">
-                      <label for="headwind">Headwind</label>
-                      <input type="text" formControlName="headwind" class="form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
-                      <div *ngIf="submittedManualModal && fManual['headwind'].errors" class="invalid-feedback">
-                          <div *ngIf="fManual['headwind'].errors['pattern']">Headwind must be numeric.</div>
-                      </div>
-                    </div> 
-                  </form>
+                  <h4 id="temp-output" class="m-0 p-0" *ngIf="runwayConditions.temp !== null">{{runwayConditions.temp.toFixed(1)}}</h4>
+                  <h4 class="m-0 p-0">&nbsp;&deg;C</h4>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(false)">Close</button>
-                <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(true)">Save</button>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+                <div class="row d-flex justify-content-center">
+                <h4 id="pressure-altitude-output" class="m-0 p-0" *ngIf="runwayConditions.pressureAltitude !== null">{{(runwayConditions.pressureAltitude*3.28084).toFixed(1) }}</h4>
+                <h4 class="m-0 p-0">&nbsp;ft</h4>
+                </div>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+                <div class="row d-flex justify-content-center">
+                  <h4 id="precipitation-output" class="m-0 p-0" *ngIf="runwayConditions.precipitation !== null">{{runwayConditions.precipitation.toFixed(2)}}</h4>
+                  <h4 class="m-0 p-0">&nbsp;in</h4>
+                </div>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+                <div class="row d-flex justify-content-center">
+                  <h4 id="headwind-output" class="m-0 p-0" *ngIf="runwayConditions.headWind !== null">{{runwayConditions.headWind.toFixed(2)}}</h4>
+                  <h4 class="m-0 p-0">&nbsp;kts</h4>
+                </div>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+                <div class="row d-flex justify-content-center">
+                  <h4 id="runway-length-output" class="m-0 p-0" *ngIf="runwayConditions.runwayLength !== null">{{(runwayConditions.runwayLength*3.28084).toFixed(0)}}</h4>
+                  <h4 class="m-0 p-0">&nbsp;ft</h4>
+                </div>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3 m-0">
+                <div class="row d-flex justify-content-center">
+                  <h4 id="runway-type-output" class="m-0 p-0">{{runwayConditions.runwayType}}&nbsp;</h4>
+                </div>
+              </div>
+            </div> 
+            <div class="row d-flex justify-content-center">
+              <div class="shadow-md airport-output text-center bg-white rounded p-3 h-100">
+                <div class="row d-flex justify-content-center">
+                  <h4 id="slope-output" class="p-0 m-0" *ngIf="runwayConditions.runwayLength !== null">{{runwayConditions.slope.toFixed(3)}}</h4>
+                  <h4 class="m-0 p-0">&deg;</h4>
+                </div>
               </div>
             </div> 
           </div>
         </div>
+      </div>  
+    </div>
+  </div>
 
+
+
+<!-- Start of Modals -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleAutomatic}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title text-center my-auto">Query Runway</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center">
+            <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
+              <div class="row d-flex justify-content-center">
+                <label for="airportInput">Enter Airport ID:</label>
+              </div>
+              <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
+                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
+                <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+                  <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
+                  <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
+                  <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <button type="submit" [disabled]="runwaysLoading" id="FindRunwaysButton" class="btn btn-outline-dark active text-center" >
+                  <span *ngIf="runwaysLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Find Runways
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <label>Select Takeoff Runway:</label>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="card border-1 mb-4" id="runway-button-group"></div> 
+          </div>
+          <div class="row d-flex justify-content-center">
+              <label for=RunwaySideButton1>Select Runway Starting Side: </label>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="blank-card mt-2">
+              <button type="button" id="RunwaySideButton1" class="btn btn-outline-dark text-center side-button">Side 1</button>
+              <button type="button" id="RunwaySideButton2" class="btn btn-outline-dark text-center side-button">Side 2</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(false)">Close</button>
+          <button type="button" class="btn btn-outline-dark active" (click)="closeAutomaticModal(true)">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaySaveStyleManual}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title text-center my-auto">Input Runway Conditions</h1>
+        </div>
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center">
+            <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
+              <div class="form-group" [formGroup]="formManualModal">
+                  <label for="temperature">Temperature</label>
+                  <input type="text" formControlName="temperature" class="form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
+                  <div *ngIf="submittedManualModal && fManual['temperature'].errors" class="invalid-feedback">
+                      <div *ngIf="fManual['temperature'].errors['required']">Temperature is required</div>
+                      <div *ngIf="fManual['temperature'].errors['maxlength'] && !fManual['temperature'].errors['pattern']">Temperature cannot be greater than 3 digits.</div>
+                      <div *ngIf="fManual['temperature'].errors['pattern']">Temperature must be numeric.</div>
+                  </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="slope">Runway Slope</label>
+                <input type="text" formControlName="slope" class="form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['slope'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['slope'].errors['pattern']">Slope must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="runwayLength">Runway Length</label>
+                <input type="text" formControlName="runwayLength" class="form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['runwayLength'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['runwayLength'].errors['pattern']">Slope must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="precipitation">Is the runway wet?</label>
+                 <div class="row d-flex justify-content-left">
+                  <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="precipitationYes" class="radio-label">Yes</label>
+                  <input type="radio" formControlName="precipitationNo" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="precipitationNo" class="radio-label">No</label>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="precipitation">What is the runway surface type?</label>
+                 <div class="row d-flex justify-content-left">
+                  <input type="radio" formControlName="concreteRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="concreteRunway" class="radio-label">Concrete</label>
+                  <input type="radio" formControlName="grassRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <label for="grassRunway" class="radio-label">Grass</label>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="pressureAltitude">PSI</label>
+                <input type="text" formControlName="pressureAltitude" class="form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['pressureAltitude'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['pressureAltitude'].errors['pattern']">Pressure Altitude must be numeric.</div>
+                </div>
+              </div> 
+              <div class="form-group" [formGroup]="formManualModal">
+                <label for="headwind">Headwind</label>
+                <input type="text" formControlName="headwind" class="form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
+                <div *ngIf="submittedManualModal && fManual['headwind'].errors" class="invalid-feedback">
+                    <div *ngIf="fManual['headwind'].errors['pattern']">Headwind must be numeric.</div>
+                </div>
+              </div> 
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(false)">Close</button>
+          <button type="button" class="btn btn-outline-dark active" (click)="closeManualModal(true)">Save</button>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+  <!-- Performance Modal -->
+  <div class="modal" tabindex="-1" role="dialog" id="performance-modal" [ngStyle]="{'display':displayPerformance}">
+    <div class="modal-dialog" role="document" id="performance-modal-dialog">
+      <div class="modal-content d-flex justify-content-center">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title my-auto">Performance Parameters</h1>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+          <div class="row d-flex justify-content-center">
+              <div class="blank-card col-lg-6">
+                <ul class="list-group list-group-flush align-center">
+                  <li class="list-group-item p-2">
+                    <button class="btn btn-dark performance-selection" id="DisplayTakeoffButton">Takeoff</button>
+                    <button class="btn btn-outline-dark performance-selection" id="DisplayLandingButton">Landing</button>
+                    <button class="btn btn-outline-dark performance-selection" id="DisplayStallSpeedButton">Stall Speeds</button>
+                  </li>
+                </ul>
+               
+                <!-- Takeoff output list -->
+                <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayTakeoff}">
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Takeoff Speed</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="takeoff-speed-output">{{performanceOutput.takeoffSpeed.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark speed-unit-block text-center">
+                        <h4 class="output-label" id="takeoff-speed-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Takeoff Distance</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+                        <h4 class="output-label" id="takeoff-distance-unit">ft</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Ground-Run Distance</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+                        <h4 class="output-label" id="ground-run-unit">ft</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Accel-Stop Distance</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+                        <h4 class="output-label" id="accel-stop-unit">ft</h4>
+                      </div>
+                    </div> 
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Speed Over Obstacle</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+                        <h4 class="output-label" id="speed-over-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                </ul>
+              
+                <!-- Landing Output List -->
+                <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displayLanding}">
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Landing Distance</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+                        <h4 class="output-label" id="landing-distance-unit">ft</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Approach Speed</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+                        <h4 class="output-label" id="approach-speed-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h2 class="output-label">Touch-Down Speed</h2>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-2">
+                        <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+                        <h4 class="output-label" id="touch-down-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                </ul>
+              
+                <!-- Stall speed output list -->
+                <ul class="list-group list-group-flush align-center" [ngStyle]="{'display':displaySpeeds}">
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex text-center justify-content-left m-0">
+                      <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+                        <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-4">
+                        <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+                        <h4 class="output-label" id="vs1-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg bg-dark text-center p-2 m-0 output-label-block">
+                        <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-4">
+                        <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+                        <h4 class="output-label" id="vs0-gu-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                  <li class="list-group-item p-0">
+                    <div class="row d-flex justify-content-left m-0">
+                      <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+                        <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
+                      </div>
+                      <div class="shadow-lg text-center output-block bg-white p-4">
+                        <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(2)}}</h3>
+                      </div>
+                      <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+                        <h4 class="output-label" id="vs0-gd-unit">kts</h4>
+                      </div>
+                    </div> 
+                  </li>
+                </ul>
+            </div>  
+            <div class="blank-card col-lg-5 mr-5">
+              <div class="row d-flex justify-content-center">
+                <div class="parent runway-parent">
+                  <img class="runway-picture" src="assets/img/runway.jpg" />
+                  <img [ngStyle]="{'display':displayPlanes}" src="assets/img/red-line.jpg" id="takeoff-red-line" />
+                  <img [ngStyle]="{'display':displayPlanes}" src="assets/img/airplane-icon.png" id="takeoff-plane"/>
+                </div>
+                <div class="parent runway-parent">
+                  <img class="runway-picture" src="assets/img/runway.jpg" />
+                  <img [ngStyle]="{'display':displayPlanes}" src="assets/img/red-line.jpg" id="landing-red-line" />
+                  <img [ngStyle]="{'display':displayPlanes}" src="assets/img/airplane-icon.png" id="landing-plane"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark active" (click)="closePerformanceModal()">Close</button>
+            <button type="button" class="btn btn-outline-dark active" (click)="printCard()">Print</button>
+          </div>
+        </div>
+      </div>    
+    </div>
 </layout-dashboard>
+
+<div id="PrintCard" #PrintCard [ngStyle]="{'display':'none'}" class="show-print">
+  <!-- Takeoff output list -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Takeoff Speed</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="takeoff-speed-output">{{performanceOutput.takeoffSpeed}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark speed-unit-block text-center">
+          <h4 class="output-label" id="takeoff-speed-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Takeoff Distance</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="takeoff-distance-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Ground-Run Distance</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="ground-run-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Accel-Stop Distance</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="accel-stop-unit">ft</h4>
+        </div>
+      </div> 
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Speed Over Obstacle</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="speed-over-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+
+  <!-- Landing Output List -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Landing Distance</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
+          <h4 class="output-label" id="landing-distance-unit">ft</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Approach Speed</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="approach-speed-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h2 class="output-label">Touch-Down Speed</h2>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-2">
+          <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
+          <h4 class="output-label" id="touch-down-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+
+  <!-- Stall speed output list -->
+  <ul class="list-group list-group-flush align-center">
+    <li class="list-group-item p-0">
+      <div class="row d-flex text-center justify-content-left m-0">
+        <div class="shadow-lg bg-dark p-2 m-0 output-label-block">
+          <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-4">
+          <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+          <h4 class="output-label" id="vs1-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg bg-dark text-center p-2 m-0 output-label-block">
+          <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-4">
+          <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+          <h4 class="output-label" id="vs0-gu-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+    <li class="list-group-item p-0">
+      <div class="row d-flex justify-content-left m-0">
+        <div class="shadow-lg text-center bg-dark p-2 m-0 output-label-block">
+          <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
+        </div>
+        <div class="shadow-lg text-center output-block bg-white p-4">
+          <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(2)}}</h3>
+        </div>
+        <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
+          <h4 class="output-label" id="vs0-gd-unit">kts</h4>
+        </div>
+      </div> 
+    </li>
+  </ul>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</div>

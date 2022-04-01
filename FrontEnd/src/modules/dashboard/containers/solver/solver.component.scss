@@ -1,5 +1,17 @@
 @import 'styles/variables.scss';
 
+#main-container {
+    margin-left: 0%;
+    margin-right: 0% !important;
+    text-align: right;
+    max-width: 10000px;
+}
+
+#third-col {
+    max-width: 50%;
+}
+
+
 #FindRunwaysButton {
     margin: 6%;
 }
@@ -17,13 +29,135 @@ form {
     width: 30%;
 }
 
+ul {
+    border: black solid 1px;
+}
+
 .modal {
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 10040;
+    overflow-y: auto;
+}
+
+#PictureColumn {
+    margin-right: 12%;
+}
+
+#CockpitPicture {
+    width: 150%;
+    margin-top: 20%;
+    margin-bottom: 5%;
+    margin-left: 10%;
+    position: relative;
+}
+
+#FullPlanePicture {
+    position: relative;
+    width: 140%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+
+.attachment-box {
+    color: white;
+    min-height: 15%;
+}
+
+#AttachmentBox1 {
+    color: white;
+    position: absolute;
+    left: -5%;
+    top: 95%;
+    display: block;
+    z-index: 2;
+    min-width: 25%;
+    max-height: 15%;
+}
+
+#AttachmentBox2 {
+    color: white;
+    position: absolute;
+    left: 30%;
+    top: 95%;
+    display: block;
+    z-index: 2;
+    min-width: 25%;
+    max-height: 15%;
+}
+
+#AttachmentBox3 {
+    color: white;
+    position: absolute;
+    left: 60%;
+    top: 95%;
+    display: block;
+    z-index: 2;
+    min-width: 25%;
+    max-height: 15%;
+}
+
+#AttachmentBox4 {
+    color: white;
+    position: absolute;
+    left: 95%;
+    top: 95%;
+    display: block;
+    z-index: 2;
+    min-width: 25%;
+    max-height: 15%;
+}
+
+#AttachmentBox5 {
+    color: white;
+    position: absolute;
+    left: 125%;
+    top: 95%;
+    display: block;
+    z-index: 2;
+    min-width: 25%;
+    max-height: 15%;
+}
+
+#PilotBox1 {
+    color: white;
+    position: absolute;
+    left: 45%;
+    top: 14%;
+    display: block;
+    z-index: 2;
+    min-width: 30%;
+    height: 15%;
+}
+
+#PilotBox2 {
+    color: white;
+    position: absolute;
+    left: 110%;
+    top: 0%;
+    display: block;
+    z-index: 2;
+    min-width: 30%;
+    height: 15%;
+}
+
+#performance-modal {
+    position: absolute;
+    bottom: 0;
+    left: 300px;
+    z-index: 10040;
     overflow: auto;
     overflow-y: auto;
+    max-width: 80% !important;
+}
+
+#performance-modal-dialog {
+    max-width: 80% !important;
+}
+
+#performance-column {
+    max-width: 100%;
 }
 
 .radio-label{
@@ -44,10 +178,71 @@ form {
     color: white;
 }
 
+.output-label {
+    display: table-cell;
+    align-items: center;
+}
+
+.performance-selection {
+    width: 32%;
+    margin-inline: 0.5%;
+}
+
+.output-label-block {
+    width: 50%;
+    margin:0;
+    display: table;
+}
+
+.output-block {
+    width: 40%;
+    margin:0;
+    display: table;
+}
+
+.unit-block, .speed-unit-block, .unit-block-big {
+    width: 10%;
+    display: table;
+    padding: 2%;
+    align-items: center;
+}
+
+.speed-unit-block {
+    padding-top: 2%;
+}
+
+.unit-block-big {
+    padding-top: 5%;
+}
+
+h2, h3 {
+    display: table-cell;
+    align-items: center;
+}
+
+#RightColumn {
+    margin-left: 1%;
+}
+
+#CalculateButton {
+    width: 100%;
+    height: 11%;
+}
+
 #AircraftProfileSelect {
     margin-right: 5%;
     height: 100%;
-    width: 50%;
+    width: 60%;
+}
+
+.parameter-selection {
+    width: 40%;
+}
+
+.performance-card {
+    width: 90%;
+    border-right-width: 1.5px;
+    border-left-width: 1.5px;
 }
 
 .card, .left-card{
@@ -60,26 +255,195 @@ form {
 
 .pilot-input {
     margin-block: 2%;
-    width: 85%;
+    width: 95%;
+    margin-left: 10%;
 }
 
-#MissionTimeInput {
-    margin-left: 14%
+#LandingWeightInput {
+    margin-left: 16%;
+    width: 50%;
 }
 
 .time-item {
-    width:40%;
-    margin: 0%;
-    padding: 0%;
+    width: 40%;
+    margin-left: 100px;
 }
 
-#CalculateButton {
-    width: 100%;
-    height: 11%;
+.time-label {
+    margin-right: 15%;
 }
 
-.parameter-button {
+.measurement-button {
     width: 40%;
     margin-inline: 5%;
 }
 
+.parent {
+  position: relative;
+  top: 0;
+  left: 0;
+  align-items: center;
+  margin-right: 10%;
+}
+
+.runway-picture {
+  position: relative;
+  top: 0;
+  left: 0;
+  max-width: 130%;
+  min-height: 130%;
+}
+
+.runway-parent {
+    margin-top: 10%;
+}
+
+#takeoff-red-line {
+  position: absolute;
+  top: 63%; 
+  left: 0%;
+  height: 4%;
+}
+
+#landing-red-line {
+  position: absolute;
+  top: 63%; 
+  left: 0%;
+  height: 4%;
+}
+
+#takeoff-plane {
+  position: absolute;
+  bottom: 10%;
+  max-width: 15%;
+  height: auto;
+}
+
+#landing-plane {
+    position: absolute;
+    left: -15%;
+    bottom: 25%;
+    max-width: 15%;
+    height: auto;
+    transform: rotate(40deg);
+}
+
+.border-td {
+    border: black 2px solid;
+}
+
+
+@media print {
+    .hide-print {
+      display: none !important;
+    }
+
+    .show-print {
+        display: block !important
+    }
+}
+
+.print-button-column {
+    margin-left: 10%;
+}
+
+.print-button-column, #PrintButton {
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+
+#PrintButton {
+    border: 1px solid white;
+}
+
+.performance-header-col {
+    margin-left: 17%;
+}
+
+.parameter-button {
+    width: 45%;
+    margin-inline: 1%;
+}
+
+.left-column {
+    margin-left: 0;
+    max-width: 28%;
+}
+
+#airportID-output{
+    width: 66.7%;
+}
+
+.airport-output {
+    width:100%; /*full width*/
+    display:table; /*acts like a table*/
+}
+
+.airport-output-white {
+    width:65%;
+    display:table;
+}
+
+.airport-output-unit {
+    width:30%; /*full width*/
+    display:table; /*acts like a table*/
+    padding-top: 1%;
+}
+
+.airport-output-unit-sm {
+    width: 33.5%;
+    padding-left: 10%;
+    height: 2%;
+}
+
+table, tr {
+    border: black solid 1px;
+    min-width: 160%;
+    min-height: 50%;
+    margin-top: 10%;
+}
+
+#KTSUnitBlock {
+    width: 33.5%;
+}
+
+td, th {
+    border: black solid 1px;
+}
+
+#BlackLine1 {
+    position: absolute;
+    top: 35%; 
+    left: 65%;
+    height: 1.5%;
+    width: 20%;
+    transform: rotate(40deg);
+    opacity: 80%;
+}
+
+#BlackLine2 {
+    position: absolute;
+    top: 20%; 
+    left: 120%;
+    height: 1.5%;
+    width: 15%;
+    transform: rotate(90deg);
+    opacity: 80%;
+}
+
+.bag-input {
+    max-width: 150%;
+    height: 45%;
+    margin-block: 3%;
+    margin-left: 0;
+    padding-left: 0%;
+}
+
+#CockpitParent {
+    max-width: 100%;
+}
+
+#FullPlaneParent {
+    margin-left: 15%;
+    width: 90%;
+}

@@ -142,7 +142,7 @@ export class CalculatorComponent implements OnInit {
                         this.currentProfile = res.data.profile;
 
                         if(this.currentProfile.agilePod) {
-                            document.getElementById('AttachmentBox3').innerHTML = "Agile Pod";
+                            document.getElementById('AgilePodText').innerHTML = "Agile Pod";
                             this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
                             this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
 
@@ -168,6 +168,8 @@ export class CalculatorComponent implements OnInit {
                     this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
                     this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
                 }
+
+                document.getElementById('AgilePodText').innerHTML = "";
 
                 this.weightSum -= this.currentProfile.outboard;
                 this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
