@@ -11,6 +11,7 @@ import { Pilot } from "@app/models/pilot";
 import { AlertService } from "@app/services/alert.service";
 import { ObjectUnsubscribedError } from "rxjs";
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { Constants } from "@app/models/constants";
 
 @Component({
     selector: 'add-profiles',
@@ -38,6 +39,16 @@ export class AddProfilesComponent implements OnInit {
 
   agileYes = false;
 
+  constants: Constants;
+  weightSum: number;
+  momentSum: number;
+  internalTank: number;
+  tipTank: number;
+  underwingTank: number;
+  outboard: number;
+  agilePodARM: number;
+  agileWeight: number;
+
   ngOnInit() {
 
     this.formSaveProfile = this.formBuilder.group({
@@ -52,6 +63,12 @@ export class AddProfilesComponent implements OnInit {
       name: ['', [Validators.required, Validators.pattern(/^[a-z0-9]/)]],
       weight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
     });
+
+    this.apiService.get('constants').subscribe(res => {
+      this.constants = res.data.constants;
+      this.weightSum = res.data.constants.basicEmptyAircraftWeight;
+      this.momentSum = res.data.constants.basicEmptyAircraftWeight*res.data.constants.basicEmptyAircraft;
+  })
 
     let profileInputs = []
 
@@ -102,6 +119,8 @@ export class AddProfilesComponent implements OnInit {
       this.agileYes = false;
     });
 
+
+
     const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
     this.apiService.get(`profiles/${user}/all`).subscribe(res => {
       res.data.profiles.forEach(profile => {
@@ -138,12 +157,36 @@ export class AddProfilesComponent implements OnInit {
   
   openSaveModal() {
     this.submittedSaveProfile = true;
-    console.log(this.formSaveProfile.errors)
     if(this.formSaveProfile.invalid) {
       if(!(this.fSave['agilePayload'].errors['required'] && !this.agileYes)) {
         return;
       }
     }
+
+    const internalTank = document.getElementById('InternalTankInput') as HTMLInputElement;
+    const underwingTank = document.getElementById('UnderwingTankInput') as HTMLInputElement;
+    const tipTank = document.getElementById('TipTankInput') as HTMLInputElement;
+    const outboard = document.getElementById('OutboardInput') as HTMLInputElement;
+    const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
+
+    this.internalTank = Number(internalTank.value);
+    this.underwingTank = Number(underwingTank.value);
+    this.tipTank = Number(tipTank.value);
+    this.outboard = Number(outboard.value);
+
+    this.weightSum = this.internalTank*6.815 + this.underwingTank*6.815 + this.tipTank*6.815 + this.outboard + this.constants.basicEmptyAircraftWeight;
+    this.momentSum = this.internalTank*6.815*this.constants.tanks + this.underwingTank*6.815*this.constants.tanks + this.tipTank*6.815*this.constants.tanks +
+    this.outboard*this.constants.tanks + this.constants.basicEmptyAircraft*this.constants.basicEmptyAircraftWeight;
+
+    if(agileYesRadio.checked) {
+      const agileWeightInput = document.getElementById('AgilePayload') as HTMLInputElement;
+      this.agileWeight = Number(agileWeightInput.value);
+      this.agilePodARM = (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail
+        + this.constants.podPayload*this.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.agileWeight);
+    }
+
+
+
     this.displaySaveProfile = "block";
     document.getElementById('main-container').style.opacity = '40%';
   }
@@ -248,7 +291,9 @@ export class AddProfilesComponent implements OnInit {
     var agilePod = false;
 
     if(agileYesRadio.checked) {
-      const agileWeightInput = document.getElementById('AgileWeightInput') as HTMLInputElement;
+      const agileWeightInput = document.getElementById('AgilePayload') as HTMLInputElement;
+      agileWeight = Number(agileWeightInput.value);
+
       agilePod = true;
     }
 
