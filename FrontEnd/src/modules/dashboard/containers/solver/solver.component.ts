@@ -8,6 +8,7 @@ import { Constants } from '@app/models/constants';
 import { Pilot } from '@app/models/pilot';
 import { Profile } from '@app/models/profile.model';
 import { RunwayConditions } from '@app/models/runway-conditions';
+import { SolverOutput } from '@app/models/solver-output';
 import { AccountService } from '@app/services/account.service';
 import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
@@ -55,19 +56,9 @@ export class SolverComponent implements OnInit {
     calculateLoading = false;
     notCalculated = true;
     pilot1NotSelected = true;
-    performanceOutput = {
-            "groundRunDistance": 0,
-            "takeoffSpeed": 0,
-            "takeoffDistance": 0,
-            "accelStopDistance": 0,
-            "speedOverObstacle": 0,
-            "stallSpeedVS1": 0,
-            "landingDistance": 0,
-            "approachSpeed": 0,
-            "touchDownSpeed": 0,
-            "stallSpeedVS0GD": 0,
-            "stallSpeedVS0GU": 0
-    };
+
+    solverOutput: SolverOutput;
+    
     pilot1: Pilot;
     pilot2: Pilot;
     outboard: number;
@@ -79,6 +70,19 @@ export class SolverComponent implements OnInit {
     agilePodARM: number;
     baggage1 = 0;
     baggage2 = 0;
+    performanceOutput = {
+        "groundRunDistance": 0,
+        "takeoffSpeed": 0,
+        "takeoffDistance": 0,
+        "accelStopDistance": 0,
+        "speedOverObstacle": 0,
+        "stallSpeedVS1": 0,
+        "landingDistance": 0,
+        "approachSpeed": 0,
+        "touchDownSpeed": 0,
+        "stallSpeedVS0GD": 0,
+        "stallSpeedVS0GU": 0
+};
 
     emptyAircraftMAC: number;
 
@@ -400,34 +404,43 @@ export class SolverComponent implements OnInit {
 
         const username = localStorage.getItem('username');
 
-        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions);
+        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions,
+        this.pilot1.mass, this.pilot2.mass, this.baggage1, this.baggage2);
 
-        this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
+        this.restClassifier.post(`calculate/solver`, calculatorInput).pipe(first())
         .subscribe(
             res => {
            
-            this.performanceOutput = res.data.calculatorOutput;
+            this.solverOutput = res.data.solverOutput;
+            this.currentProfile=this.solverOutput.profile;
+            this.performanceOutput = this.solverOutput.calculatorOutput;
 
-            this.calculateLoading = false;
-            this.notCalculated = false;
+            if(this.solverOutput.error) {
+                this.alertService.error("Runway is too short at minimum fuel load.")
+                this.calculateLoading = false;
+            }
+            else {
+                this.calculateLoading = false;
+                this.notCalculated = false;
 
-            const takeoffLineDistance = 100*(this.performanceOutput.takeoffDistance/(this.runwayConditions.runwayLength*3.28084));
-            const takeoffLine = document.getElementById('takeoff-red-line') as HTMLImageElement;
+                const takeoffLineDistance = 100*(this.performanceOutput.takeoffDistance/(this.runwayConditions.runwayLength*3.28084));
+                const takeoffLine = document.getElementById('takeoff-red-line') as HTMLImageElement;
 
-            takeoffLine.style.width = takeoffLineDistance.toString() + "%";
+                takeoffLine.style.width = takeoffLineDistance.toString() + "%";
 
-            const takeoffPlane = document.getElementById('takeoff-plane') as HTMLImageElement;
-            takeoffPlane.style.left = takeoffLineDistance.toString() + "%";
+                const takeoffPlane = document.getElementById('takeoff-plane') as HTMLImageElement;
+                takeoffPlane.style.left = takeoffLineDistance.toString() + "%";
 
-            const landingLineDistance = 100*(this.performanceOutput.landingDistance/(this.runwayConditions.runwayLength*3.28084));
-            const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
+                const landingLineDistance = 100*(this.performanceOutput.landingDistance/(this.runwayConditions.runwayLength*3.28084));
+                const landingLine = document.getElementById('landing-red-line') as HTMLImageElement;
 
-            landingLine.style.width = landingLineDistance.toString() + "%";
+                landingLine.style.width = landingLineDistance.toString() + "%";
 
-            this.displayPlanes = 'block';
-            this.displayPerformance = 'block';
+                this.displayPlanes = 'block';
+                this.displayPerformance = 'block';
 
-            document.getElementById('main-container').style.opacity = '40%';
+                document.getElementById('main-container').style.opacity = '40%';
+            }
             },
             error => {
                 this.alertService.error("Conditions could not be calculated.")
@@ -551,6 +564,8 @@ export class SolverComponent implements OnInit {
 
         document.getElementById('main-container').style.opacity = '100%';
         this.displaySaveStyleAutomatic = 'none';
+
+        this.runwaysLoading = false;
     }
 
     get fManual() { return this.formManualModal.controls; }

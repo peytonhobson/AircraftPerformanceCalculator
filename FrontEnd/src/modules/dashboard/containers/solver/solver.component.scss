@@ -149,11 +149,13 @@ ul {
     z-index: 10040;
     overflow: auto;
     overflow-y: auto;
-    max-width: 80% !important;
+    max-width: 85% !important;
+    min-height: 110%;
 }
 
 #performance-modal-dialog {
     max-width: 80% !important;
+    min-height: 100%;
 }
 
 #performance-column {
@@ -294,10 +296,6 @@ h2, h3 {
   min-height: 130%;
 }
 
-.runway-parent {
-    margin-top: 10%;
-}
-
 #takeoff-red-line {
   position: absolute;
   top: 63%; 
@@ -398,9 +396,8 @@ h2, h3 {
 
 table, tr {
     border: black solid 1px;
-    min-width: 160%;
+    min-width: 115%;
     min-height: 50%;
-    margin-top: 10%;
 }
 
 #KTSUnitBlock {
@@ -447,3 +444,14 @@ td, th {
     margin-left: 15%;
     width: 90%;
 }
+
+.runway-parent {
+    position: relative;
+    top: 0;
+    left: 0;
+    align-items: left;
+    max-width: 70%;
+    margin-top: 5%;
+    margin-left: 7%;
+    margin-bottom: 10%;
+  }

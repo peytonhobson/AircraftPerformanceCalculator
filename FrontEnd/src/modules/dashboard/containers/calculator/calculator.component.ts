@@ -400,7 +400,8 @@ export class CalculatorComponent implements OnInit {
 
         const username = localStorage.getItem('username');
 
-        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions);
+        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions,
+        this.pilot1.mass, this.pilot2.mass, this.baggage1, this.baggage2);
 
         this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
         .subscribe(
@@ -551,6 +552,8 @@ export class CalculatorComponent implements OnInit {
 
         document.getElementById('main-container').style.opacity = '100%';
         this.displaySaveStyleAutomatic = 'none';
+
+        this.runwaysLoading = false;
     }
 
     get fManual() { return this.formManualModal.controls; }

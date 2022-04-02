@@ -5,6 +5,7 @@ import { Constants } from "./constants";
 import { Pilot } from "./pilot";
 import { Profile } from "./profile.model";
 import { RunwayConditions } from "./runway-conditions";
+import { SolverOutput } from "./solver-output";
 import { User } from "./user";
 
 export interface CustomResponse {
@@ -16,7 +17,7 @@ export interface CustomResponse {
     developerMessage: string;
     data: {profiles?: Profile[], profile?: Profile, runwayCondition? : RunwayConditions, airportRunways? : string[], 
         runwayError?: string, attachments?: Attachment[], pilots: Pilot[], pilot: Pilot, calculatorOutput: CalculatorOutput,
-    user: User, activityLogs: ActivityLog[], constants: Constants};
+    user: User, activityLogs: ActivityLog[], constants: Constants, solverOutput: SolverOutput};
 }
 
 export interface CalculatorResponse {
