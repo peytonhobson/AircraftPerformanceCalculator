@@ -41,6 +41,9 @@
           <div class="card-header text-center">
             Pilots
           </div>
+          <div class="row">
+            <label id="BaggageLabel">Baggage Weight:</label>
+          </div>
           <div class="card-body pl-0 pr-0">
             <div class="row d-flex justify-content-center">
               <div class="col-md-6">
@@ -52,9 +55,23 @@
                   <option>None</option>
                 </select>
               </div>  
-              <div class=col-md-6>
-                <input type="number" class="bag-input" placeholder="Bag weight" id="Baggage1"/>
-                <input type="number" class="bag-input" placeholder="Bag weight" disabled id="Baggage2"/>
+              <div class="col-md-6">
+                <div class="row d-flex justify-content-center h-100">
+                  <form [formGroup]="baggageForm" class="d-flex justify-content-center">
+                    <div class="row d-flex justify-content-center" [formGroup]="baggageForm">
+                      <input type="number" class="bag-input border border-dark text-right" formControlName="baggage1" id="Baggage1" [ngClass]="{ 'is-invalid': submittedCalc && fBag['baggage1'].errors }"/>
+                      <label class="ml-1 mt-2">lbs</label>
+                      <div *ngIf="submittedCalc && fBag['baggage1'].errors" class="invalid-feedback">
+                        <div *ngIf="fBag['baggage1'].errors['min']">Baggage cannot be less than 0 lbs.</div>
+                      </div>
+                      <input type="number" class="bag-input border border-dark text-right" formControlName="baggage1" id="Baggage2" [ngClass]="{ 'is-invalid': submittedCalc && fBag['baggage2'].errors }"/>
+                      <label class="ml-1 mt-2">lbs</label>
+                      <div *ngIf="submittedCalc && fBag['baggage2'].errors" class="invalid-feedback">
+                        <div *ngIf="fBag['baggage2'].errors['min']">Baggage cannot be less than 0 lbs.</div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>  
           </div>
@@ -67,12 +84,18 @@
             <div class="row d-flex justify-content-center">
               <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
                 <label>Landing Weight:</label>
-                <div class="row d-flex justify-content-center">
-                  <input type="number" class="time-item text-right" id="LandingWeightInput" value="">
-                  <label class="time-label">&nbsp;lbs</label>
-                </div>
+                <form [formGroup]="landingWeightForm" class="w-100">
+                  <div class="row d-flex justify-content-center" [formGroup]="landingWeightForm">
+                    <input type="number" formControlName="landingWeight" class="time-item text-right border border-dark" id="LandingWeightInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fLand['landingWeight'].errors }">
+                    <div *ngIf="submittedCalc && fLand['landingWeight'].errors" class="invalid-feedback">
+                      <div *ngIf="fLand['landingWeight'].errors['required']">Landing Weight is required</div>
+                      <div *ngIf="fLand['landingWeight'].errors['min']">Landing Weight cannot be less than minimum aircraft weight.</div>
+                    </div>
+                    <label class="time-label mt-2">&nbsp;lbs</label>
+                  </div>
+                </form>
               </div>
-              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
+              <div class="col-md-5 mr-0 ml-0 pl-3">
                 <label class="mb-0">Parachute 2:</label>
                 <div class="row d-flex justify-content-center">
                   <input type="radio" class="radio ml-2" id="ParachuteYesRadio" checked/>
@@ -140,7 +163,7 @@
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-md airport-output text-center bg-dark rounded p-3">
+              <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
                 <h4 class="output-label p-0 m-0">Slope</h4>
               </div>
             </div> 
@@ -194,7 +217,7 @@
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
-              <div class="shadow-md airport-output text-center bg-white rounded p-3 h-100">
+              <div class="shadow-lg airport-output text-center bg-white rounded p-3 h-100">
                 <div class="row d-flex justify-content-center">
                   <h4 id="slope-output" class="p-0 m-0" *ngIf="runwayConditions.runwayLength !== null">{{runwayConditions.slope.toFixed(3)}}</h4>
                   <h4 class="m-0 p-0">&deg;</h4>
@@ -223,7 +246,7 @@
                 <label for="airportInput">Enter Airport ID:</label>
               </div>
               <div class="row d-flex justify-content-center form-group" [formGroup]="runwaysForm">
-                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submittedRunways && f['airportInput'].errors }" />
+                <input type="text" formControlName="airportInput" id="airportID" class="form-control border border-dark" [ngClass]="{ 'is-invalid': submittedRunways && f['airportInput'].errors }" />
                 <div *ngIf="submittedRunways && f['airportInput'].errors" class="invalid-feedback">
                   <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
                   <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>

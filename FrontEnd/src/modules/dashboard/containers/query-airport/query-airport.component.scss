@@ -20,6 +20,7 @@ h4, h3, h2{
 
 #runway-button-group {
     min-height: 100px;
+    border: black solid 1px;
 }
 
 #airportID-output{
@@ -30,6 +31,12 @@ form, input {
     width: 35%;
     display: table-cell;
 }
+
+input {
+    border: black solid 1px;
+}
+
+
 
 .card-header {
     color: white;

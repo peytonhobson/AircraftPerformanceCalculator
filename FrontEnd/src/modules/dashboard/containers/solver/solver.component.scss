@@ -429,11 +429,16 @@ td, th {
 }
 
 .bag-input {
-    max-width: 70%;
-    height: 42%;
+    max-width: 60%;
+    height: 40%;
     margin-block: 2%;
     margin-left: 0;
     padding-left: 0%;
+}
+
+#BaggageLabel {
+    position: absolute;
+    left: 60%;
 }
 
 #CockpitParent {

@@ -26,6 +26,8 @@ export class SolverComponent implements OnInit {
 
     runwaysForm: FormGroup;
     formManualModal: FormGroup;
+    landingWeightForm: FormGroup;
+    baggageForm: FormGroup;
     runwayConditions = {
         "airportID": "",
         "temp": null,
@@ -35,7 +37,7 @@ export class SolverComponent implements OnInit {
         "runwayLength": null,
         "runwayType": null,
         "slope": null,
-    };
+    };0
     runwayButtonNumber: number;
     airportID: string;
 
@@ -43,6 +45,7 @@ export class SolverComponent implements OnInit {
     displaySaveStyleManual = 'none';
     submittedManualModal = false;
     submittedRunways = false;
+    submittedCalc = false;
 
     displayTakeoff = 'block';
     displayLanding = 'none';
@@ -127,6 +130,15 @@ export class SolverComponent implements OnInit {
             precipitationYes: ['1'],
             precipitationNo: ['0'],
             runwayLength: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0)]]
+        });
+
+        this.landingWeightForm = this.formBuilder.group({
+            landingWeight: [{ value: 0, disabled: false }, [Validators.required, Validators.min(8186)]]
+        });
+
+        this.baggageForm = this.formBuilder.group({
+            baggage1: [{ value: 0, disabled: false }, [Validators.min(0)]],
+            baggage2: [{ value: 0, disabled: false }, [Validators.min(0)]],
         });
 
         const aircraftProfileSelect = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
@@ -358,6 +370,8 @@ export class SolverComponent implements OnInit {
                 this.zeroMomentSum -= this.baggage1*this.constants.baggage1;
                 this.baggage1 = undefined;
             }
+
+            this.submittedCalc = false;
         })
 
         baggage2.addEventListener('change', (e) => {
@@ -375,6 +389,8 @@ export class SolverComponent implements OnInit {
                 this.zeroMomentSum -= this.baggage2*this.constants.baggage2;
                 this.baggage2 = undefined;
             }
+
+            this.submittedCalc = false;
         })
 
         const parachuteYes = document.getElementById('ParachuteYesRadio') as HTMLInputElement;
@@ -425,11 +441,26 @@ export class SolverComponent implements OnInit {
         concreteRadio.addEventListener('click', (e) => {
             grassRadio.checked = false;
         })
+
+        const landingWeightInput = document.getElementById('LandingWeightInput') as HTMLInputElement;
+
+        landingWeightInput.addEventListener('click', (e) => {
+            this.submittedCalc = false;
+        });
     }
+
+    get fBag() { return this.baggageForm.controls};
+    get fLand() { return this.landingWeightForm.controls};
 
     calculate() {
 
         this.calculateLoading = true;
+        this.submittedCalc=true;
+
+        if(!this.landingWeightForm.valid) {
+            this.calculateLoading = false;
+            return;
+        }
 
         const pilot1Name = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
         const pilot2Name = document.getElementById('Pilot2ProfileSelect') as HTMLSelectElement;
@@ -506,6 +537,7 @@ export class SolverComponent implements OnInit {
                 this.displayPerformance = 'block';
 
                 document.getElementById('main-container').style.opacity = '40%';
+                this.submittedCalc=false;
             }
             },
             error => {
@@ -541,8 +573,8 @@ export class SolverComponent implements OnInit {
             const pressureAltitude = this.fManual['pressureAltitude'].value
             const headwind = this.fManual['headwind'].value
 
-            this.runwayConditions = new RunwayConditions("", Number(temperature), Number(pressureAltitude), precipitation, Number(headwind),
-                Number(runwayLength), runwayType, Number(slope))
+            this.runwayConditions = new RunwayConditions("", Number(temperature), Number(pressureAltitude)/3.28084, precipitation, Number(headwind),
+                Number(runwayLength)/3.28084, runwayType, Number(slope));
 
 
             for(var name in this.formManualModal.controls) {
