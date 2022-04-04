@@ -61,4 +61,17 @@ public class ProfileResource {
                         .build()
         );
     }
+
+    @PostMapping(path = "/delete")
+    public ResponseEntity<Response> delete(@RequestBody String username, String name) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("profile", profileService.delete(username, name)))
+                        .message("Profile deleted")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 }

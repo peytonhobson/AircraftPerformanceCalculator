@@ -1,7 +1,6 @@
 package com.opl.aircraftperformancecalculator.repo;
 
 import com.opl.aircraftperformancecalculator.models.ActivityLog;
-import com.opl.aircraftperformancecalculator.models.Attachment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

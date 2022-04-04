@@ -65,13 +65,12 @@ public class PilotResource {
     }
 
     @PostMapping(path = "/delete")
-    public ResponseEntity<Response> deletePilot(@RequestBody Pilot pilot) throws Exception {
-
+    public ResponseEntity<Response> delete(@RequestBody String username, String name) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of(true, pilotService.deletePilot(pilot.getId())))
-                        .message("Pilot Deleted")
+                        .data(of("pilot", pilotService.delete(username, name)))
+                        .message("Pilot deleted")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()

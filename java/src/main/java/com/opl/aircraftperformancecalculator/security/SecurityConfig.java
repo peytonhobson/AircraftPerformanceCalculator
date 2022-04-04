@@ -5,6 +5,7 @@ import com.opl.aircraftperformancecalculator.filter.CustomAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-@Configuration @EnableWebSecurity @RequiredArgsConstructor @PropertySource(value = {"classpath:application.yml"})
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+@PropertySource(value = {"classpath:application.yml"})
+@Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${spring.key.name}")
     private String secret;
+
+    @Value("${constant.aircraftMass.emptyAircraftKG}")
+    private String empty;
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        log.info(empty);
     }
 
     @Override
@@ -60,6 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(OPTIONS,"/users/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/users/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(GET,"/users/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(OPTIONS,"/constants/**").permitAll();
+        http.authorizeRequests().antMatchers(GET,"/constants/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilterLogin);

@@ -12,47 +12,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String username;
     private String name;
     private double internalTank;
-    private double dropTank;
+    private double underwingTank;
     private double tipTank;
-
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "profile_attachment",
-            joinColumns = @JoinColumn(name = "attachment_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"))
-    private Set<Attachment> attachments = new HashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Profile profile = (Profile) o;
-        return Objects.equals(id, profile.id) && Objects.equals(username, profile.username) && Objects.equals(name, profile.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, name);
-    }
-
-    @Override
-    public String toString() {
-        return "Profile{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
+    private double Outboard;
+    private boolean agilePod;
+    private double agileWeight;
 }

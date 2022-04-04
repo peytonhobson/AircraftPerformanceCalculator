@@ -1,7 +1,7 @@
 spring:
   datasource:
     password: 5150
-    url: jdbc:mysql://localhost:3306/AircraftPerformanceCalculator
+    url: jdbc:mysql://localhost:3306/apc
     username: root
   jpa:
     hibernate:
@@ -13,3 +13,24 @@ spring:
     show-sql: true
   key:
     name: dGUqtweq
+constant:
+  aircraftMass:
+    emptyAircraftKG: 3527
+    agilePodKG: 105.05
+    emptyAircraftLBS: 7777
+    agilePodLBS: 186
+    agileRailLBS: 45.8
+    parachuteWeightLBS: 36
+  ARM:
+    basicEmptyAircraft: 242.45
+    emptyAgilePod: 142.51
+    agileRail: 137.8
+    podPayload: 142.51
+    pilot1: 121
+    pilot2: 118
+    baggage1: 26.25
+    baggage2: 53.25
+    tanks: 243.5
+  MAC:
+    MACL39: 84.6455
+    MACRefDatum: 218.46

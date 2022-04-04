@@ -40,7 +40,7 @@ public class TakeoffDistanceCalculator {
 
         double takeoffDist;
 
-        if (runwayType.equalsIgnoreCase("concrete")) {
+        if (runwayType.equalsIgnoreCase("conc") || runwayType.equalsIgnoreCase("asph")) {
             takeoffDist = lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
                     lineList.get(0).get(2)*mass + lineList.get(0).get(3);
         }
@@ -49,6 +49,6 @@ public class TakeoffDistanceCalculator {
                     lineList.get(1).get(2)*mass + lineList.get(1).get(3);
         }
 
-        return takeoffDist;
+        return takeoffDist*3.28084;
     }
 }

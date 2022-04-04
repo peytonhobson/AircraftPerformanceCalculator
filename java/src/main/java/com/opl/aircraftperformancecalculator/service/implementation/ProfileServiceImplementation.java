@@ -44,10 +44,9 @@ public class ProfileServiceImplementation implements ProfileService {
     }
 
     @Override
-    public Boolean delete(Long id) {
-        log.info("Deleting Server by ID: {}", id);
-        profileRepo.deleteById(id);
-        return TRUE;
+    public Integer delete(String name, String username) {
+        log.info("Deleting profile");
+        return profileRepo.deleteByNameAndUsername(name, username);
     }
 
     @Override

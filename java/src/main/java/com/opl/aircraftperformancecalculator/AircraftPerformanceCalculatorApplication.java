@@ -4,6 +4,7 @@ import com.opl.aircraftperformancecalculator.models.*;
 import com.opl.aircraftperformancecalculator.repo.ProfileRepo;
 import com.opl.aircraftperformancecalculator.security.SecurityConfig;
 import com.opl.aircraftperformancecalculator.service.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,44 +28,18 @@ public class AircraftPerformanceCalculatorApplication {
 
 	@Bean
 	CommandLineRunner run(ProfileService profileService, UserService userService,
-						  AuthenticationService authenticationService, AttachmentService attachmentService,
+						  AuthenticationService authenticationService,
 						  PilotService pilotService) {
 		return args -> {
-			Attachment attachment1 = new Attachment();
-			attachment1.setId("peytonhobson_attachment1");
-			attachment1.setName("attachment2");
-			attachment1.setUsername("peytonhobson");
-			attachment1.setMass(200);
-			attachmentService.save(attachment1);
 
-			Attachment attachment2 = new Attachment();
-			attachment2.setId("peytonhobson_attachment2");
-			attachment2.setName("attachment2");
-			attachment2.setUsername("peytonhobson");
-			attachment2.setMass(100);
-			attachmentService.save(attachment2);
+			profileService.save( new Profile("peytonhobson_profile1", "peytonhobson", "profile1", 288, 0, 52,
+					400, true, 150));
 
-			Attachment attachment3 = new Attachment();
-			attachment3.setId("peytonhobson_attachment3");
-			attachment3.setName("attachment3");
-			attachment3.setUsername("peytonhobson");
-			attachment3.setMass(400);
-			attachmentService.save(attachment3);
-
-			Profile profile = new Profile();
-			profile.setName("profile1");
-			profile.setUsername("peytonhobson");
-			profile.setAttachments(new HashSet<>(List.of(attachment1, attachment2, attachment3)));
-			profile.setInternalTank(78);
-			profile.setDropTank(50);
-			profile.setTipTank(50);
-			profileService.save(profile);
 			userService.saveUser(new User("peytonhobson", "password", "ROLE_USER"));
 			userService.saveUser(new User("admin", "password", "ROLE_ADMIN"));
 
-			pilotService.save(new Pilot("peytonhobson_peyton", "peytonhobson", "peyton", 100));
-			pilotService.save(new Pilot("peytonhobson_asdfdf", "peytonhobson", "asdfdf", 100));
-			pilotService.save(new Pilot("peytonhobson_asdf", "peytonhobson", "asdf", 100));
+			pilotService.save(new Pilot("peytonhobson_Peyton", "peytonhobson", "Peyton", 145));
+			pilotService.save(new Pilot("peytonhobson_Alex", "peytonhobson", "Alex", 170));
 
 //			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
 //			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));
@@ -76,5 +51,13 @@ public class AircraftPerformanceCalculatorApplication {
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Value("${constant.aircraftMass.emptyAircraftKG}")
+	private String emptyAircraftKG;
+
+	@Bean
+	public String getEmptyAircraftKG() {
+		return emptyAircraftKG;
 	}
 }

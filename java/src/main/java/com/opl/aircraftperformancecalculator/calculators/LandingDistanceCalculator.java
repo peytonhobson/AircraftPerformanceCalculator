@@ -12,11 +12,19 @@ import java.util.Scanner;
 @Slf4j
 public class LandingDistanceCalculator {
 
+    /**
+     * Calculates landing distance from digitized graphs using landing mass and braking friction.
+     * @param mass
+     * @param friction
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Double getLandingDistance(double mass, double friction) throws FileNotFoundException {
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
+        // Creates lists of polynomials from data files.
         Scanner sc = new Scanner(new File("src/main/resources/python/Landing_Distance_Output/landingdist.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
@@ -50,6 +58,7 @@ public class LandingDistanceCalculator {
             landingDist = lineList.get(3).get(0)*mass + lineList.get(3).get(1);
         }
 
-        return friction <= 0.2 ?  landingDist*1.17:landingDist;
+        // Multiplies landing distance by 17% if runway is wet.
+        return friction <= 0.2 ?  landingDist*1.17*3.28084:landingDist*3.28084;
     }
 }

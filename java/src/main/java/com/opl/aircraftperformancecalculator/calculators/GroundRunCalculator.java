@@ -12,6 +12,17 @@ import java.util.Scanner;
 @Slf4j
 public class GroundRunCalculator {
 
+    /**
+     * Calculates the accel-stop distance using cubic polynomials from digitized graphs.
+     * @param psi
+     * @param temp
+     * @param mass
+     * @param wind
+     * @param slope
+     * @param rollingFriction
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Double getGroundRun(double psi, double temp, double mass, double wind, double slope, double rollingFriction) throws FileNotFoundException {
 
         // Names of the csv file names that contain the coefficients
@@ -118,8 +129,6 @@ public class GroundRunCalculator {
         double massOutput= massLists.get(graph).get(0) * (Math.pow(mass, 3)) + massLists.get(graph).get(1) * (Math.pow(mass, 2))
                 + massLists.get(graph).get(2) * mass + massLists.get(graph).get(3) + yDifference;
 
-        log.info("windList");
-
         List<List<Double>> windLists = polyList.get(3);
         min = Integer.MAX_VALUE;
 
@@ -172,6 +181,6 @@ public class GroundRunCalculator {
         }
 
         return (fricLists.get(graph).get(0) * (Math.pow(rollingFriction, 3)) + fricLists.get(graph).get(1) * (Math.pow(rollingFriction, 2))
-                + fricLists.get(graph).get(2) * rollingFriction + fricLists.get(graph).get(3) + yDifference)*100;
+                + fricLists.get(graph).get(2) * rollingFriction + fricLists.get(graph).get(3) + yDifference)*100*3.28084;
     }
 }

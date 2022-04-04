@@ -8,5 +8,5 @@ import java.util.List;
 public interface PilotRepo extends JpaRepository<Pilot, Long> {
     Pilot findById(String id);
     List<Pilot> findAllByUsername(String username);
-    Integer deleteById(String id);
+    Integer deleteByNameAndUsername(String name, String username);
 }

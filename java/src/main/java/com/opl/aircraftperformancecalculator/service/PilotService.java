@@ -9,5 +9,5 @@ public interface PilotService {
     Pilot save(Pilot pilot);
     List<Pilot> listByUsername(String username);
     Pilot getByID(String id);
-    Integer deletePilot(String id);
+    Integer delete(String name, String username);
 }

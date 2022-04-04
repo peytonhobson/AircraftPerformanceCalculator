@@ -40,8 +40,8 @@ public class TakeoffAirspeedCalculator {
             }
         }
 
-        return List.of(lineList.get(2).get(0)*mass + lineList.get(2).get(1),
-            lineList.get(1).get(0)*mass + lineList.get(1).get(1),
-            lineList.get(0).get(0)*mass + lineList.get(0).get(1));
+        return List.of((lineList.get(2).get(0)*mass + lineList.get(2).get(1))*0.539957,
+                (lineList.get(1).get(0)*mass + lineList.get(1).get(1))*0.539957,
+                (lineList.get(0).get(0)*mass + lineList.get(0).get(1))*0.539957);
     }
 }

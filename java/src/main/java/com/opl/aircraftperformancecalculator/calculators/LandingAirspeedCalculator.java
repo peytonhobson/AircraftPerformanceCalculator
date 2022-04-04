@@ -12,11 +12,20 @@ import java.util.Scanner;
 @Slf4j
 public class LandingAirspeedCalculator {
 
+    /**
+     * Calculates landing airspeed from digitized graphs using landing mass.
+     * @param mass
+     * @return
+     * @throws FileNotFoundException
+     */
     public static List<Double> getLandingAirspeed(double mass) throws FileNotFoundException {
 
         List<List<Double>> lineList = new ArrayList<>();
         List<Double> numList = new ArrayList<>();
 
+        /**
+         * Creates lists of cubic polynomials from digitized graph files.
+         */
         Scanner sc = new Scanner(new File("src/main/resources/python/Landing_Airspeed_Output/landingairspeed.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
         String val = null;
@@ -39,15 +48,16 @@ public class LandingAirspeedCalculator {
                 }
             }
         }
-        //Output is in km/h
+
+        //Output is in kts
         return  List.of(
-                lineList.get(3).get(0)*Math.pow(mass,3) + lineList.get(3).get(1)*Math.pow(mass,2) +
-                lineList.get(3).get(2)*mass + lineList.get(3).get(3),
-                lineList.get(2).get(0)*Math.pow(mass,3) + lineList.get(2).get(1)*Math.pow(mass,2) +
-                lineList.get(2).get(2)*mass + lineList.get(2).get(3),
-                lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
-                lineList.get(1).get(2)*mass + lineList.get(1).get(3),
-                lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
-                lineList.get(0).get(2)*mass + lineList.get(0).get(3));
+                (lineList.get(3).get(0)*Math.pow(mass,3) + lineList.get(3).get(1)*Math.pow(mass,2) +
+                lineList.get(3).get(2)*mass + lineList.get(3).get(3))*0.539957,
+                (lineList.get(2).get(0)*Math.pow(mass,3) + lineList.get(2).get(1)*Math.pow(mass,2) +
+                lineList.get(2).get(2)*mass + lineList.get(2).get(3))*0.539957,
+                (lineList.get(1).get(0)*Math.pow(mass,3) + lineList.get(1).get(1)*Math.pow(mass,2) +
+                lineList.get(1).get(2)*mass + lineList.get(1).get(3))*0.539957,
+                (lineList.get(0).get(0)*Math.pow(mass,3) + lineList.get(0).get(1)*Math.pow(mass,2) +
+                lineList.get(0).get(2)*mass + lineList.get(0).get(3))*0.539957);
     }
 }

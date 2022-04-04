@@ -2,6 +2,26 @@
   "groups": [],
   "properties": [
     {
+      "name": "constant.agilePodMassKG",
+      "type": "java.lang.Double",
+      "description": "Description for constant.agilePodMassKG."
+    },
+    {
+      "name": "constant.aircraftMass.agilePodKG",
+      "type": "java.lang.Double",
+      "description": "Description for constant.aircraftMass.agilePodKG."
+    },
+    {
+      "name": "constant.aircraftMass.emptyAircraftKG",
+      "type": "java.lang.Double",
+      "description": "Description for constant.aircraftMass.emptyAircraftKG."
+    },
+    {
+      "name": "constant.emptyAircraftMassKG",
+      "type": "java.lang.Double",
+      "description": "Description for constant.emptyAircraftMassKG."
+    },
+    {
       "name": "spring.key.name",
       "type": "java.lang.String",
       "description": "Description for spring.key.name."

@@ -10,7 +10,7 @@ public interface ProfileService {
 
     Profile save(Profile profile);
     Profile update(Profile profile);
-    Boolean delete(Long id);
     List<Profile> listByUsername(String username);
     Profile getByUsernameandName(String username, String profileName);
+    Integer delete(String name, String username);
 }

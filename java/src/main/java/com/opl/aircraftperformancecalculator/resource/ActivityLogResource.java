@@ -1,16 +1,12 @@
 package com.opl.aircraftperformancecalculator.resource;
 
 import com.opl.aircraftperformancecalculator.models.ActivityLog;
-import com.opl.aircraftperformancecalculator.models.Attachment;
 import com.opl.aircraftperformancecalculator.models.Response;
 import com.opl.aircraftperformancecalculator.service.ActivityLogService;
-import com.opl.aircraftperformancecalculator.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;

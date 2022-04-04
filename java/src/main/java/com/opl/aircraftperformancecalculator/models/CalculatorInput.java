@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
+import java.util.Set;
 
 
 @Data
@@ -12,13 +12,11 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class CalculatorInput {
 
-    private double takeoffMass;
-    private double flightTime;
-    private double pressureAltitude;
-    private double headwind;
-    private double temperature;
-    private double slope;
-    private double rollingFriction;
-    private double brakingFriction;
-    private String runwayType;
+    private Profile profile;
+    private double landingMass;
+    private RunwayConditions runwayConditions;
+    private double pilot1;
+    private double pilot2;
+    private double baggage1;
+    private double baggage2;
 }
