@@ -68,7 +68,7 @@ ul {
 #AttachmentBox1 {
     color: white;
     position: absolute;
-    left: -5%;
+    left: -3%;
     top: 95%;
     display: block;
     z-index: 2;
@@ -432,9 +432,14 @@ td, th {
 }
 
 .bag-input {
-    max-width: 150%;
-    height: 45%;
-    margin-block: 3%;
+    max-width: 70%;
+    height: 42%;
+    margin-block: 2%;
     margin-left: 0;
     padding-left: 0%;
+}
+
+.manual-form-control {
+    max-width: 80%;
+    border: solid black 1px;
 }

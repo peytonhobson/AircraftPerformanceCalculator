@@ -24,7 +24,7 @@ export class QueryAirportComponent implements OnInit {
     runwaysLoading = false;
 
     runwayConditions = {
-        "airportID": null,
+        "airportID": "",
         "temp": null,
         "pressureAltitude": null,
         "precipitation": null,
@@ -67,8 +67,6 @@ export class QueryAirportComponent implements OnInit {
         let sideNumbers = document.getElementsByClassName('side-button');
         var runwayNumber, runwaySideNumber;
 
-        document.getElementById('AirportIDLabel').innerHTML = "Airport ID: "
-
         for(var i = 0; i < runwayNumbers.length; i++) {
             if(runwayNumbers[i].getAttribute('class').includes('btn-dark')) {
                 runwayNumber = runwayNumbers[i];
@@ -98,6 +96,7 @@ export class QueryAirportComponent implements OnInit {
         this.submitted = true;
 
         if (this.form.invalid) {
+            this.runwaysLoading = false;
             return;
         }
 

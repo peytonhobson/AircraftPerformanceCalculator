@@ -138,7 +138,7 @@ ul {
     top: 0%;
     display: block;
     z-index: 2;
-    min-width: 30%;
+    min-width: 40%;
     height: 15%;
 }
 
@@ -252,12 +252,12 @@ h2, h3 {
 }
 
 .left-card {
-    margin-bottom: 12%;
+    margin-bottom: 3%;
 }
 
 .pilot-input {
-    margin-block: 2%;
     width: 95%;
+    margin-block: 2%;
     margin-left: 10%;
 }
 
@@ -429,9 +429,9 @@ td, th {
 }
 
 .bag-input {
-    max-width: 150%;
-    height: 45%;
-    margin-block: 3%;
+    max-width: 70%;
+    height: 42%;
+    margin-block: 2%;
     margin-left: 0;
     padding-left: 0%;
 }
@@ -454,4 +454,9 @@ td, th {
     margin-top: 5%;
     margin-left: 7%;
     margin-bottom: 10%;
-  }
+}
+
+.manual-form-control {
+    max-width: 80%;
+    border: solid black 1px;
+}

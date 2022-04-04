@@ -40,6 +40,14 @@
             <td></td>
           </tr>
           <tr>
+            <td>Parachute 2</td>
+            <td></td>
+            <td><span *ngIf="!this.parachute2">{{ -constants.parachuteWeight }}</span></td>
+            <td><span *ngIf="this.constants && !this.parachute2">{{ constants.pilot2 }}</span></td>
+            <td><span *ngIf="!this.parachute2 > 0 && this.constants">{{ (constants.pilot2*constants.parachuteWeight).toFixed(0) }}</span></td>
+            <td></td>
+          </tr>
+          <tr>
             <td>Baggage (1)</td>
             <td></td>
             <td><span *ngIf="this.baggage1">{{ baggage1 }}</span></td>
@@ -141,11 +149,11 @@
         </div>
         <div class="card text-center left-card">
           <div class="card-header text-center">
-            Mission Specific Info
+            Pilots
           </div>
           <div class="card-body pl-0 pr-0">
             <div class="row d-flex justify-content-center">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <select class="btn btn-dark pilot-input" id="Pilot1ProfileSelect">
                   <option>Pilot 1</option>
                 </select>
@@ -154,15 +162,33 @@
                   <option>None</option>
                 </select>
               </div>  
-              <div class=col-md-3>
+              <div class=col-md-6>
                 <input type="number" class="bag-input" placeholder="Bag weight" id="Baggage1"/>
                 <input type="number" class="bag-input" placeholder="Bag weight" disabled id="Baggage2"/>
               </div>
+            </div>  
+          </div>
+        </div>
+        <div class="card text-center left-card">
+          <div class="card-header text-center">
+            Mission Info
+          </div>
+          <div class="card-body p-2">
+            <div class="row d-flex justify-content-center">
               <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
                 <label>Landing Weight:</label>
                 <div class="row d-flex justify-content-center">
                   <input type="number" class="time-item text-right" id="LandingWeightInput" value="">
                   <label class="time-label">&nbsp;lbs</label>
+                </div>
+              </div>
+              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
+                <label class="mb-0">Parachute 2:</label>
+                <div class="row d-flex justify-content-center">
+                  <input type="radio" class="radio ml-2" id="ParachuteYesRadio" checked/>
+                  <label  class="radio-label ml-1">In</label>
+                  <input type="radio" class="radio ml-2" id="ParachuteNoRadio"/>
+                  <label class="radio-label ml-1">Out</label>
                 </div>
               </div>
             </div>  
@@ -318,13 +344,13 @@
         </div>
         <div class="modal-body">
           <div class="row d-flex justify-content-center">
-            <form [formGroup]="formAutomaticModal" (ngSubmit)="findRunways()">
+            <form [formGroup]="runwaysForm" (ngSubmit)="findRunways()">
               <div class="row d-flex justify-content-center">
                 <label for="airportInput">Enter Airport ID:</label>
               </div>
-              <div class="row d-flex justify-content-center form-group" [formGroup]="formAutomaticModal">
-                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['airportInput'].errors }" />
-                <div *ngIf="submitted && f['airportInput'].errors" class="invalid-feedback">
+              <div class="row d-flex justify-content-center form-group" [formGroup]="runwaysForm">
+                <input type="text" formControlName="airportInput" id="airportID" class="form-control" [ngClass]="{ 'is-invalid': submittedRunways && f['airportInput'].errors }" />
+                <div *ngIf="submittedRunways && f['airportInput'].errors" class="invalid-feedback">
                   <div *ngIf="f['airportInput'].errors['required']">Airport ID is required</div>
                   <div *ngIf="f['airportInput'].errors['maxlength']">Airport ID must be less than 5 characters.</div>
                   <div *ngIf="f['airportInput'].errors['minlength']">Airport ID must be at least 2 characters</div>
@@ -371,59 +397,73 @@
         <div class="modal-body">
           <div class="row d-flex justify-content-center">
             <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
-              <div class="form-group" [formGroup]="formManualModal">
+              <div class="form-group" class="mb-0 mt-0" [formGroup]="formManualModal">
                   <label for="temperature">Temperature</label>
-                  <input type="text" formControlName="temperature" class="form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
+                  <div class="row">
+                    <input type="number" formControlName="temperature" class="form-control manual-form-control" placeholder="Enter temperature" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['temperature'].errors }" />
+                    <h2 class="ml-1 mt-1 font-weight-normal">&deg;C</h2>
+                  </div>
                   <div *ngIf="submittedManualModal && fManual['temperature'].errors" class="invalid-feedback">
                       <div *ngIf="fManual['temperature'].errors['required']">Temperature is required</div>
-                      <div *ngIf="fManual['temperature'].errors['maxlength'] && !fManual['temperature'].errors['pattern']">Temperature cannot be greater than 3 digits.</div>
-                      <div *ngIf="fManual['temperature'].errors['pattern']">Temperature must be numeric.</div>
                   </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
-                <label for="slope">Runway Slope</label>
-                <input type="text" formControlName="slope" class="form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
+                <label >Runway Slope</label>
+                <div class="row">
+                  <input type="number" formControlName="slope" class="form-control manual-form-control" placeholder="Enter slope" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }" />
+                  <h2 class="ml-1 mt-1 font-weight-normal">&deg;</h2>
+                </div>
                 <div *ngIf="submittedManualModal && fManual['slope'].errors" class="invalid-feedback">
-                    <div *ngIf="fManual['slope'].errors['pattern']">Slope must be numeric.</div>
+                  <div *ngIf="fManual['slope'].errors['required']">Slope is required.</div>
                 </div>
               </div> 
-              <div class="form-group" [formGroup]="formManualModal">
-                <label for="runwayLength">Runway Length</label>
-                <input type="text" formControlName="runwayLength" class="form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
+              <div class="form-group" class="mt-0" [formGroup]="formManualModal">
+                <label class="mt-0">Runway Length</label>
+                <div class="row">
+                  <input type="number" formControlName="runwayLength" class="form-control manual-form-control" placeholder="Enter runway length" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['runwayLength'].errors }" />
+                  <h2 class="ml-1 mt-1 font-weight-normal">ft</h2>
+                </div>
                 <div *ngIf="submittedManualModal && fManual['runwayLength'].errors" class="invalid-feedback">
-                    <div *ngIf="fManual['runwayLength'].errors['pattern']">Slope must be numeric.</div>
+                  <div *ngIf="fManual['runwayLength'].errors['required']">Runway length is required.</div>
+                  <div *ngIf="fManual['runwayLength'].errors['min']">Runway length can't be less than 0.</div>
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
                 <label for="precipitation">Is the runway wet?</label>
                  <div class="row d-flex justify-content-left">
-                  <input type="radio" formControlName="precipitationYes" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <input type="radio" formControlName="precipitationYes" id="PrecipitationYes" class="radio" value="1"/>
                   <label for="precipitationYes" class="radio-label">Yes</label>
-                  <input type="radio" formControlName="precipitationNo" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <input type="radio" formControlName="precipitationNo" id="PrecipitationNo" class="radio"/>
                   <label for="precipitationNo" class="radio-label">No</label>
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
                 <label for="precipitation">What is the runway surface type?</label>
                  <div class="row d-flex justify-content-left">
-                  <input type="radio" formControlName="concreteRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <input type="radio" formControlName="concreteRunway" id="ConcreteRadio" class="radio" value="1"/>
                   <label for="concreteRunway" class="radio-label">Concrete</label>
-                  <input type="radio" formControlName="grassRunway" class="radio" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['slope'].errors }"/>
+                  <input type="radio" formControlName="grassRunway" id="GrassRadio" class="radio"/>
                   <label for="grassRunway" class="radio-label">Grass</label>
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
-                <label for="pressureAltitude">PSI</label>
-                <input type="text" formControlName="pressureAltitude" class="form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
+                <label for="pressureAltitude">Pressure Altitude</label>
+                <div class="row">
+                  <input type="number" formControlName="pressureAltitude" class="form-control manual-form-control" placeholder="Enter pressure altitude" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['pressureAltitude'].errors }" />
+                  <h2 class="ml-1 mt-1 font-weight-normal">ft</h2>
+                </div>
                 <div *ngIf="submittedManualModal && fManual['pressureAltitude'].errors" class="invalid-feedback">
-                    <div *ngIf="fManual['pressureAltitude'].errors['pattern']">Pressure Altitude must be numeric.</div>
+                  <div *ngIf="fManual['pressureAltitude'].errors['required']">Pressure Altitude is required.</div>
                 </div>
               </div> 
               <div class="form-group" [formGroup]="formManualModal">
                 <label for="headwind">Headwind</label>
-                <input type="text" formControlName="headwind" class="form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
+                <div class="row">
+                  <input type="number" formControlName="headwind" class="form-control manual-form-control" placeholder="Enter headwind" [ngClass]="{ 'is-invalid': submittedManualModal && fManual['headwind'].errors }" />
+                  <h2 class="ml-1 mt-1 font-weight-normal">kts</h2>
+                </div>
                 <div *ngIf="submittedManualModal && fManual['headwind'].errors" class="invalid-feedback">
-                    <div *ngIf="fManual['headwind'].errors['pattern']">Headwind must be numeric.</div>
+                  <div *ngIf="fManual['headwind'].errors['required']">Headwind is required.</div>
                 </div>
               </div> 
             </form>

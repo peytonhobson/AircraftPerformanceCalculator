@@ -23,9 +23,8 @@ import { first} from 'rxjs/operators';
 export class CalculatorComponent implements OnInit {
     title = 'FrontEnd';
 
-    form: FormGroup;
+    runwaysForm: FormGroup;
     formManualModal: FormGroup;
-    formAutomaticModal: FormGroup;
     runwayConditions = {
         "airportID": "",
         "temp": null,
@@ -42,7 +41,7 @@ export class CalculatorComponent implements OnInit {
     displaySaveStyleAutomatic = 'none';
     displaySaveStyleManual = 'none';
     submittedManualModal = false;
-    submittedAutomaticModal = false;
+    submittedRunways = false;
 
     displayTakeoff = 'block';
     displayLanding = 'none';
@@ -79,6 +78,7 @@ export class CalculatorComponent implements OnInit {
     agilePodARM: number;
     baggage1 = 0;
     baggage2 = 0;
+    parachute2 = true;
 
     emptyAircraftMAC: number;
 
@@ -99,7 +99,7 @@ export class CalculatorComponent implements OnInit {
 
     ngOnInit() {
 
-        this.form = this.formBuilder.group({
+        this.runwaysForm = this.formBuilder.group({
             airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
         });
 
@@ -112,22 +112,16 @@ export class CalculatorComponent implements OnInit {
             this.emptyAircraftMAC = ((this.constants.basicEmptyAircraft-this.constants.macrefDatum)*100)/this.constants.macl39;
         })
 
-        // TODO: More validators needed
         this.formManualModal = this.formBuilder.group({
-            temperature: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]],
-            //TODO: add pattern to check for only "double" type numbers
-            slope: [''],
-            pressureAltitude: ['', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[0-9]/)]],
-            headwind: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]],
-            concreteRunway: [''],
-            grassRunway: [''],
-            precipitationYes: [''],
-            precipitationNo: [''],
-            runwayLength: ['', [Validators.required, Validators.maxLength(3), Validators.pattern(/^[0-9]/)]]
-        });
-
-        this.formAutomaticModal = this.formBuilder.group({
-            airportInput: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(4)]]
+            temperature: [{ value: 0, disabled: false }, [Validators.required]],
+            slope: [{ value: 0, disabled: false }, [Validators.required]],
+            pressureAltitude: [{ value: 0, disabled: false }, [Validators.required]],
+            headwind: [{ value: 0, disabled: false }, [Validators.required]],
+            concreteRunway: ['1'],
+            grassRunway: ['0'],
+            precipitationYes: ['1'],
+            precipitationNo: ['0'],
+            runwayLength: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0)]]
         });
 
         const aircraftProfileSelect = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
@@ -214,7 +208,7 @@ export class CalculatorComponent implements OnInit {
 
         const idInput = document.getElementById('airportID') as HTMLInputElement;
         idInput.addEventListener('change', (e) => {
-            this.submittedAutomaticModal = false;
+            this.submittedRunways = false;
         })
 
         const takeoffOutputButton = document.getElementById('DisplayTakeoffButton') as HTMLButtonElement;
@@ -283,13 +277,12 @@ export class CalculatorComponent implements OnInit {
                 this.pilot1NotSelected = true;
                 document.getElementById("PilotBox1Text").innerHTML = "";
                 document.getElementById("PilotBox2Text").innerHTML = "";
-                if(this.pilot1) {
-                    this.weightSum -=  this.pilot1.mass;
-                    this.momentSum -= this.pilot1.mass*this.constants.pilot1;
-                    this.zeroWeightSum -= this.pilot1.mass;
-                    this.zeroMomentSum -= this.pilot1.mass*this.constants.pilot1;
-                    this.pilot1 = undefined;
-                }
+
+                this.weightSum -=  this.pilot1.mass;
+                this.momentSum -= this.pilot1.mass*this.constants.pilot1;
+                this.zeroWeightSum -= this.pilot1.mass;
+                this.zeroMomentSum -= this.pilot1.mass*this.constants.pilot1;
+                this.pilot1 = new Pilot(null, null, 0)
             }
         });
 
@@ -309,18 +302,35 @@ export class CalculatorComponent implements OnInit {
                     this.zeroWeightSum += this.pilot2.mass;
                     this.zeroMomentSum += this.pilot2.mass*this.constants.pilot2;
                 });
+
+                this.parachute2 = true;
+                const parachuteYes = document.getElementById('ParachuteYesRadio') as HTMLInputElement;
+                const parachuteNo = document.getElementById('ParachuteNoRadio') as HTMLInputElement;
+
+                parachuteNo.checked = false;
+                parachuteNo.disabled = true;
+                parachuteYes.checked = true;
+                parachuteYes.disabled = false;
+                
             }
             else {
                 document.getElementById("PilotBox2Text").innerHTML = "";
-                if(this.pilot2) {
-                    this.weightSum -=  this.pilot2.mass;
-                    this.momentSum -= this.pilot2.mass*this.constants.pilot2;
-                    this.zeroWeightSum -= this.pilot2.mass;
-                    this.zeroMomentSum -= this.pilot2.mass*this.constants.pilot2;
-                    this.pilot2 = undefined;
-                    const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
-                }
+
+                this.weightSum -=  this.pilot2.mass;
+                this.momentSum -= this.pilot2.mass*this.constants.pilot2;
+                this.zeroWeightSum -= this.pilot2.mass;
+                this.zeroMomentSum -= this.pilot2.mass*this.constants.pilot2;
+                this.pilot2 = new Pilot(null, null, 0);
+
+                const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
+                
                 baggage2.disabled = true;
+
+                const parachuteYes = document.getElementById('ParachuteYesRadio') as HTMLInputElement;
+                const parachuteNo = document.getElementById('ParachuteNoRadio') as HTMLInputElement;
+
+                parachuteNo.disabled = false;
+                parachuteYes.disabled = false;
             }
 
         });
@@ -361,6 +371,55 @@ export class CalculatorComponent implements OnInit {
                 this.baggage2 = undefined;
             }
         })
+
+        const parachuteYes = document.getElementById('ParachuteYesRadio') as HTMLInputElement;
+        const parachuteNo = document.getElementById('ParachuteNoRadio') as HTMLInputElement;
+
+        parachuteYes.addEventListener('click', (e) => {
+            if(!this.parachute2) {
+                this.weightSum += this.constants.parachuteWeight;
+                this.momentSum += this.constants.parachuteWeight*this.constants.pilot2;
+                this.zeroWeightSum += this.constants.parachuteWeight;
+                this.zeroMomentSum += this.constants.parachuteWeight*this.constants.pilot2;
+                this.parachute2 = true;
+            }
+
+            parachuteNo.checked = false;
+        })
+
+        parachuteNo.addEventListener('click', (e) => {
+            if(this.parachute2) {
+                this.weightSum -= this.constants.parachuteWeight;
+                this.momentSum -= this.constants.parachuteWeight*this.constants.pilot2;
+                this.zeroWeightSum -= this.constants.parachuteWeight;
+                this.zeroMomentSum -= this.constants.parachuteWeight*this.constants.pilot2;
+                this.parachute2 = false;
+            }
+
+            parachuteYes.checked = false;
+        })
+
+        const precipitationYes = document.getElementById('PrecipitationYes') as HTMLInputElement;
+        const precipitationNo = document.getElementById('PrecipitationNo') as HTMLInputElement;
+
+        precipitationYes.addEventListener('click', (e) =>  {
+            precipitationNo.checked = false;
+        })
+
+        precipitationNo.addEventListener('click', (e) =>  {
+            precipitationYes.checked = false;
+        })
+
+        const grassRadio = document.getElementById('GrassRadio') as HTMLInputElement;
+        const concreteRadio = document.getElementById('ConcreteRadio') as HTMLInputElement;
+
+        grassRadio.addEventListener('click', (e) => {
+            concreteRadio.checked = false;
+        })
+
+        concreteRadio.addEventListener('click', (e) => {
+            grassRadio.checked = false;
+        })
     }
 
     calculate() {
@@ -399,9 +458,14 @@ export class CalculatorComponent implements OnInit {
         }
 
         const username = localStorage.getItem('username');
+        var pilot2 = this.pilot2.mass;
+
+        if(!this.parachute2) {
+            pilot2 -= 36;
+        }
 
         const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions,
-        this.pilot1.mass, this.pilot2.mass, this.baggage1, this.baggage2);
+        this.pilot1.mass, pilot2, this.baggage1, this.baggage2);
 
         this.restClassifier.post(`calculate`, calculatorInput).pipe(first())
         .subscribe(
@@ -463,14 +527,17 @@ export class CalculatorComponent implements OnInit {
             const pressureAltitude = this.fManual['pressureAltitude'].value
             const headwind = this.fManual['headwind'].value
 
-            this.runwayConditions = new RunwayConditions(null, Number(temperature), Number(pressureAltitude), precipitation, Number(headwind),
+            this.runwayConditions = new RunwayConditions("", Number(temperature), Number(pressureAltitude), precipitation, Number(headwind),
                 Number(runwayLength), runwayType, Number(slope))
 
 
             for(var name in this.formManualModal.controls) {
-                (<FormControl>this.formManualModal.controls[name]).setValue('');
+                (<FormControl>this.formManualModal.controls[name]).setValue(0);
                 this.formManualModal.controls[name].setErrors(null);
             }
+
+            (document.getElementById('PrecipitationYes') as HTMLInputElement).checked = true;
+            (document.getElementById('ConcreteRadio') as HTMLInputElement).checked = true;
 
             this.submittedManualModal=false;
 
@@ -484,9 +551,11 @@ export class CalculatorComponent implements OnInit {
         }
     }
 
+    get f() {
+         return this.runwaysForm.controls;
+    }
+
     saveAutomaticModal() {
-        
-        this.submittedAutomaticModal = true;
 
         let runwayNumbers = document.getElementsByClassName('runway-button');
         let sideNumbers = document.getElementsByClassName('side-button');
@@ -517,15 +586,11 @@ export class CalculatorComponent implements OnInit {
             manualButton.innerHTML = "Manual"
             manualButton.className = manualButton.className.replace('btn-success', 'btn-dark')
         });
-    
     }
-
-    get fAutomatic() { return this.formAutomaticModal.controls; }
 
     openAutomaticModal() {
         this.displaySaveStyleAutomatic = 'block';
         document.getElementById('main-container').style.opacity = '40%';
-        this.submittedAutomaticModal = false;
     }
 
     closeAutomaticModal(save: boolean) {
@@ -534,7 +599,7 @@ export class CalculatorComponent implements OnInit {
             this.saveAutomaticModal();
         }
 
-        this.fAutomatic['airportInput'].setValue('');
+        this.f['airportInput'].setValue('');
         const runwayButtonGroup = document.getElementById('runway-button-group');
         while (runwayButtonGroup.firstChild) {
             runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
@@ -573,9 +638,12 @@ export class CalculatorComponent implements OnInit {
             document.getElementById('main-container').style.opacity = '100%';
 
             for(var name in this.formManualModal.controls) {
-                (<FormControl>this.formManualModal.controls[name]).setValue('');
+                (<FormControl>this.formManualModal.controls[name]).setValue(0);
                 this.formManualModal.controls[name].setErrors(null);
             }
+
+            (document.getElementById('PrecipitationYes') as HTMLInputElement).checked = true;
+            (document.getElementById('ConcreteRadio') as HTMLInputElement).checked = true;
 
             this.submittedManualModal=false;
         }
@@ -589,8 +657,10 @@ export class CalculatorComponent implements OnInit {
     findRunways() {
 
         this.runwaysLoading = true;
+        this.submittedRunways = true;
 
-        if (this.formAutomaticModal.invalid) {
+        if (this.runwaysForm.invalid) {
+            this.runwaysLoading = false;
             return;
         }
 
@@ -602,7 +672,7 @@ export class CalculatorComponent implements OnInit {
             runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
         }
 
-        this.restClassifier.get(`airport/runways/${this.fAutomatic['airportInput'].value}`).subscribe(res => {
+        this.restClassifier.get(`airport/runways/${this.f['airportInput'].value}`).subscribe(res => {
 
             if(res.data.airportRunways) {
                 res.data.airportRunways.forEach(x=> {

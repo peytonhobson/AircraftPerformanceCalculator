@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+                    this.alertService.success('Login successful', { keepAfterRouteChange: true });
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {

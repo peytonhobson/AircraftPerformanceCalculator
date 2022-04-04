@@ -3,6 +3,7 @@ export class Constants {
     public basicEmptyAircraftWeight: number;
     public emptyAgilePodWeight: number;
     public agileRailWeight: number;
+    public parachuteWeight: number;
     public basicEmptyAircraft: number;
     public emptyAgilePod: number;
     public agileRail: number;
@@ -15,13 +16,14 @@ export class Constants {
     public macl39: number;
     public macrefDatum: number;
 
-    constructor(basicEmptyAircraftWeight: number, emptyAgilePodWeight: number, agileRailWeight, basicEmptyAircraft: number, 
+    constructor(basicEmptyAircraftWeight: number, emptyAgilePodWeight: number, agileRailWeight, parachuteWeight: number, basicEmptyAircraft: number, 
         emptyAgilePod: number, agileRail: number, podPayload: number, pilot1: number, pilot2: number, 
         baggage1: number, baggage2: number, tanks: number, macl39: number, macrefDatum: number) {
 
         this.basicEmptyAircraftWeight = basicEmptyAircraftWeight;
         this.emptyAgilePodWeight = emptyAgilePodWeight;
         this.agileRailWeight = agileRailWeight;
+        this.parachuteWeight = parachuteWeight;
         this.basicEmptyAircraft = basicEmptyAircraft;
         this.emptyAgilePod = emptyAgilePod;
         this.agileRail = agileRail;

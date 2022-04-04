@@ -50,83 +50,103 @@
     <div class="col-lg-5">
       <div class="row d-flex justify-content-center">
         <div id="airportID-output">
-          <div class="w-100 shadow-lg text-center bg-dark rounded p-2" id="IDContainer">
-            <h2 id="AirportIDLabel" class="output-label">Airport ID: </h2>
+          <div class="w-100 shadow-lg text-center bg-dark airport-output rounded p-2" id="IDContainer">
+            <h2 class="output-label">Airport ID: {{runwayConditions.airportID.toUpperCase()}}</h2>
           </div>
         </div>
       </div>
       <div class="row d-flex justify-content-center">
         <div class="col-lg-4">
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Temperature</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Temperature</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Pressure Altitude</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Altitude</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Precipitation</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Precipitation</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Head Wind</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Head Wind</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Runway Length</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Runway Length</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Runway Type</h3>
+            <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Runway Type</h3>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-dark rounded p-3">
-              <h3 class="output-label">Slope</h3>
+            <div class="shadow-md airport-output text-center bg-dark rounded p-3">
+              <h3 class="output-label p-0 m-0">Slope</h3>
             </div>
           </div> 
         </div>
         <div class="col-lg-4">
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="temp-output">{{ runwayConditions.temp }} &deg;C</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+              <div class="row d-flex justify-content-center">
+                <h3 id="temp-output" class="m-0 p-0" *ngIf="runwayConditions.temp !== null">{{runwayConditions.temp.toFixed(1)}}</h3>
+                <h3 class="m-0 p-0">&nbsp;&deg;C</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="pressure-altitude-output">{{ runwayConditions.pressureAltitude }} ft</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+              <div class="row d-flex justify-content-center">
+              <h3 id="pressure-altitude-output" class="m-0 p-0" *ngIf="runwayConditions.pressureAltitude !== null">{{(runwayConditions.pressureAltitude*3.28084).toFixed(1) }}</h3>
+              <h3 class="m-0 p-0">&nbsp;ft</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="precipitation-output">{{ runwayConditions.precipitation }} in</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+              <div class="row d-flex justify-content-center">
+                <h3 id="precipitation-output" class="m-0 p-0" *ngIf="runwayConditions.precipitation !== null">{{runwayConditions.precipitation.toFixed(2)}}</h3>
+                <h3 class="m-0 p-0">&nbsp;in</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="headwind-output">{{ runwayConditions.headWind }} kts</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+              <div class="row d-flex justify-content-center">
+                <h3 id="headwind-output" class="m-0 p-0" *ngIf="runwayConditions.headWind !== null">{{runwayConditions.headWind.toFixed(2)}}</h3>
+                <h3 class="m-0 p-0">&nbsp;kts</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="runway-length-output">{{ runwayConditions.runwayLength }} ft</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3">
+              <div class="row d-flex justify-content-center">
+                <h3 id="runway-length-output" class="m-0 p-0" *ngIf="runwayConditions.runwayLength !== null">{{(runwayConditions.runwayLength*3.28084).toFixed(0)}}</h3>
+                <h3 class="m-0 p-0">&nbsp;ft</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="runway-type-output">{{ runwayConditions.runwayType }}&nbsp;</h3>
+            <div class="shadow-lg airport-output text-center bg-white rounded p-3 m-0">
+              <div class="row d-flex justify-content-center">
+                <h3 id="runway-type-output" class="m-0 p-0">{{runwayConditions.runwayType}}&nbsp;</h3>
+              </div>
             </div>
           </div> 
           <div class="row d-flex justify-content-center">
-            <div class="shadow-lg text-center bg-white rounded p-3">
-              <h3 id="slope-output">{{ runwayConditions.slope }}&deg;</h3>
+            <div class="shadow-md airport-output text-center bg-white rounded p-3 h-100">
+              <div class="row d-flex justify-content-center">
+                <h3 id="slope-output" class="p-0 m-0" *ngIf="runwayConditions.runwayLength !== null">{{runwayConditions.slope.toFixed(3)}}</h3>
+                <h3 class="m-0 p-0">&deg;</h3>
+              </div>
             </div>
           </div> 
         </div>

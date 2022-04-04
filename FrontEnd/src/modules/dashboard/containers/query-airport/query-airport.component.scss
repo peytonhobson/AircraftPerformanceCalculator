@@ -43,3 +43,25 @@ form, input {
     margin-bottom: 3%;
     margin-top: 5%;
 }
+
+.airport-output {
+    width:100%; /*full width*/
+    display:table; /*acts like a table*/
+}
+
+.airport-output-white {
+    width:65%;
+    display:table;
+}
+
+.airport-output-unit {
+    width:30%; /*full width*/
+    display:table; /*acts like a table*/
+    padding-top: 1%;
+}
+
+.airport-output-unit-sm {
+    width: 33.5%;
+    padding-left: 10%;
+    height: 2%;
+}
