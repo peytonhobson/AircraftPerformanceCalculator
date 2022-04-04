@@ -52,6 +52,9 @@ export class AdminComponent implements OnInit {
             this.LOG.push(element);
             document.getElementById('main-container').style.opacity = '40%';
           })
+        },
+        error => {
+          this.alertService.error("Activity log could not be found.")
         });
       }
       else {
@@ -61,6 +64,9 @@ export class AdminComponent implements OnInit {
             this.LOG.push(element);
             document.getElementById('main-container').style.opacity = '40%';
           })
+        },
+        error => {
+          this.alertService.error("Activity log could not be found.")
         });
       }
     });

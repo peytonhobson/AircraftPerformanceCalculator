@@ -51,7 +51,6 @@ export class SolverComponent implements OnInit {
     displayLanding = 'none';
     displaySpeeds = 'none';
     displayPlanes = 'none';
-    displayProfileInfo = 'none';
     displayPerformance = 'none';
 
     runwaysLoading = false;
@@ -118,6 +117,9 @@ export class SolverComponent implements OnInit {
             this.zeroWeightSum = res.data.constants.basicEmptyAircraftWeight+409;
             this.zeroMomentSum = (res.data.constants.basicEmptyAircraftWeight+409)*res.data.constants.basicEmptyAircraft;
             this.emptyAircraftMAC = ((this.constants.basicEmptyAircraft-this.constants.macrefDatum)*100)/this.constants.macl39;
+        },
+        error => {
+            this.alertService.error("Constants could not be retreived. Try reloading the page.")
         })
 
         this.formManualModal = this.formBuilder.group({
@@ -170,6 +172,9 @@ export class SolverComponent implements OnInit {
                         this.momentSum += (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
 
       
+                    },
+                    error => {
+                        this.alertService.error("Profile could not be retrieved.")
                     }
                 )
             }
@@ -197,6 +202,9 @@ export class SolverComponent implements OnInit {
             res.data.profiles.forEach((profile) => {
                 aircraftProfileSelect.add(new Option(profile.name, profile.name), undefined)
             });
+        },
+        error => {
+            this.alertService.error("Profiles could not be retrieved.")
         });
 
         const pilot1ProfileSelect = document.getElementById('Pilot1ProfileSelect') as HTMLSelectElement;
@@ -208,6 +216,9 @@ export class SolverComponent implements OnInit {
                 pilot1ProfileSelect.add(new Option(profile.name, profile.name), undefined)
                 pilot2ProfileSelect.add(new Option(profile.name, profile.name), undefined)
             });
+        },
+        error => {
+            this.alertService.error("Pilots could not be retrieved.")
         });
 
         this.runwayButtonNumber = 0;
@@ -288,6 +299,9 @@ export class SolverComponent implements OnInit {
                     this.momentSum += this.pilot1.mass*this.constants.pilot1;
                     this.zeroWeightSum += this.pilot1.mass;
                     this.zeroMomentSum += this.pilot1.mass*this.constants.pilot1;
+                },
+                error => {
+                    this.alertService.error("Pilot does not exist.")
                 });
             }
             else {
@@ -318,6 +332,9 @@ export class SolverComponent implements OnInit {
                     this.momentSum += this.pilot2.mass*this.constants.pilot2;
                     this.zeroWeightSum += this.pilot2.mass;
                     this.zeroMomentSum += this.pilot2.mass*this.constants.pilot2;
+                },
+                error => {
+                    this.alertService.error("Pilot does not exist.")
                 });
 
                 this.parachute2 = true;
@@ -451,6 +468,8 @@ export class SolverComponent implements OnInit {
 
     get fBag() { return this.baggageForm.controls};
     get fLand() { return this.landingWeightForm.controls};
+    get f() { return this.runwaysForm.controls; }
+    get fManual() { return this.formManualModal.controls; }
 
     calculate() {
 
@@ -627,13 +646,12 @@ export class SolverComponent implements OnInit {
             const manualButton = document.getElementById('ManualButton') as HTMLButtonElement;
             manualButton.innerHTML = "Manual"
             manualButton.className = manualButton.className.replace('btn-success', 'btn-dark')
+        },
+        error => {
+            this.alertService.error("Runway conditions could not be queried.")
         });
     
     }
-
-    get f() {
-        return this.runwaysForm.controls;
-   }
 
     openAutomaticModal() {
         this.displaySaveStyleAutomatic = 'block';
@@ -667,8 +685,6 @@ export class SolverComponent implements OnInit {
 
         this.runwaysLoading = false;
     }
-
-    get fManual() { return this.formManualModal.controls; }
 
     openManualModal() {
         this.displaySaveStyleManual = 'block';
@@ -736,6 +752,9 @@ export class SolverComponent implements OnInit {
             }
 
             this.runwaysLoading = false;
+        },
+        error => {
+            this.alertService.error("Airport runways could not be found.")
         });
     }
 
@@ -774,24 +793,6 @@ export class SolverComponent implements OnInit {
         sideButton1.innerHTML=sides[0];
         sideButton2.innerHTML=sides[1];
         sideButton1.className = sideButton1.className.replace('btn-outline-dark', 'btn-dark');
-    }
-
-    getProfileInfo() {
-
-        const aircraftProfileName = document.getElementById('AircraftProfileSelect') as HTMLSelectElement;
-        const username = localStorage.getItem('username');
-
-        this.restClassifier.get(`profiles/${username}/${aircraftProfileName.value}`).pipe(first())
-        .subscribe( res => {
-            this.currentProfile = res.data.profile;
-            this.displayProfileInfo = 'block';
-            document.getElementById('main-container').style.opacity = '40%';
-        })
-    }
-
-    closeProfileModal() {
-        this.displayProfileInfo = 'none';
-        document.getElementById('main-container').style.opacity = '100%';
     }
 
     printCard(): void {

@@ -2,6 +2,7 @@ import { query } from "@angular/animations";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RunwayConditions } from "@app/models/runway-conditions";
+import { AlertService } from "@app/services/alert.service";
 import { ApiService } from "@app/services/api.service";
 import { Button } from "protractor";
 
@@ -13,7 +14,7 @@ import { Button } from "protractor";
 })
 export class QueryAirportComponent implements OnInit {
     
-    constructor(private apiService: ApiService, private formBuilder: FormBuilder) {}
+    constructor(private apiService: ApiService, private formBuilder: FormBuilder, private alertService: AlertService) {}
 
     runway: string;
     runwayNumber: number;
@@ -84,7 +85,10 @@ export class QueryAirportComponent implements OnInit {
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
                 this.runwayConditions = res.data.runwayCondition
-            });
+            },
+            error => {
+                this.alertService.error("Airport conditions could not be queried.")
+              });
     }
 
     get f() { return this.form.controls; }
@@ -125,7 +129,10 @@ export class QueryAirportComponent implements OnInit {
             }
 
             this.runwaysLoading = false;
-        });
+        },
+        error => {
+            this.alertService.error("Runways could not be found.")
+          });
     }
 
     runwayClick(id: string) {
