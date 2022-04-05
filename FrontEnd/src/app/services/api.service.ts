@@ -65,10 +65,11 @@ export class ApiService {
     }));
   }
 
-  saveProfile(Profile : Profile): Observable<CustomResponse> {
-    return this.post('profiles/save', Profile);
-  }
-
+  /**
+   * Handles errors caught in get and post requests
+   * @param error 
+   * @returns 
+   */
   handleError(error: string): Observable<never> {
     if(error == "403") {
         this.accountService.logout();

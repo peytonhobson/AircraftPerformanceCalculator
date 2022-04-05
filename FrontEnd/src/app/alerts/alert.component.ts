@@ -5,11 +5,13 @@ import { Subscription } from 'rxjs';
 import { Alert, AlertType } from '../models/alert';
 import { AlertService } from '../services/alert.service';
 
+// Component for alerts
 @Component({ selector: 'alert', templateUrl: 'alert.component.html' })
 export class AlertComponent implements OnInit, OnDestroy {
     @Input() id = 'default-alert';
     @Input() fade = true;
 
+    // Current array of alerts
     alerts: Alert[] = [];
     alertSubscription: Subscription;
     routeSubscription: Subscription;
@@ -20,6 +22,7 @@ export class AlertComponent implements OnInit, OnDestroy {
         // subscribe to new alert notifications
         this.alertSubscription = this.alertService.onAlert(this.id)
             .subscribe(alert => {
+
                 // clear alerts when an empty alert is received
                 if (!alert.message) {
                     // filter out alerts without 'keepAfterRouteChange' flag
@@ -33,9 +36,14 @@ export class AlertComponent implements OnInit, OnDestroy {
                 // add alert to array
                 this.alerts.push(alert);
 
-
+                // Set timeout for 2 seconds if alert is success
                 if(alert.type == AlertType.Success) {
                     setTimeout(() => this.removeAlert(alert), 2000);
+                }
+
+                // Set timeout for five seconds if alert is error
+                if(alert.type == AlertType.Error) {
+                    setTimeout(() => this.removeAlert(alert), 5000);
                 }
 
                 // auto close alert if required

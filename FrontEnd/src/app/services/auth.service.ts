@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 import { AuthenticationCode } from '../models/authentication.code.model';
@@ -14,13 +14,13 @@ const httpOptions = {
   })
 };
 
+/**
+ * Service used for authentication of users
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  // BASE_PATH: 'http://localhost:8080'
-  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
   public username: String;
   public password: String;
@@ -28,11 +28,12 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
 
-
+  // Returns string for authorization header
   createAuthToken(accessToken: String) {
     return 'Bearer ' + accessToken
   }
 
+  // Checks if user is logged in by token in local storage
   isUserLoggedIn() {
     if (!localStorage.getItem('token')) return false
     return true
@@ -42,6 +43,7 @@ export class AuthenticationService {
     return localStorage.getItem('username');
   }
 
+  // Authenticates user for registering by making request to backend with code.
   authenticate(authenicationCode: AuthenticationCode, user : User): Observable<AuthenticationResponse>{
     
     return this.http.post<AuthenticationResponse>(`${environment.apiUrl}register/authentication`, 
@@ -61,6 +63,7 @@ export class AuthenticationService {
             );
   }
 
+  // Handles error for registering
   handleError(error: string): Observable<never> {
     if(error == "404") {
       this.alertService.error("Incorrect Authentication Code")

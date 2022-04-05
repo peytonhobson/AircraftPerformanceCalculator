@@ -6,6 +6,7 @@ import { environment } from '@environments/environment';
 import { AccountService } from '../services/account.service';
 import { AuthenticationService } from '../services/auth.service';
 
+// Interceptor for JWT token requests
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     constructor(private accountService: AccountService, private authenticationService: AuthenticationService) { }

@@ -4,6 +4,9 @@ import { filter } from 'rxjs/operators';
 
 import { Alert, AlertType } from '../models/alert';
 
+/**
+ * Service used for alerts
+ */
 @Injectable({ providedIn: 'root' })
 export class AlertService {
     private subject = new Subject<Alert>();

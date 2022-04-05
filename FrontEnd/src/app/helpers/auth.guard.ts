@@ -9,6 +9,7 @@ import { ApiService } from '../services/api.service';
 import { AuthenticationService } from '../services/auth.service';
 import jwtDecode from 'jwt-decode';
 
+// Guard to protect info from non-users/admin
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
     constructor(
@@ -23,11 +24,13 @@ export class AuthGuard implements CanActivate {
     // or check with database on part of token that verifies password
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
+        // Checks to see if user has correct role
         const decode = jwtDecode(localStorage.getItem('token'))
         if (decode['roles'][0] === "ROLE_USER" || decode['roles'][0] === "ROLE_ADMIN") {
             return true;
         }
 
+        // Routes back to login if not user
         this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
         return false;
     }

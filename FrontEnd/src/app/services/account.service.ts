@@ -11,6 +11,9 @@ import { Token } from '../models/token';
 import { AuthenticationCode } from '../models/authentication.code.model';
 import { CustomResponse } from '@app/models/response';
 
+/**
+ * Service used for login and logout of users, as well as editing for admin.
+ */
 @Injectable({ providedIn: 'root' })
 export class AccountService {
     
@@ -21,6 +24,7 @@ export class AccountService {
 
     ) {}
 
+    // Logs used in and sets retreived token to local storage
     login(username: string, password: string): Observable<Token> {
         let params = new HttpParams()
             .set('username', username)
@@ -41,7 +45,7 @@ export class AccountService {
     }
 
     register(user: User, authenicationCode: AuthenticationCode){
-
+        // Registers user
         return this.authenticationService.authenticate(authenicationCode, user);
     }
 
@@ -53,22 +57,6 @@ export class AccountService {
     // // TODO: May need to make this more secure
     // getById(id: string) {
     //     return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
-    // }
-
-    // update(username, params) {
-    //     return this.http.put(`${environment.apiUrl}/users/${username}`, params)
-    //         .pipe(map(x => {
-    //             // update stored user if the logged in user updated their own record
-    //             if (username == localStorage.getItem('username')) {
-    //                 // update local storage
-    //                 const user = { ...this.userValue, ...params };
-    //                 localStorage.setItem('user', JSON.stringify(user));
-
-    //                 // publish updated user to subscribers
-    //                 this.userSubject.next(user);
-    //             }
-    //             return x;
-    //         }));
     // }
 
     // delete(username: string) {

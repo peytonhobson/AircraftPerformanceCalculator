@@ -16,8 +16,6 @@ import { DragDropModule, DragRef } from '@angular/cdk/drag-drop';
     imports: [BrowserModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, DragDropModule],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-        // provider used to create fake backend
         ApiService,
         AuthenticationService],
     bootstrap: [AppComponent],

@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/auth.service';
 
+/**
+ * Service for sending options requests
+ */
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
 

@@ -1,5 +1,3 @@
-import { Attachment } from "./attachment";
-import { Pilot } from "./pilot";
 import { Profile } from "./profile.model";
 import { RunwayConditions } from "./runway-conditions";
 

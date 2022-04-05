@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { AccountService } from '../services/account.service';
 import { AlertService } from '@app/services/alert.service';
 
+// Interceptor for HTTP errors
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
     constructor(private accountService: AccountService,
