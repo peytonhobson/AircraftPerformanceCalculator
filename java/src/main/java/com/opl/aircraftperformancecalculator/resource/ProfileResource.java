@@ -16,7 +16,7 @@ import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
- * Class acts as Controller for Rest API
+ * Class acts as resource controller for aircraft profiles
  */
 @RestController
 @RequestMapping("/profiles")
@@ -25,6 +25,11 @@ public class ProfileResource {
 
     private final ProfileServiceImplementation profileService;
 
+    /**
+     * Returns all by username
+     * @param username
+     * @return
+     */
     @GetMapping(path = "/{username}/all")
     public ResponseEntity<Response> returnAllProfiles(@PathVariable("username") String username) {
         return ResponseEntity.ok(
@@ -37,6 +42,12 @@ public class ProfileResource {
         );
     }
 
+    /**
+     * Returns the info of the profile by the name and user
+     * @param username
+     * @param profileName
+     * @return
+     */
     @GetMapping(path = "/{username}/{profileName}")
     public ResponseEntity<Response> returnProfile(@PathVariable("username") String username, @PathVariable("profileName") String profileName) {
         return ResponseEntity.ok(
@@ -49,6 +60,11 @@ public class ProfileResource {
         );
     }
 
+    /**
+     * Saves profile to DB
+     * @param profile
+     * @return
+     */
     @PostMapping(path = "/save")
     public ResponseEntity<Response> save(@RequestBody Profile profile) {
         return ResponseEntity.ok(
@@ -62,6 +78,12 @@ public class ProfileResource {
         );
     }
 
+    /**
+     * Deletes profile from DB
+     * @param username
+     * @param name
+     * @return
+     */
     @PostMapping(path = "/delete")
     public ResponseEntity<Response> delete(@RequestBody String username, String name) {
         return ResponseEntity.ok(

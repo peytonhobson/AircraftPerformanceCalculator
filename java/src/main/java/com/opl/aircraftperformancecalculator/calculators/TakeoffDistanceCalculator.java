@@ -12,6 +12,13 @@ import java.util.Scanner;
 @Slf4j
 public class TakeoffDistanceCalculator {
 
+    /**
+     * Calculates takoff distance based on runway type and takeoff mass.
+     * @param mass
+     * @param runwayType
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Double getTakeoffDistance(double mass, String runwayType) throws FileNotFoundException {
 
         List<List<Double>> lineList = new ArrayList<>();

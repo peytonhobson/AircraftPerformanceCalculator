@@ -12,6 +12,9 @@ import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * Resource to request items related to acitivity logs
+ */
 @RestController
 @RequestMapping("/activity-log")
 @RequiredArgsConstructor
@@ -20,6 +23,11 @@ public class ActivityLogResource {
 
     private final ActivityLogService activityLogService;
 
+    /**
+     * Saves activity log and returns saved activity log as response.
+     * @param activityLog
+     * @return
+     */
     @PostMapping(path = "/save")
     public ResponseEntity<Response> save(@RequestBody ActivityLog activityLog) {
         return ResponseEntity.ok(
@@ -33,8 +41,13 @@ public class ActivityLogResource {
         );
     }
 
+    /**
+     * Returns all activity logs by username
+     * @param username
+     * @return
+     */
     @GetMapping(path = "/{username}")
-    public ResponseEntity<Response> save(@PathVariable("username") String username) {
+    public ResponseEntity<Response> getByUsername(@PathVariable("username") String username) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -46,8 +59,12 @@ public class ActivityLogResource {
         );
     }
 
+    /**
+     * Returns all logs
+     * @return
+     */
     @GetMapping(path = "/all")
-    public ResponseEntity<Response> save() {
+    public ResponseEntity<Response> getAllLogs() {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())

@@ -25,12 +25,20 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class CalculatorResource {
 
+    // Empty Aircraft value in KG returned from config file
     @Value("${constant.aircraftMass.emptyAircraftKG}")
     private double emptyAircraftKG;
 
+    // Empty agile pod value in KG returned from config file (Also includes rail weight)
     @Value("${constant.aircraftMass.agilePodKG}")
     private double agilePodKG;
 
+    /**
+     * Function to return calculation of inputs
+     * @param input
+     * @return
+     * @throws Exception
+     */
     @PostMapping
     public ResponseEntity<Response> calculate(@RequestBody CalculatorInput input) throws Exception {
 
@@ -46,6 +54,12 @@ public class CalculatorResource {
         );
     }
 
+    /**
+     * Function to solve inputs for maximum fuel weight
+     * @param input
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/solver")
     public ResponseEntity<Response> solve(@RequestBody CalculatorInput input) throws Exception {
 

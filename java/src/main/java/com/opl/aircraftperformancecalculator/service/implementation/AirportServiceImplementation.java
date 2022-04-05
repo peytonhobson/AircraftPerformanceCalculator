@@ -30,13 +30,24 @@ import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-
+/**
+ * Service to get airport/runway info
+ */
 @Service
 @Transactional
 @Slf4j
 public class AirportServiceImplementation implements AirportService {
 
-    //TODO: Will likely need to make this return AirportWeather instead of string
+    /**
+     * This function parses aviation weather for the specified runway and returns conditions.
+     * @param airportID
+     * @param runwayNumber
+     * @param runwaySide
+     * @return
+     * @throws IOException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     @Override
     public RunwayConditions getRunwayConditions(String airportID, String runwayNumber, String runwaySide) throws IOException, ParserConfigurationException, SAXException {
 
@@ -74,8 +85,6 @@ public class AirportServiceImplementation implements AirportService {
         double windSpeed = 0;
         double precipitation = 0;
 
-        //TODO: Make it so if metar is null it will return exception
-        assert metar != null;
         NodeList metarChildren = metar.getChildNodes();
         for(int i = 0; i < metar.getChildNodes().getLength(); i++) {
             if(metarChildren.item(i).getNodeName().equals("temp_c")) {
@@ -107,6 +116,14 @@ public class AirportServiceImplementation implements AirportService {
                 headWind,Double.parseDouble(list.get(0))*0.3048, list.get(1), Double.parseDouble(list.get(2)));
     }
 
+    /**
+     * Gets runway info by parsing faa website
+     * @param airportID
+     * @param runwayNumber
+     * @param runwaySide
+     * @return
+     * @throws IOException
+     */
     public static List<String> getRunwayInfo(String airportID, String runwayNumber, String runwaySide) throws IOException {
 
         WebClient client = new WebClient();
@@ -121,7 +138,6 @@ public class AirportServiceImplementation implements AirportService {
             String searchUrl = "https://nfdc.faa.gov/nfdcApps/services/ajv5/airportDisplay.jsp?airportId=" + airportID;
             HtmlPage page = client.getPage(searchUrl);
 
-            //TODO: Need to fix so that it matches TDZE
             HtmlElement runway = page.querySelector("div[id=runway_" + runwayNumber + "]");
             if(runway == null) {
                 runwayType = "BadRunway";
@@ -197,6 +213,12 @@ public class AirportServiceImplementation implements AirportService {
         return list;
     }
 
+    /**
+     * Gets the runway options from FAA website
+     * @param airportID
+     * @return
+     * @throws IOException
+     */
     @Override
     public List<String> getRunways(String airportID) throws IOException {
 
@@ -211,6 +233,7 @@ public class AirportServiceImplementation implements AirportService {
 
             List<DomNode> runway = page.querySelectorAll("div[id^=runway_]");
 
+            // Runway not listed by faa
             if(runway.isEmpty()) {
                 list.add("BadRunway");
                 return list;
@@ -227,6 +250,12 @@ public class AirportServiceImplementation implements AirportService {
         return list;
     }
 
+    /**
+     * Calculates pressure altitude from mercury altimeter
+     * @param hg
+     * @param elevation
+     * @return
+     */
     public static Double calculatePressureAltitude(double hg, double elevation) {
         return elevation+((hg-29.92)*1000)*0.3048;
     }

@@ -69,8 +69,12 @@ public class ConstantsResource {
     @Value("${constant.MAC.MACRefDatum}")
     private double MACRefDatum;
 
+    /**
+     * Returns all list constants in config file
+     * @return
+     */
     @GetMapping
-    public ResponseEntity<Response> getByUsername() {
+    public ResponseEntity<Response> getAll() {
 
         return ResponseEntity.ok(
                 Response.builder()

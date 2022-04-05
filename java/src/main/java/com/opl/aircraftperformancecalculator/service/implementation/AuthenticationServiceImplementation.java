@@ -12,6 +12,9 @@ import javax.transaction.Transactional;
 
 import static java.lang.Boolean.TRUE;
 
+/**
+ * Service for saving and deleting authentication codes from DB
+ */
 @RequiredArgsConstructor
 @Service
 @Transactional

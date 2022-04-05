@@ -12,6 +12,14 @@ import java.util.List;
 @Slf4j
 public class Solver {
 
+    /**
+     * Function to solve for maximum fuel for runway conditions and profile
+     * @param input
+     * @param emptyAircraftKG
+     * @param agilePodKG
+     * @return
+     * @throws FileNotFoundException
+     */
     public static SolverOutput solve(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
 
         Profile profile = input.getProfile();
@@ -28,7 +36,8 @@ public class Solver {
         boolean notFirstLoop = false;
 
 
-        //TODO: need to make final adjustments to tanks after going from low to high or vice versa
+        // Loop that incrementally adds or subtracts fuel. Once combined distance of accel-stop and takeoff distance
+        // either go lower or higher than the runway distance, the loop stops and the current fuel store is returned.
         while(true) {
 
             totalDist = TakeoffDistanceCalculator.getTakeoffDistance(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),

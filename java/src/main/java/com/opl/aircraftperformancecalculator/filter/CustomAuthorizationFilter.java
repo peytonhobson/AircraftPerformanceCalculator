@@ -32,12 +32,23 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
+/**
+ * Class that authorizes requests based on authentication header.
+ */
 @Slf4j
 @AllArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private final String secret;
 
+    /**
+     * Filters requests based on URL and authentication token.
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -48,6 +59,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "*");
 
+        // These URLS can be accessed without authorization
         if(request.getServletPath().equals("/users/login") || request.getServletPath().equals("/users/token/refresh")
         || request.getServletPath().equals("/register/authentication") || request.getServletPath().equals("/register/token")) {
             filterChain.doFilter(request,response);
@@ -56,8 +68,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
+                    /*
+                    Decodes the JWT token to verify for roles
+                     */
                     String token  = authorizationHeader.substring("Bearer ".length());
-                    //TODO: Alter this in production (secret)
                     Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
@@ -76,6 +90,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error: logging in: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());
                     log.info(String.valueOf(exception.getClass()));
+
+                    /*
+                    Return error response if authentication token is not valid.
+                     */
                     if(!exception.getClass().equals(org.springframework.web.util.NestedServletException.class)) {
                         response.setStatus(FORBIDDEN.value());
                     }

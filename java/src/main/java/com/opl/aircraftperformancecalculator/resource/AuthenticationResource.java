@@ -17,6 +17,9 @@ import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * Resource for registering with authentication codes
+ */
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
@@ -26,9 +29,17 @@ public class AuthenticationResource {
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
+    /**
+     * Function thats called to register user.
+     * @param user
+     * @return
+     * @throws Exception
+     */
     @PostMapping(path = "/authentication")
     public ResponseEntity<Response> register(@RequestBody AuthUser user) throws Exception {
 
+
+        // Returns error if username is already taken
         if (userService.getUser(user.getUsername()) != null) {
             return ResponseEntity.ok(
                     Response.builder()
@@ -41,6 +52,7 @@ public class AuthenticationResource {
             );
         }
 
+        // Checks if authentication code is in database. Returns error if deletion doesnt't work
         if (authenticationService.deleteAuthenticationCode(new AuthenticationCode(user.getCode())) != 1) {
             return ResponseEntity.ok(
                     Response.builder()
@@ -56,7 +68,6 @@ public class AuthenticationResource {
         User newUser = new User(user.getUsername(), user.getPassword(), user.getRole());
         userService.saveUser(newUser);
 
-        // TODO: This is only temporary. Set actual API values.
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())

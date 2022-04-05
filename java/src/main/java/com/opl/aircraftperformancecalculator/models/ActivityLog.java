@@ -13,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+/**
+ * Entity that acts as activity logs.
+ */
 @Entity
 @Getter
 @Setter
@@ -20,6 +23,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ActivityLog {
 
+    /**
+     * Randomly generated ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

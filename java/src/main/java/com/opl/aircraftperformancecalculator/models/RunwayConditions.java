@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * Class to represent current runway conditions.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,6 +24,6 @@ public class RunwayConditions {
     private double precipitation;
     private double headWind;
     private double runwayLength;
-    private String runwayType;
+    private String runwayType; // can be concrete or grass, but represented as "CONC"/"ASPH" or "TURF"
     private double slope;
 }

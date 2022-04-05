@@ -68,7 +68,7 @@ export class AddProfilesComponent implements OnInit {
       this.constants = res.data.constants;
       this.weightSum = res.data.constants.basicEmptyAircraftWeight;
       this.momentSum = res.data.constants.basicEmptyAircraftWeight*res.data.constants.basicEmptyAircraft;
-  })
+    })
 
     let profileInputs = []
 
@@ -126,6 +126,9 @@ export class AddProfilesComponent implements OnInit {
       res.data.profiles.forEach(profile => {
         aircraftSelect.add(new Option(profile.name, profile.name), undefined)
       })
+    },
+    error => {
+      this.alertService.error("Profiles could not be found.")
     });
 
     aircraftSelect.addEventListener('change', (e) => {
@@ -142,6 +145,9 @@ export class AddProfilesComponent implements OnInit {
       res.data.pilots.forEach(pilot => {
         pilotSelect.add(new Option(pilot.name, pilot.name), undefined)
       })
+    },
+    error => {
+      this.alertService.error("Pilots could not be found.")
     })
 
     pilotSelect.addEventListener('change', (e) => {
@@ -237,7 +243,10 @@ export class AddProfilesComponent implements OnInit {
         }
       }
         
-      });
+    },
+    error => {
+      this.alertService.error("Aircraft profile could not be deleted.")
+    });
   }
 
   openPilotDeleteModal() {
@@ -274,7 +283,10 @@ export class AddProfilesComponent implements OnInit {
         }
       }
         
-      });
+    },
+    error => {
+      this.alertService.error("Pilot could not be deleted.")
+    });
   }
 
   save() {
@@ -307,6 +319,9 @@ export class AddProfilesComponent implements OnInit {
 
         const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
         aircraftSelect.add(new Option(profile.name, profile.name), undefined)
+      },
+      error => {
+        this.alertService.error("Profile could not be saved.")
       }
     );
   }
@@ -332,7 +347,10 @@ export class AddProfilesComponent implements OnInit {
 
         const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
         pilotSelect.add(new Option(currentName, currentName), undefined)
-      }   
+      },
+      error => {
+        this.alertService.error("Pilot could not be saved.")
+      }  
     );
 
     name.value = "";

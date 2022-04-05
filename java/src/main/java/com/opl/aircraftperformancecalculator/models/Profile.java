@@ -11,12 +11,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Class to reprsent profile of aircraft.
+ */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Profile {
 
+    /**
+     * This is returned as combination of username_name by front end.
+     */
     @Id
     private String id;
 

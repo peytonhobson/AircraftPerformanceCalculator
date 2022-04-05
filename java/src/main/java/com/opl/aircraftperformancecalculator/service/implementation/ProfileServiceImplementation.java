@@ -17,6 +17,9 @@ import java.util.Optional;
 import static java.lang.Boolean.TRUE;
 import static org.springframework.data.domain.PageRequest.of;
 
+/**
+ * Service for aircraft profiles
+ */
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -38,17 +41,17 @@ public class ProfileServiceImplementation implements ProfileService {
     }
 
     @Override
-    public Profile update(Profile profile) {
-        log.info("Updating Profile: {}", profile.getName());
-        return profileRepo.save(profile);
-    }
-
-    @Override
     public Integer delete(String name, String username) {
         log.info("Deleting profile");
         return profileRepo.deleteByNameAndUsername(name, username);
     }
 
+    /**
+     * Returns unique profile by username and name
+     * @param username
+     * @param profileName
+     * @return
+     */
     @Override
     public Profile getByUsernameandName(String username, String profileName) {
         log.info("Getting Profile");

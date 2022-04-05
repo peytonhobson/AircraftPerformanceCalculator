@@ -12,6 +12,12 @@ import java.util.Scanner;
 @Slf4j
 public class TakeoffAirspeedCalculator {
 
+    /**
+     * Calculates airspeeds based on takeoff mass and digitized graphs.
+     * @param mass
+     * @return
+     * @throws FileNotFoundException
+     */
     public static List<Double> getTakeoffAirspeed(double mass) throws FileNotFoundException {
 
         List<List<Double>> lineList = new ArrayList<>();

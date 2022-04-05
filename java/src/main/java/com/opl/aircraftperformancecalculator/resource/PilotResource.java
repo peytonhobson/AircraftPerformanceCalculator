@@ -14,6 +14,9 @@ import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * Resource used for fetching and saving pilot entities
+ */
 @RestController
 @RequestMapping("/pilots")
 @RequiredArgsConstructor
@@ -22,6 +25,11 @@ public class PilotResource {
 
     private final PilotServiceImplementation pilotService;
 
+    /**
+     * Returns all pilots by username
+     * @param username
+     * @return
+     */
     @GetMapping(path = "/{username}/all")
     public ResponseEntity<Response> getByUsername(@PathVariable(name = "username") String username) {
 
@@ -36,6 +44,11 @@ public class PilotResource {
         );
     }
 
+    /**
+     * Returns pilot by id (username_name)
+     * @param id
+     * @return
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity<Response> getByID(@PathVariable(name = "id") String id) {
 
@@ -50,6 +63,12 @@ public class PilotResource {
         );
     }
 
+    /**
+     * Saves pilot to DB
+     * @param pilot
+     * @return
+     * @throws Exception
+     */
     @PostMapping(path = "/save")
     public ResponseEntity<Response> save(@RequestBody Pilot pilot) throws Exception {
 
@@ -64,6 +83,12 @@ public class PilotResource {
         );
     }
 
+    /**
+     * Deletes pilot from DB
+     * @param username
+     * @param name
+     * @return
+     */
     @PostMapping(path = "/delete")
     public ResponseEntity<Response> delete(@RequestBody String username, String name) {
         return ResponseEntity.ok(

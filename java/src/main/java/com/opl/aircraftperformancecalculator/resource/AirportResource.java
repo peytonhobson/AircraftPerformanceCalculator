@@ -17,6 +17,9 @@ import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * Resource for runway/airport related information
+ */
 @RestController
 @RequestMapping("/airport")
 @RequiredArgsConstructor
@@ -25,12 +28,20 @@ public class AirportResource {
 
     private final AirportService airportService;
 
-
+    /**
+     * Functions returns runway condition when mapped to airport, runway, and starting runway side.
+     * @param airportID
+     * @param runwayNumber
+     * @param runwaySide
+     * @return
+     * @throws Exception
+     */
     @GetMapping(path = "/runway/{airportID}/{runwayNumber}/{runwaySide}")
     public ResponseEntity<Response> getRunwayConditions(@PathVariable final String airportID, @PathVariable final String runwayNumber, @PathVariable final String runwaySide) throws Exception {
 
         RunwayConditions runwayConditions = airportService.getRunwayConditions(airportID, runwayNumber, runwaySide);
 
+        // Triggers error response if weather conditions cant be found
         if(runwayConditions.getAirportID().equals("BadMetar")) {
             log.info("bad metar");
             return ResponseEntity.ok(
@@ -44,6 +55,7 @@ public class AirportResource {
             );
         }
 
+        // Triggers error if airport isnt listed by FAA
         if(runwayConditions.getAirportID().equals("BadRunway")) {
             log.info("bad runway");
             return ResponseEntity.ok(
@@ -57,6 +69,7 @@ public class AirportResource {
             );
         }
 
+        // Returns runway conditions
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -69,11 +82,20 @@ public class AirportResource {
 
     }
 
+    /**
+     * Returns runways of specified airport ID
+     * @param airportID
+     * @return
+     * @throws Exception
+     */
     @GetMapping(path = "/runways/{airportID}")
     public ResponseEntity<Response> getRunways(@PathVariable final String airportID) throws Exception {
 
         List<String> list = airportService.getRunways(airportID);
 
+        /**
+         * Returns error if not listed by faa
+         */
         if(list.get(0).equals("BadRunway")) {
             log.info(list.toString());
             return ResponseEntity.ok(

@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-
+/**
+ * Class to represent calculator input sent from front end.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

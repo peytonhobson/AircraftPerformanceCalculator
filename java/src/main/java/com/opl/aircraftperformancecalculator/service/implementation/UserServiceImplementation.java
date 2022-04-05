@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * Service for users
+ */
 @Service @RequiredArgsConstructor
 @Transactional @Slf4j
 public class UserServiceImplementation implements UserService, UserDetailsService {
@@ -26,6 +28,12 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Method used by authorization manager to verify user and authorities
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);

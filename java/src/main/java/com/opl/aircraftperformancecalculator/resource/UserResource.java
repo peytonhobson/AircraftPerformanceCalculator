@@ -33,6 +33,9 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
+/**
+ * Controller to fetch and save users in db. Generally limited to admin role.
+ */
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -41,17 +44,44 @@ public class UserResource {
 
     private final UserService userService;
 
+    /**
+     * Returns all users from DB.
+     * @return
+     */
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+    public ResponseEntity<Response> getUsers() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("users", userService.getUsers()))
+                        .message("User retrieved")
+                        .statusCode(OK.value())
+                        .build()
+        );
     }
 
+    /**
+     * Saves user to DB
+     * @param user
+     * @return
+     */
     @PostMapping("/user/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+    public ResponseEntity<Response> saveUser(@RequestBody User user) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("user", userService.saveUser(user)))
+                        .message("User retrieved")
+                        .statusCode(OK.value())
+                        .build()
+        );
     }
 
+    /**
+     * Returns user by username;
+     * @param username
+     * @return
+     */
     @GetMapping("/{username}")
     public ResponseEntity<Response> getUser(@PathVariable String username) {
         return ResponseEntity.ok(
@@ -64,18 +94,18 @@ public class UserResource {
         );
     }
 
-    @GetMapping("/authenticated")
-    public ResponseEntity<String> authenticate() {
-        log.info("authenticating");
-        return ResponseEntity.ok().body("true");
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<Boolean> register(@RequestBody User user) {
-        log.info("Registering User {}", user.getUsername());
-        userService.saveUser(user);
-        return ResponseEntity.ok().body(true);
-    }
+//    @GetMapping("/authenticated")
+//    public ResponseEntity<String> authenticate() {
+//        log.info("authenticating");
+//        return ResponseEntity.ok().body("true");
+//    }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<Boolean> register(@RequestBody User user) {
+//        log.info("Registering User {}", user.getUsername());
+//        userService.saveUser(user);
+//        return ResponseEntity.ok().body(true);
+//    }
 
 //    @GetMapping("/token/refresh")
 //    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {

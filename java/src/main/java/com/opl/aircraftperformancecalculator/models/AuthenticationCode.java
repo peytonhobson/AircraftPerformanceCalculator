@@ -10,6 +10,9 @@ import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.AUTO;
 
+/**
+ * Authentication entity for registering users.
+ */
 @Entity
 @Data
 @NoArgsConstructor

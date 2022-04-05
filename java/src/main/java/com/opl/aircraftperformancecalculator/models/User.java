@@ -12,6 +12,9 @@ import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.AUTO;
 
+/**
+ * Entity class to represent user.
+ */
 @Entity
 @Data
 @NoArgsConstructor
