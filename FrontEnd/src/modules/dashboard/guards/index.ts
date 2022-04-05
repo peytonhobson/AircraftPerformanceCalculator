@@ -1,5 +1,5 @@
-import { DashboardGuard } from './dashboard.guard';
+import { AdminGuard } from './admin.guard';
 
-export const guards = [DashboardGuard];
+export const guards = [AdminGuard];
 
-export * from './dashboard.guard';
+export * from './admin.guard';

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ProfileService {
-
     Profile save(Profile profile);
     List<Profile> listByUsername(String username);
     Profile getByUsernameandName(String username, String profileName);

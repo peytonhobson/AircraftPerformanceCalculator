@@ -5,11 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 /* Modules */
-import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
-
-/* Components */
-import * as dashboardComponents from './components';
 
 /* Containers */
 import * as dashboardContainers from './containers';
@@ -18,7 +14,6 @@ import * as dashboardContainers from './containers';
 import * as dashboardGuards from './guards';
 
 /* Services */
-import * as dashboardServices from './services';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
@@ -27,13 +22,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        AppCommonModule,
         NavigationModule,
         DragDropModule,
     ],
-    providers: [...dashboardServices.services, ...dashboardGuards.guards],
-    declarations: [...dashboardContainers.containers, ...dashboardComponents.components],
-    exports: [...dashboardContainers.containers, ...dashboardComponents.components],
+    providers: [...dashboardGuards.guards],
+    declarations: [...dashboardContainers.containers],
+    exports: [...dashboardContainers.containers],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DashboardModule {}

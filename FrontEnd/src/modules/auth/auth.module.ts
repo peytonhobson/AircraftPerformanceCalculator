@@ -5,20 +5,12 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 /* Modules */
-import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
-
-/* Components */
-import * as authComponents from './components';
 
 /* Containers */
 import * as authContainers from './containers';
 
-/* Guards */
-import * as authGuards from './guards';
-
 /* Services */
-import * as authServices from './services';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from '@app/helpers/error.interceptor';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
@@ -31,16 +23,15 @@ import { AuthenticationService } from '@app/services/auth.service';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        AppCommonModule,
         NavigationModule
     ],
-    providers: [...authServices.services, ...authGuards.guards,
+    providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
             { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     
             ApiService,
             AuthenticationService],
-    declarations: [...authContainers.containers, ...authComponents.components],
-    exports: [...authContainers.containers, ...authComponents.components],
+    declarations: [...authContainers.containers],
+    exports: [...authContainers.containers],
 })
 export class AuthModule {}

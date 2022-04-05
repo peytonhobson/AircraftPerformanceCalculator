@@ -3,9 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-/* Modules */
-import { AppCommonModule } from '@common/app-common.module';
-
 /* Components */
 import * as navigationComponents from './components';
 
@@ -23,10 +20,16 @@ import * as navigationServices from './services';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from '@app/helpers/jwt.interceptor';
 import { ErrorInterceptor } from '@app/helpers/error.interceptor';
+
+/* Modules */
 import { AlertModule } from '@app/alerts/alert.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { IconsModule } from '@modules/icons/icons.module';
+
+const thirdParty = [IconsModule, NgbModule];
 
 @NgModule({
-    imports: [CommonModule, RouterModule, AppCommonModule, AlertModule],
+    imports: [CommonModule, RouterModule, AlertModule, ...thirdParty],
     providers: [ { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         ...navigationServices.services, ...navigationGuards.guards],
@@ -38,6 +41,7 @@ import { AlertModule } from '@app/alerts/alert.module';
     exports: [
         ...navigationContainers.containers,
         ...navigationComponents.components,
+        ...thirdParty,
         ...appCommonLayouts.layouts
     ],
 })

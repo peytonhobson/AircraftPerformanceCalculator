@@ -1,16 +1,10 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from "@angular/cdk/drag-drop";
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "@app/services/api.service";
-import { Attachment } from "@app/models/attachment";
-import { UserService } from '@modules/auth/services';
-import { async } from "rxjs";
-import { first, map } from "rxjs/operators";
+import { first } from "rxjs/operators";
 import { Profile } from "@app/models/profile.model";
-import { NgbProgressbar } from "@ng-bootstrap/ng-bootstrap";
 import { Pilot } from "@app/models/pilot";
 import { AlertService } from "@app/services/alert.service";
-import { ObjectUnsubscribedError } from "rxjs";
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Constants } from "@app/models/constants";
 
 @Component({
@@ -24,8 +18,13 @@ export class AddProfilesComponent implements OnInit {
     private alertService: AlertService,
     private formBuilder: FormBuilder) {}
 
+  // Display style for save profile modal
   displaySaveProfile = "none";
+
+  // Display style for delete aircraft modal
   displayDeleteAircraft = "none";
+
+  // Display style for delete pilot modal
   displayDeletePilot = "none";
 
   currentAircraft: String;
@@ -78,6 +77,7 @@ export class AddProfilesComponent implements OnInit {
     profileInputs.push(document.getElementById('OutboardInput') as HTMLInputElement);
     profileInputs.push(document.getElementById('AgilePayload') as HTMLInputElement);
 
+    // If form inputs for saving profile are clicked, errors will disappear
     profileInputs.forEach(input => {
       input.addEventListener('click', (e) => {
         this.submittedSaveProfile = false;
@@ -89,6 +89,7 @@ export class AddProfilesComponent implements OnInit {
     pilotInputs.push(document.getElementById('PilotName') as HTMLInputElement);
     pilotInputs.push(document.getElementById('PilotWeight') as HTMLInputElement);
 
+    // If form inputs for saving pilot are clicked, errors will disappear
     pilotInputs.forEach(input => {
       input.addEventListener('click', (e) => {
         this.submittedSavePilot = false;
@@ -101,6 +102,7 @@ export class AddProfilesComponent implements OnInit {
     const agileWeightInput = document.getElementById('AgilePayload') as HTMLInputElement;
     agileWeightInput.disabled = true;
 
+    // Event listeners for agile pod radios
     agileYesRadio.addEventListener('click', (e) => {
       agileYesRadio.checked = true;
       agileNoRadio.checked = false;
@@ -120,7 +122,7 @@ export class AddProfilesComponent implements OnInit {
     });
 
 
-
+    // Initialize aircraft dropdown for user profiles
     const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
     this.apiService.get(`profiles/${user}/all`).subscribe(res => {
       res.data.profiles.forEach(profile => {
@@ -140,6 +142,7 @@ export class AddProfilesComponent implements OnInit {
       }
     });
 
+    // Initialize pilot drop down
     const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
     this.apiService.get(`pilots/${user}/all`).subscribe(res => {
       res.data.pilots.forEach(pilot => {
@@ -160,7 +163,10 @@ export class AddProfilesComponent implements OnInit {
     })
   }
 
-  
+  get fSave() { return this.formSaveProfile.controls; }
+  get fSavePilot() { return this.formSavePilot.controls; }
+
+  // Function for opening modal to save aircraft profile
   openSaveModal() {
     this.submittedSaveProfile = true;
     if(this.formSaveProfile.invalid) {
@@ -191,12 +197,11 @@ export class AddProfilesComponent implements OnInit {
         + this.constants.podPayload*this.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.agileWeight);
     }
 
-
-
     this.displaySaveProfile = "block";
     document.getElementById('main-container').style.opacity = '40%';
   }
 
+  // Close save modal and return opacity to normal
   closeSaveModal(save: boolean) {
     this.displaySaveProfile = "none";
 
@@ -207,8 +212,7 @@ export class AddProfilesComponent implements OnInit {
     }
   }
 
-  get fSave() { return this.formSaveProfile.controls; }
-
+  // Open modal to delete aircraft
   openAircraftDeleteModal() {
 
     if(!this.currentAircraft) {
@@ -221,19 +225,23 @@ export class AddProfilesComponent implements OnInit {
     this.displayDeleteAircraft = 'flex';
   }
 
-  closeAircraftDeleteModal(save: boolean) {
+  // Function to close aircraft delete modal
+  closeAircraftDeleteModal() {
     this.displayDeleteAircraft = "none";
 
     document.getElementById('main-container').style.opacity = '100%';
   }
 
+  // Delete aircraft from DB
   deleteAircraft() {
     this.displayDeleteAircraft = "none";
     document.getElementById('main-container').style.opacity = '100%';
 
+    // HTTP request to delete
     this.apiService.post('profiles/delete', { username: localStorage.getItem('username'), name: this.currentAircraft }).subscribe(res => {
       const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
 
+      // Remove profile name from drop down menu
       aircraftSelect.value = "Choose Aircraft Profile";
       for(var i = 0; i < aircraftSelect.options.length; i++) {
         if(aircraftSelect.options.item(i).value == this.currentAircraft) {
@@ -249,6 +257,7 @@ export class AddProfilesComponent implements OnInit {
     });
   }
 
+  // Open pilot delete modal if pilot selected
   openPilotDeleteModal() {
 
     if(!this.currentPilot) {
@@ -271,9 +280,11 @@ export class AddProfilesComponent implements OnInit {
     this.displayDeletePilot = "none";
     document.getElementById('main-container').style.opacity = '100%';
 
+    // Delete pilot from DB
     this.apiService.post('pilots/delete', { username: localStorage.getItem('username'), name: this.currentPilot }).subscribe(res => {
       const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
 
+      // Remove pilot from drop down
       pilotSelect.value = "Choose Pilot";
       for(var i = 0; i < pilotSelect.options.length; i++) {
         if(pilotSelect.options.item(i).value == this.currentPilot) {
@@ -289,6 +300,7 @@ export class AddProfilesComponent implements OnInit {
     });
   }
 
+  // Function for saving aircraft profile
   save() {
 
     const profileName = document.getElementById('ProfileName') as HTMLInputElement;
@@ -302,6 +314,7 @@ export class AddProfilesComponent implements OnInit {
     var agileWeight = 0;
     var agilePod = false;
 
+    // Adds agile weight if applicable
     if(agileYesRadio.checked) {
       const agileWeightInput = document.getElementById('AgilePayload') as HTMLInputElement;
       agileWeight = Number(agileWeightInput.value);
@@ -309,14 +322,17 @@ export class AddProfilesComponent implements OnInit {
       agilePod = true;
     }
 
+    // Profile to return to back end
     const profile = new Profile(user,profileName.value, Number(internalTankVal.value),
       Number(underwingTankVal.value), Number(tipTankVal.value), Number(outboard.value), agilePod, agileWeight);
 
+    // HTTP request to save profile
     this.apiService.post('profiles/save',profile).pipe(first())
     .subscribe(
       res => {
         this.alertService.success("Aircraft profile saved!")
 
+        // Add profile name to delete drop down
         const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
         aircraftSelect.add(new Option(profile.name, profile.name), undefined)
       },
@@ -326,6 +342,7 @@ export class AddProfilesComponent implements OnInit {
     );
   }
 
+  // Function to save new pilot
   createPilot() {
 
     this.submittedSavePilot = true;
@@ -340,11 +357,13 @@ export class AddProfilesComponent implements OnInit {
 
     const currentName = name.value;
 
+    // HTTP request to save
     this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).pipe(first())
     .subscribe(
       res => {
         this.alertService.success("Pilot profile saved!")
 
+        // Add pilot name to delete drop down
         const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
         pilotSelect.add(new Option(currentName, currentName), undefined)
       },
@@ -356,6 +375,4 @@ export class AddProfilesComponent implements OnInit {
     name.value = "";
     mass.value = "";
   }
-
-  get fSavePilot() { return this.formSavePilot.controls; }
 }

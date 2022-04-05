@@ -6,20 +6,20 @@ import {
     faArrowLeft,
     faBars,
     faBookOpen,
+    faCalculator,
     faChartArea,
     faChartBar,
     faChartPie,
     faChevronDown,
     faChevronUp,
     faColumns,
+    faPlane,
+    faPlaneDeparture,
+    faQuestionCircle,
     faSearch,
     faTable,
     faTachometerAlt,
     faUser,
-    faCalculator,
-    faQuestionCircle,
-    faPlane,
-    faPlaneDeparture
 
 } from '@fortawesome/free-solid-svg-icons';
 

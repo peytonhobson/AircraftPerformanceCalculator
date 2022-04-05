@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { CalculatorResponse, CustomResponse } from '../models/response';
+import { CustomResponse } from '../models/response';
 import { tap, catchError, map } from 'rxjs/operators';
 import { Profile } from '../models/profile.model'
 import { AccountService } from './account.service';

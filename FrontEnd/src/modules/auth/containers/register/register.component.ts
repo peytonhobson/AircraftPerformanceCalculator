@@ -53,6 +53,7 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
+        // If passwords don't match throw alert
         if(this.f['password'].value !== this.f['confirmPassword'].value) {
             this.alertService.error("Passwords do not match.")
             return;

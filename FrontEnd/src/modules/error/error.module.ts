@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 /* Modules */
-import { AppCommonModule } from '@common/app-common.module';
 import { NavigationModule } from '@modules/navigation/navigation.module';
 
 /* Components */
@@ -26,7 +25,6 @@ import * as errorServices from './services';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        AppCommonModule,
         NavigationModule,
     ],
     providers: [...errorServices.services, ...errorGuards.guards],

@@ -11,14 +11,15 @@ import * as dashboardContainers from './containers';
 /* Guards */
 import { AuthGuard } from '@app/helpers/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { faListUl } from '@fortawesome/free-solid-svg-icons';
 
 /* Routes */
 export const ROUTES: Routes = [
-    
+
     {
         path: '',
         canActivate: [AuthGuard],
-        component: dashboardContainers.DashboardComponent,
+        component: dashboardContainers.CalculatorComponent,
     },
     {
         path: 'calculator',
@@ -45,7 +46,7 @@ export const ROUTES: Routes = [
         canActivate: [AdminGuard],
         component: dashboardContainers.AdminComponent,
     },
- 
+
 ];
 
 @NgModule({

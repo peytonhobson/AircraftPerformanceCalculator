@@ -1,4 +1,3 @@
-import { Attachment } from "./attachment";
 
 /**
  * Class used to represent response, where output is initialized to empty
