@@ -32,9 +32,9 @@ export const ROUTES: Routes = [
         component: dashboardContainers.SolverComponent,
     },
     {
-        path: 'add-profiles',
+        path: 'profiles',
         canActivate: [AuthGuard],
-        component: dashboardContainers.AddProfilesComponent,
+        component: dashboardContainers.ProfilesComponent,
     },
     {
         path: 'airports',

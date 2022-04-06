@@ -12,9 +12,6 @@ import * as navigationContainers from './containers';
 /* Layouts */
 import * as appCommonLayouts from './layouts';
 
-/* Guards */
-import * as navigationGuards from './guards';
-
 /* Services */
 import * as navigationServices from './services';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -32,7 +29,7 @@ const thirdParty = [IconsModule, NgbModule];
     imports: [CommonModule, RouterModule, AlertModule, ...thirdParty],
     providers: [ { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        ...navigationServices.services, ...navigationGuards.guards],
+        ...navigationServices.services],
     declarations: [
         ...navigationContainers.containers,
         ...navigationComponents.components,

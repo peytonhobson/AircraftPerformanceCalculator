@@ -1,14 +1,12 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { VersionComponent } from './version.component';
+
+import { AddProfilesComponent } from './profiles.component';
 
 @Component({
     template: `
-        <sbpro-version
-            [someInput]="someInput"
-            (someFunction)="someFunction($event)"
-        ></sbpro-version>
+        <add-profiles [someInput]="someInput" (someFunction)="someFunction($event)"></add-profiles>
     `,
 })
 class TestHostComponent {
@@ -16,22 +14,20 @@ class TestHostComponent {
     // someFunction(event: Event) {}
 }
 
-describe('VersionComponent', () => {
+describe('AddProfilesComponent', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let hostComponent: TestHostComponent;
     let hostComponentDE: DebugElement;
     let hostComponentNE: Element;
 
-    let component: VersionComponent;
+    let component: AddProfilesComponent;
     let componentDE: DebugElement;
     let componentNE: Element;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [TestHostComponent, VersionComponent],
-            imports: [
-                NoopAnimationsModule,
-            ],
+            declarations: [TestHostComponent, AddProfilesComponent],
+            imports: [NoopAnimationsModule],
             providers: [],
             schemas: [NO_ERRORS_SCHEMA],
         }).compileComponents();
@@ -49,9 +45,6 @@ describe('VersionComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(
-            hostComponentNE.querySelector('sbpro-version'),
-        ).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('profiles')).toEqual(jasmine.anything());
     });
-
 });

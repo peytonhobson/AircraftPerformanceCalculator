@@ -6,7 +6,7 @@ import { FooterComponent } from './footer.component';
 
 @Component({
     template: `
-        <sb-footer [someInput]="someInput" (someFunction)="someFunction($event)"></sb-footer>
+        <main-footer [someInput]="someInput" (someFunction)="someFunction($event)"></main-footer>
     `,
 })
 class TestHostComponent {
@@ -45,6 +45,6 @@ describe('FooterComponent', () => {
     });
 
     it('should display the component', () => {
-        expect(hostComponentNE.querySelector('sb-footer')).toEqual(jasmine.anything());
+        expect(hostComponentNE.querySelector('main-footer')).toEqual(jasmine.anything());
     });
 });

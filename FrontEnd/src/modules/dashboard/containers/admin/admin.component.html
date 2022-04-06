@@ -38,7 +38,7 @@
                         <tr class="table-secondary">
                             <th>Id</th>
                             <th>Username</th>
-                            <th>Time</th>
+                            <th>Date</th>
                             <th>Action</th>
                             <th>Input</th>
                             <th>Output</th>
@@ -48,8 +48,8 @@
                             <td>{{log.username}}</td>
                             <td>{{log.time}}</td>
                             <td>{{log.action}}</td>
-                            <td>{{log.input}}</td>
-                            <td>{{log.output}}</td>
+                            <td>{{log.input | json}}</td>
+                            <td>{{log.output | json}}</td>
                         </tr>
                     </table>
                 </div>

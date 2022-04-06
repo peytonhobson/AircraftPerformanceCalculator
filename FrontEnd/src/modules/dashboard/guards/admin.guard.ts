@@ -20,10 +20,11 @@ export class AdminGuard implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
-        const decode = jwtDecode(localStorage.getItem('token'))
-        if (decode['roles'][0] === "ROLE_ADMIN") {
-            return true;
+        if(localStorage.getItem('token')) {
+            const decode = jwtDecode(localStorage.getItem('token'));
+            if (decode['roles'][0] === "ROLE_ADMIN") {
+                return true;
+            }
         }
 
         this.router.navigate(['/dashboard'], { queryParams: { returnUrl: state.url } });

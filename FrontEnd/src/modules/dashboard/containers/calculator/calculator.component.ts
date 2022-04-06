@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common'
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CalculatorInput } from '@app/models/calculator-input';
@@ -9,6 +10,7 @@ import { RunwayConditions } from '@app/models/runway-conditions';
 import { AccountService } from '@app/services/account.service';
 import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
+import { ActivityLog } from '@modules/dashboard/models/activity-log';
 import { first} from 'rxjs/operators';
 
 
@@ -53,7 +55,6 @@ export class CalculatorComponent implements OnInit {
     submittedRunways = false;
     submittedCalc = false;
 
-    //
     runwaysLoading = false;
     calculateLoading = false;
     notCalculated = true;
@@ -94,6 +95,7 @@ export class CalculatorComponent implements OnInit {
         private accountService: AccountService,
         private formBuilder: FormBuilder,
         private alertService: AlertService,
+        private datepipe: DatePipe
     ) {
         this.pilot1 = new Pilot(null, null, 0);
         this.pilot2 = new Pilot(null, null, 0);
@@ -532,7 +534,6 @@ export class CalculatorComponent implements OnInit {
             return;
         }
 
-        const username = localStorage.getItem('username');
         let pilot2 = this.pilot2.mass;
 
         // Remove parachute weight if not present
@@ -572,6 +573,28 @@ export class CalculatorComponent implements OnInit {
 
             document.getElementById('main-container').style.opacity = '40%';
             this.submittedCalc = false;
+
+            const date=Date.now();
+            let latest_date =this.datepipe.transform(date, 'dd-MM-yyyy');
+
+            // Reformatting input and output to have less decimals to look prettier
+            const newRunwayConditions = new RunwayConditions(this.runwayConditions.airportID, this.runwayConditions.temp.toFixed(1), 
+            this.runwayConditions.pressureAltitude.toFixed(0), this.runwayConditions.precipitation.toFixed(2), this.runwayConditions.headWind.toFixed(1),
+            this.runwayConditions.runwayLength.toFixed(0), this.runwayConditions.runwayType, this.runwayConditions.slope.toFixed(2));
+            const newCalcInput = new CalculatorInput(this.currentProfile, calculatorInput.landingMass, newRunwayConditions, this.pilot1.mass,
+            this.pilot2.mass, this.baggage1, this.baggage2)
+            const newCalcOutput = new CalculatorOutput(Number(this.performanceOutput.groundRunDistance.toFixed(0)), Number(this.performanceOutput.takeoffSpeed.toFixed(0)),
+                Number(this.performanceOutput.takeoffDistance.toFixed(0)), Number(this.performanceOutput.accelStopDistance.toFixed(0)), Number(this.performanceOutput.speedOverObstacle.toFixed(0)), 
+                Number(this.performanceOutput.stallSpeedVS1.toFixed(0)), Number(this.performanceOutput.landingDistance.toFixed(0)), Number(this.performanceOutput.approachSpeed.toFixed(0)), 
+                Number(this.performanceOutput.touchDownSpeed.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GD.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GU.toFixed(0)))
+
+
+            const activityLog = new ActivityLog(localStorage.getItem('username'), latest_date, 'calculate',
+            JSON.stringify(newCalcInput).replace(/^[\\]/g, ""), JSON.stringify(newCalcOutput).replace(/^[\\]/g, ""));
+
+            this.restClassifier.post('activity-log/save', activityLog).subscribe(res => {
+                console.log(res.data.activityLog);
+            });
             },
             error => {
                 this.alertService.error('Conditions could not be calculated.')
@@ -816,7 +839,6 @@ export class CalculatorComponent implements OnInit {
         sideButton2.innerHTML=sides[1];
         sideButton1.className = sideButton1.className.replace('btn-outline-dark', 'btn-dark');
     }
-
 
     // Function to print parameter values
     printCard(): void {

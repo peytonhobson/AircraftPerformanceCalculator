@@ -117,7 +117,7 @@
             </select>
           </div>
         </div>
-        <button class="btn-lg btn-dark" [disabled] = "calculateLoading" id="CalculateButton" (click) = "calculate()">
+        <button class="btn-lg btn-dark" [disabled] = "calculateLoading" id="CalculateButton" (click) = "solve()">
           <span *ngIf="calculateLoading" class="spinner-border spinner-border-sm mr-1"></span>
           Solve
         </button>

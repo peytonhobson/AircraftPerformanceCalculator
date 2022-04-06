@@ -1,6 +1,6 @@
 /* tslint:disable: ordered-imports*/
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -25,7 +25,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         NavigationModule,
         DragDropModule,
     ],
-    providers: [...dashboardGuards.guards],
+    providers: [...dashboardGuards.guards, DatePipe],
     declarations: [...dashboardContainers.containers],
     exports: [...dashboardContainers.containers],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]

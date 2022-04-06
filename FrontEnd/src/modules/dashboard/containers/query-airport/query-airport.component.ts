@@ -1,10 +1,10 @@
-import { query } from "@angular/animations";
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { RunwayConditions } from "@app/models/runway-conditions";
-import { AlertService } from "@app/services/alert.service";
-import { ApiService } from "@app/services/api.service";
-import { Button } from "protractor";
+import { query } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RunwayConditions } from '@app/models/runway-conditions';
+import { AlertService } from '@app/services/alert.service';
+import { ApiService } from '@app/services/api.service';
+import { Button } from 'protractor';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { Button } from "protractor";
     styleUrls: ['query-airport.component.scss'],
 })
 export class QueryAirportComponent implements OnInit {
-    
+
     constructor(private apiService: ApiService, private formBuilder: FormBuilder, private alertService: AlertService) {}
 
     runway: string;
@@ -24,15 +24,16 @@ export class QueryAirportComponent implements OnInit {
     submitted = false;
     runwaysLoading = false;
 
+    // Initialized for injection
     runwayConditions = {
-        "airportID": "",
-        "temp": null,
-        "pressureAltitude": null,
-        "precipitation": null,
-        "headWind": null,
-        "runwayLength": null,
-        "runwayType": null,
-        "slope": null,
+        airportID: '',
+        temp: null,
+        pressureAltitude: null,
+        precipitation: null,
+        headWind: null,
+        runwayLength: null,
+        runwayType: null,
+        slope: null,
     };
 
     ngOnInit() {
@@ -54,51 +55,61 @@ export class QueryAirportComponent implements OnInit {
         })
         sideButton2.disabled = true;
 
+        // Make query button disabled until runways have been queried
         const queryButton = document.getElementById('QueryButton') as HTMLButtonElement;
         queryButton.disabled = true;
 
+        // Event listener that removes errors when id input is clicked on
         const idInput = document.getElementById('airportID') as HTMLInputElement;
-        idInput.addEventListener('change', (e) => {
+        idInput.addEventListener('click', (e) => {
             this.submitted = false;
         })
     }
 
-    queryAirport() {
-        let runwayNumbers = document.getElementsByClassName('runway-button');
-        let sideNumbers = document.getElementsByClassName('side-button');
-        var runwayNumber, runwaySideNumber;
+    // Form controls for ease of access
+    get f() { return this.form.controls; }
 
-        for(var i = 0; i < runwayNumbers.length; i++) {
+    // Queries airport info from backend
+    queryAirport() {
+        const runwayNumbers = document.getElementsByClassName('runway-button');
+        const sideNumbers = document.getElementsByClassName('side-button');
+        let runwayNumber, runwaySideNumber;
+
+        for(let i = 0; i < runwayNumbers.length; i++) {
             if(runwayNumbers[i].getAttribute('class').includes('btn-dark')) {
                 runwayNumber = runwayNumbers[i];
             }
         }
 
-        for(var i = 0; i < sideNumbers.length; i++) {
+        for(let i = 0; i < sideNumbers.length; i++) {
             if(sideNumbers[i].getAttribute('class').includes('btn-dark')) {
                 runwaySideNumber = sideNumbers[i];
             }
         }
 
-        const runwayReplace = runwayNumber.innerHTML.replace("/", "_")
+        const runwayReplace = runwayNumber.innerHTML.replace('/', '_')
+
+        // Call to backend for runway conditions
         this.apiService
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
                 this.runwayConditions = res.data.runwayCondition
             },
             error => {
-                this.alertService.error("Airport conditions could not be queried.")
+                this.alertService.error('Airport conditions could not be queried.')
               });
     }
 
-    get f() { return this.form.controls; }
-
+    // Find runways from FAA
     findRunways() {
 
+        // Causes runways button to show loading symbol
         this.runwaysLoading = true;
 
+        // Triggers visual errors if form is invalid
         this.submitted = true;
 
+        // If form is invalid, function stops
         if (this.form.invalid) {
             this.runwaysLoading = false;
             return;
@@ -112,8 +123,10 @@ export class QueryAirportComponent implements OnInit {
             runwayButtonGroup.removeChild(runwayButtonGroup.lastChild);
         }
 
-        this.apiService.get(`airport/runways/${this.f['airportInput'].value}`).subscribe(res => {
+        // Backend call to find runways at airport listed by faa
+        this.apiService.get(`airport/runways/${this.f.airportInput.value}`).subscribe(res => {
 
+            // Adds buttons to group for each runway
             if(res.data.airportRunways) {
                 res.data.airportRunways.forEach(x => {
                     const newButton = document.createElement('button');
@@ -131,15 +144,16 @@ export class QueryAirportComponent implements OnInit {
             this.runwaysLoading = false;
         },
         error => {
-            this.alertService.error("Runways could not be found.")
+            this.alertService.error('Runways could not be found.')
           });
     }
 
+    // Visually changes buttons when clicked
     runwayClick(id: string) {
         const button = document.getElementById(id);
         const buttons = document.getElementsByClassName('runway-button')
 
-        for(var i = 0; i < buttons.length; i++) {
+        for(let i = 0; i < buttons.length; i++) {
             buttons[i].className = buttons[i].className.replace('active', '');
             buttons[i].className = buttons[i].className.replace('btn-dark', 'btn-outline-dark');
         }
@@ -154,7 +168,7 @@ export class QueryAirportComponent implements OnInit {
         const sideButton2 = document.getElementById('RunwaySideButton2') as HTMLButtonElement;
         sideButton2.disabled = false;
 
-        const sides = button.innerHTML.split("/");
+        const sides = button.innerHTML.split('/');
         sideButton1.innerHTML=sides[0];
         sideButton2.innerHTML=sides[1];
 
@@ -162,11 +176,12 @@ export class QueryAirportComponent implements OnInit {
         queryButton.disabled = false;
     }
 
+    // Visually changes runway side buttons when clicked.
     runwaySideClick(id: string) {
         const button = document.getElementById(id);
         const buttons = document.getElementsByClassName('side-button')
 
-        for(var i = 0; i < buttons.length; i++) {
+        for(let i = 0; i < buttons.length; i++) {
             buttons[i].className = buttons[i].className.replace('active', '');
             buttons[i].className = buttons[i].className.replace('btn-dark', 'btn-outline-dark');
         }

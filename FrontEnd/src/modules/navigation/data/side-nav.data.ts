@@ -19,8 +19,8 @@ export const sideNavItems: SideNavItems = {
     },
     addProfiles: {
         icon: 'plane',
-        text: 'Add Profiles',
-        link: '/dashboard/add-profiles',
+        text: 'Profiles',
+        link: '/dashboard/profiles',
     },
     queryAirport: {
         icon: 'plane-departure',

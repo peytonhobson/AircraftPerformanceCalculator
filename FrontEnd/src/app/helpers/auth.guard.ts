@@ -25,9 +25,11 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         // Checks to see if user has correct role
-        const decode = jwtDecode(localStorage.getItem('token'))
-        if (decode['roles'][0] === "ROLE_USER" || decode['roles'][0] === "ROLE_ADMIN") {
-            return true;
+        if(localStorage.getItem('token')) {
+            const decode = jwtDecode(localStorage.getItem('token'))
+            if (decode['roles'][0] === "ROLE_USER" || decode['roles'][0] === "ROLE_ADMIN") {
+                return true;
+            }
         }
 
         // Routes back to login if not user

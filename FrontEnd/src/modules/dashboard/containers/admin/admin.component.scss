@@ -11,9 +11,10 @@
 }
 
 table{
-    overflow-y:scroll;
+    overflow-y: none;
+    overflow-wrap:normal;
     display:block;
-    width:100%;
+    max-width:100%;
     table-layout: fixed;
 }
 
@@ -21,7 +22,7 @@ td,th {
     border: black 1px solid;
     text-align: center;
     table-layout: fixed;
-    width:18%;
+    max-width:18% !important;
 }
 
 .modal {
@@ -29,7 +30,7 @@ td,th {
     bottom: 0;
     left: 300px;
     z-index: 10040;
-    overflow: auto;
+    overflow: none;
     overflow-y: auto;
     max-width: 80% !important;
 }

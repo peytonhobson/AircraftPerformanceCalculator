@@ -1,31 +1,31 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "@app/services/api.service";
-import { first } from "rxjs/operators";
-import { Profile } from "@app/models/profile.model";
-import { Pilot } from "@app/models/pilot";
-import { AlertService } from "@app/services/alert.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Constants } from "@app/models/constants";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Constants } from '@app/models/constants';
+import { Pilot } from '@app/models/pilot';
+import { Profile } from '@app/models/profile.model';
+import { AlertService } from '@app/services/alert.service';
+import { ApiService } from '@app/services/api.service';
+import { first } from 'rxjs/operators';
 
 @Component({
-    selector: 'add-profiles',
-    templateUrl: './add-profiles.component.html',
-    styleUrls: ['add-profiles.component.scss'],
+    selector: 'profiles',
+    templateUrl: './profiles.component.html',
+    styleUrls: ['profiles.component.scss'],
 })
-export class AddProfilesComponent implements OnInit {
-    
+export class ProfilesComponent implements OnInit {
+
   constructor(private apiService: ApiService,
     private alertService: AlertService,
     private formBuilder: FormBuilder) {}
 
   // Display style for save profile modal
-  displaySaveProfile = "none";
+  displaySaveProfile = 'none';
 
   // Display style for delete aircraft modal
-  displayDeleteAircraft = "none";
+  displayDeleteAircraft = 'none';
 
   // Display style for delete pilot modal
-  displayDeletePilot = "none";
+  displayDeletePilot = 'none';
 
   currentAircraft: String;
   currentPilot: String;
@@ -69,7 +69,7 @@ export class AddProfilesComponent implements OnInit {
       this.momentSum = res.data.constants.basicEmptyAircraftWeight*res.data.constants.basicEmptyAircraft;
     })
 
-    let profileInputs = []
+    const profileInputs = []
 
     profileInputs.push(document.getElementById('InternalTankInput') as HTMLInputElement);
     profileInputs.push(document.getElementById('UnderwingTankInput') as HTMLInputElement);
@@ -84,7 +84,7 @@ export class AddProfilesComponent implements OnInit {
       })
     });
 
-    let pilotInputs = []
+    const pilotInputs = []
 
     pilotInputs.push(document.getElementById('PilotName') as HTMLInputElement);
     pilotInputs.push(document.getElementById('PilotWeight') as HTMLInputElement);
@@ -95,10 +95,10 @@ export class AddProfilesComponent implements OnInit {
         this.submittedSavePilot = false;
       })
     });
-  
+
     const user = localStorage.getItem('username');
-    const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
-    const agileNoRadio = document.getElementById("AgileNoRadio") as HTMLInputElement;
+    const agileYesRadio = document.getElementById('AgileYesRadio') as HTMLInputElement;
+    const agileNoRadio = document.getElementById('AgileNoRadio') as HTMLInputElement;
     const agileWeightInput = document.getElementById('AgilePayload') as HTMLInputElement;
     agileWeightInput.disabled = true;
 
@@ -107,7 +107,7 @@ export class AddProfilesComponent implements OnInit {
       agileYesRadio.checked = true;
       agileNoRadio.checked = false;
       agileWeightInput.disabled = false;
-      agileWeightInput.value = "0";
+      agileWeightInput.value = '0';
       this.submittedSaveProfile = false;
       this.agileYes = true;
     });
@@ -116,7 +116,7 @@ export class AddProfilesComponent implements OnInit {
       agileNoRadio.checked = true;
       agileYesRadio.checked = false;
       agileWeightInput.disabled = true;
-      agileWeightInput.value = "0";
+      agileWeightInput.value = '0';
       this.submittedSaveProfile = false;
       this.agileYes = false;
     });
@@ -130,11 +130,11 @@ export class AddProfilesComponent implements OnInit {
       })
     },
     error => {
-      this.alertService.error("Profiles could not be found.")
+      this.alertService.error('Profiles could not be found.')
     });
 
     aircraftSelect.addEventListener('change', (e) => {
-      if(aircraftSelect.value !== "Choose Aircraft Profile") {
+      if(aircraftSelect.value !== 'Choose Aircraft Profile') {
         this.currentAircraft = aircraftSelect.value;
       }
       else {
@@ -150,11 +150,11 @@ export class AddProfilesComponent implements OnInit {
       })
     },
     error => {
-      this.alertService.error("Pilots could not be found.")
+      this.alertService.error('Pilots could not be found.')
     })
 
     pilotSelect.addEventListener('change', (e) => {
-      if(pilotSelect.value !== "Choose Pilot") {
+      if(pilotSelect.value !== 'Choose Pilot') {
         this.currentPilot = pilotSelect.value;
       }
       else {
@@ -170,7 +170,7 @@ export class AddProfilesComponent implements OnInit {
   openSaveModal() {
     this.submittedSaveProfile = true;
     if(this.formSaveProfile.invalid) {
-      if(!(this.fSave['agilePayload'].errors['required'] && !this.agileYes)) {
+      if(!(this.fSave.agilePayload.errors.required && !this.agileYes)) {
         return;
       }
     }
@@ -179,7 +179,7 @@ export class AddProfilesComponent implements OnInit {
     const underwingTank = document.getElementById('UnderwingTankInput') as HTMLInputElement;
     const tipTank = document.getElementById('TipTankInput') as HTMLInputElement;
     const outboard = document.getElementById('OutboardInput') as HTMLInputElement;
-    const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
+    const agileYesRadio = document.getElementById('AgileYesRadio') as HTMLInputElement;
 
     this.internalTank = Number(internalTank.value);
     this.underwingTank = Number(underwingTank.value);
@@ -197,13 +197,13 @@ export class AddProfilesComponent implements OnInit {
         + this.constants.podPayload*this.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.agileWeight);
     }
 
-    this.displaySaveProfile = "block";
+    this.displaySaveProfile = 'block';
     document.getElementById('main-container').style.opacity = '40%';
   }
 
   // Close save modal and return opacity to normal
   closeSaveModal(save: boolean) {
-    this.displaySaveProfile = "none";
+    this.displaySaveProfile = 'none';
 
     document.getElementById('main-container').style.opacity = '100%';
 
@@ -216,7 +216,7 @@ export class AddProfilesComponent implements OnInit {
   openAircraftDeleteModal() {
 
     if(!this.currentAircraft) {
-      this.alertService.error("Please select an aircraft profile to delete.")
+      this.alertService.error('Please select an aircraft profile to delete.')
       return;
     }
 
@@ -227,14 +227,14 @@ export class AddProfilesComponent implements OnInit {
 
   // Function to close aircraft delete modal
   closeAircraftDeleteModal() {
-    this.displayDeleteAircraft = "none";
+    this.displayDeleteAircraft = 'none';
 
     document.getElementById('main-container').style.opacity = '100%';
   }
 
   // Delete aircraft from DB
   deleteAircraft() {
-    this.displayDeleteAircraft = "none";
+    this.displayDeleteAircraft = 'none';
     document.getElementById('main-container').style.opacity = '100%';
 
     // HTTP request to delete
@@ -242,18 +242,18 @@ export class AddProfilesComponent implements OnInit {
       const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
 
       // Remove profile name from drop down menu
-      aircraftSelect.value = "Choose Aircraft Profile";
-      for(var i = 0; i < aircraftSelect.options.length; i++) {
+      aircraftSelect.value = 'Choose Aircraft Profile';
+      for(let i = 0; i < aircraftSelect.options.length; i++) {
         if(aircraftSelect.options.item(i).value == this.currentAircraft) {
           aircraftSelect.options.remove(i);
           this.currentAircraft = undefined;
           break;
         }
       }
-        
+
     },
     error => {
-      this.alertService.error("Aircraft profile could not be deleted.")
+      this.alertService.error('Aircraft profile could not be deleted.')
     });
   }
 
@@ -261,7 +261,7 @@ export class AddProfilesComponent implements OnInit {
   openPilotDeleteModal() {
 
     if(!this.currentPilot) {
-      this.alertService.error("Please select an pilot to delete.")
+      this.alertService.error('Please select an pilot to delete.')
       return;
     }
 
@@ -271,13 +271,13 @@ export class AddProfilesComponent implements OnInit {
   }
 
   closePilotDeleteModal(save: boolean) {
-    this.displayDeletePilot = "none";
+    this.displayDeletePilot = 'none';
 
     document.getElementById('main-container').style.opacity = '100%';
   }
 
   deletePilot() {
-    this.displayDeletePilot = "none";
+    this.displayDeletePilot = 'none';
     document.getElementById('main-container').style.opacity = '100%';
 
     // Delete pilot from DB
@@ -285,18 +285,18 @@ export class AddProfilesComponent implements OnInit {
       const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
 
       // Remove pilot from drop down
-      pilotSelect.value = "Choose Pilot";
-      for(var i = 0; i < pilotSelect.options.length; i++) {
+      pilotSelect.value = 'Choose Pilot';
+      for(let i = 0; i < pilotSelect.options.length; i++) {
         if(pilotSelect.options.item(i).value == this.currentPilot) {
           pilotSelect.options.remove(i);
           this.currentPilot = undefined;
           break;
         }
       }
-        
+
     },
     error => {
-      this.alertService.error("Pilot could not be deleted.")
+      this.alertService.error('Pilot could not be deleted.')
     });
   }
 
@@ -310,9 +310,9 @@ export class AddProfilesComponent implements OnInit {
     const tipTankVal = document.getElementById('TipTankInput') as HTMLInputElement;
     const outboard = document.getElementById('OutboardInput') as HTMLInputElement;
 
-    const agileYesRadio = document.getElementById("AgileYesRadio") as HTMLInputElement;
-    var agileWeight = 0;
-    var agilePod = false;
+    const agileYesRadio = document.getElementById('AgileYesRadio') as HTMLInputElement;
+    let agileWeight = 0;
+    let agilePod = false;
 
     // Adds agile weight if applicable
     if(agileYesRadio.checked) {
@@ -330,14 +330,14 @@ export class AddProfilesComponent implements OnInit {
     this.apiService.post('profiles/save',profile).pipe(first())
     .subscribe(
       res => {
-        this.alertService.success("Aircraft profile saved!")
+        this.alertService.success('Aircraft profile saved!')
 
         // Add profile name to delete drop down
         const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
         aircraftSelect.add(new Option(profile.name, profile.name), undefined)
       },
       error => {
-        this.alertService.error("Profile could not be saved.")
+        this.alertService.error('Profile could not be saved.')
       }
     );
   }
@@ -361,18 +361,18 @@ export class AddProfilesComponent implements OnInit {
     this.apiService.post('pilots/save', new Pilot(name.value, user, Number(mass.value))).pipe(first())
     .subscribe(
       res => {
-        this.alertService.success("Pilot profile saved!")
+        this.alertService.success('Pilot profile saved!')
 
         // Add pilot name to delete drop down
         const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
         pilotSelect.add(new Option(currentName, currentName), undefined)
       },
       error => {
-        this.alertService.error("Pilot could not be saved.")
-      }  
+        this.alertService.error('Pilot could not be saved.')
+      }
     );
 
-    name.value = "";
-    mass.value = "";
+    name.value = '';
+    mass.value = '';
   }
 }
