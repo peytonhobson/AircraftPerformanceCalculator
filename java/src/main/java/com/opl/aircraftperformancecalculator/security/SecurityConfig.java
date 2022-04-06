@@ -67,11 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET,"/profiles/**", "/users/register/**",
                 "/pilots/**", "/constants/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
         http.authorizeRequests().antMatchers(OPTIONS,"/profiles/**", "/users/register/**", "/airport/**",
-                "/pilots/**", "/calculate/**", "/users/**", "/constants/**").permitAll();
+                "/pilots/**", "/calculate/**", "/users/**", "/constants/**", "/activity-log/**").permitAll();
         http.authorizeRequests().antMatchers(POST,"/airport/**", "/pilots/**",
-                "/calculate/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
+                "/calculate/**", "/activity-log/save/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
         http.authorizeRequests().antMatchers(POST,"/users/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(GET,"/users/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(GET,"/users/**", "/activity-log/**").hasAnyAuthority("ROLE_ADMIN");
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilterLogin);

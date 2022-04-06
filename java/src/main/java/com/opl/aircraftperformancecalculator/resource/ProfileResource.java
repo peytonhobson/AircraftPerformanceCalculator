@@ -53,7 +53,7 @@ public class ProfileResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("profile", profileService.getByUsernameandName(username, profileName)))
+                        .data(of("profile", profileService.getByUsernameAndName(username, profileName)))
                         .message("Profiles retrieved")
                         .statusCode(OK.value())
                         .build()

@@ -65,7 +65,7 @@ public class UserResource {
      * @param user
      * @return
      */
-    @PostMapping("/user/save")
+    @PostMapping("/save")
     public ResponseEntity<Response> saveUser(@RequestBody User user) {
         return ResponseEntity.ok(
                 Response.builder()
@@ -89,6 +89,23 @@ public class UserResource {
                         .timeStamp(now())
                         .data(of("user", userService.getUser(username)))
                         .message("User retrieved")
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
+    /**
+     * Returns user by username;
+     * @param username
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResponseEntity<Response> deleteUser(@RequestBody String username) {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("user", userService.deleteUser(username)))
+                        .message("User deleted")
                         .statusCode(OK.value())
                         .build()
         );

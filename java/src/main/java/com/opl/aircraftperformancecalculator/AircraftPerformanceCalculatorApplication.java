@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +32,7 @@ public class AircraftPerformanceCalculatorApplication {
 	@Bean
 	CommandLineRunner run(ProfileService profileService, UserService userService,
 						  AuthenticationService authenticationService,
-						  PilotService pilotService) {
+						  PilotService pilotService, ActivityLogService activityLogService) {
 		return args -> {
 
 			profileService.save( new Profile("peytonhobson_profile1", "peytonhobson", "profile1", 288, 0, 52,
@@ -37,9 +40,13 @@ public class AircraftPerformanceCalculatorApplication {
 
 			userService.saveUser(new User("peytonhobson", "password", "ROLE_USER"));
 			userService.saveUser(new User("admin", "password", "ROLE_ADMIN"));
+			userService.saveUser(new User("aDS", "password", "ROLE_USER"));
 
 			pilotService.save(new Pilot("peytonhobson_Peyton", "peytonhobson", "Peyton", 145));
 			pilotService.save(new Pilot("peytonhobson_Alex", "peytonhobson", "Alex", 170));
+
+			activityLogService.save(new ActivityLog(1L,"peytonhobson", "",
+					"calculator", "input", "output"));
 
 //			authenticationService.saveCode(new AuthenticationCode("rxDLQ1EcnhM5"));
 //			authenticationService.saveCode(new AuthenticationCode("DuU4dgwIZ0jI"));

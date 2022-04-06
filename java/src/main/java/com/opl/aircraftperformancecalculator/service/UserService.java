@@ -8,8 +8,7 @@ public interface UserService {
 
     User saveUser(User user);
     User getUser(String username);
-
-    //TODO:create limit
     List<User> getUsers();
+    Integer deleteUser(String username);
 
 }

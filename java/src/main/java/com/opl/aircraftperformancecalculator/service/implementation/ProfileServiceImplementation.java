@@ -53,7 +53,7 @@ public class ProfileServiceImplementation implements ProfileService {
      * @return
      */
     @Override
-    public Profile getByUsernameandName(String username, String profileName) {
+    public Profile getByUsernameAndName(String username, String profileName) {
         log.info("Getting Profile");
         return profileRepo.findByUsernameAndName(username, profileName);
     }

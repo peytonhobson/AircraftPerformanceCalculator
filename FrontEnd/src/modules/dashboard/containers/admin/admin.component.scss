@@ -25,7 +25,7 @@ td,th {
     max-width:18% !important;
 }
 
-.modal {
+.modal-log {
     position: absolute;
     bottom: 0;
     left: 300px;
@@ -35,10 +35,36 @@ td,th {
     max-width: 80% !important;
 }
 
+.modal-change {
+    position: absolute;
+    left: 45%;
+    top: 30%;
+    overflow: none;
+    overflow-y: auto;
+    max-width: 20% !important;
+}
+
 .modal-dialog {
     max-width: 80% !important;
 }
 
 .card-header, .modal-header {
     color: white;
+}
+
+#UsernameInput {
+    max-width: 25%;
+}
+
+.select-user-button {
+    max-width: 60%;
+}
+
+#GeneratedCodeInput {
+    max-width: 20%;
+    max-height: 20% !important;
+}
+
+#CopyCodeButton {
+    max-height: 10%;
 }

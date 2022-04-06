@@ -33,7 +33,7 @@ public class ActivityLogResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("activityLogs", activityLogService.save(activityLog)))
+                        .data(of("activityLog", activityLogService.save(activityLog)))
                         .message("Log saved")
                         .status(OK)
                         .statusCode(OK.value())

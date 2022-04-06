@@ -65,4 +65,12 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         log.info("Getting all users from database");
         return userRepo.findAll();
     }
+
+    @Override
+    public Integer deleteUser(String username) {
+        log.info("Deleting user: {}", username);
+        return userRepo.deleteByUsername(username);
+    }
+
+
 }

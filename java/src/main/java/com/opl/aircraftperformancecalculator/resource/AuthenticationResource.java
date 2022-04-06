@@ -78,4 +78,23 @@ public class AuthenticationResource {
                         .build()
         );
     }
+
+    /**
+     * Function to save authentication code
+     * @param code
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(path = "/save")
+    public ResponseEntity<Response> register(@RequestBody AuthenticationCode code) throws Exception {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of(true, authenticationService.saveCode(code)))
+                        .message("Authentication code saved.")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 }

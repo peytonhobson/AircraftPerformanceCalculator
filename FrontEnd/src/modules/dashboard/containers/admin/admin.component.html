@@ -2,9 +2,9 @@
 </sb-dashboard-head>
 
 <div id="main-container">
-    <div class="row" id="firstrow">
+    <div class="row d-flex justify-content-center" id="firstrow">
         <div class="col-lg-5">
-            <div class="card text-center left-card">
+            <div class="card text-center left-card border border-dark">
                 <div class="card-header bg-dark text-center">
                   Activity Log
                 </div>
@@ -14,6 +14,7 @@
                         <button class="btn btn-secondary activity-log-button" id="UsernameButton" >By Username</button>
                     </div>
                     <div class="row d-flex justify-content-center">
+                        <h3 class="mt-3 mb-0 mr-2">Username: </h3>
                         <input class="mt-3" type="text" id="UsernameInput">
                     </div>
                     <div class="row d-flex justify-content-center">
@@ -21,46 +22,152 @@
                     </div>
                 </div>
             </div>
+            <div class="card text-center mt-4 border border-dark">
+                <div class="card-header bg-dark text-center">
+                    Users
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="card text-center border border-dark">
+                            <div class="card-header bg-dark text-center">
+                              Change User Password
+                            </div>
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <select class="btn btn-dark select-user-button" id="EditUserSelect">
+                                        <option>Select User</option>
+                                    </select>
+                                </div>
+                                <div class="row d-flex justify-content-center mt-3">
+                                    <label>New Password:</label>
+                                    <input type="text" id="NewPasswordInput">
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <button class="btn btn-dark mt-3" (click)="openPasswordModal()">Change</button>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <div *ngIf="userChanged" class="text-success mt-1">User password changed!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card text-center border border-dark h-100" id="DeleteUserCard">
+                            <div class="card-header bg-dark text-center">
+                              Delete User
+                            </div>
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center mt-4">
+                                    <select class="btn btn-dark select-user-button" id="DeleteUserSelect">
+                                        <option>Select User</option>
+                                    </select>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <button class="btn btn-dark mt-3" (click)="openDeleteUserModal()">Delete</button>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <div *ngIf="userDeleted" class="text-success mt-1">User deleted!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card text-center left-card border border-dark">
+                <div class="card-header bg-dark text-center">
+                  Authentication Codes
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <button class="btn btn-dark" (click)="generateCode()" >Generate new authentication code</button>
+                    </div>
+                    <div class="row d-flex justify-content-center mt-4">
+                        <input type="text" class="text-center" id="GeneratedCodeInput" disabled/>
+                        <button class="btn btn-dark" (click)="copyCode()" id="CopyCodeButton">Copy</button>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div *ngIf="codeCopied" class="text-success mt-1">Code copied to clipboard!</div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <button class="btn btn-dark mt-4" (click)="saveCode()">Save</button>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div *ngIf="codeSaved" class="text-success mt-1">Code saved to database!</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLog}">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-dark d-flex justify-content-center">
-          <h1 class="modal-title text-center my-auto">Activity Log</h1>
-        </div>
-        <div class="modal-body">
-            <div class="shadow-md border" id="activity-log-output">
-                <div id="pdfData" #pdfData>
-                    <table class="table table-bordered">
-                        <tr class="table-secondary">
-                            <th>Id</th>
-                            <th>Username</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                            <th>Input</th>
-                            <th>Output</th>
-                        </tr>
-                        <tr *ngFor="let log of LOG">
-                            <th>{{log.id}}</th>
-                            <td>{{log.username}}</td>
-                            <td>{{log.time}}</td>
-                            <td>{{log.action}}</td>
-                            <td>{{log.input | json}}</td>
-                            <td>{{log.output | json}}</td>
-                        </tr>
-                    </table>
+    <div class="modal modal-log" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLog}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark d-flex justify-content-center">
+                    <h1 class="modal-title text-center my-auto">Activity Log</h1>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <div class="shadow-md border" id="activity-log-output">
+                        <div id="pdfData" #pdfData>
+                            <table class="table table-bordered">
+                                <tr class="table-secondary">
+                                    <th>Id</th>
+                                    <th>Username</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                    <th>Input</th>
+                                    <th>Output</th>
+                                </tr>
+                                <tr *ngFor="let log of LOG">
+                                    <th>{{log.id}}</th>
+                                    <td>{{log.username}}</td>
+                                    <td>{{log.time}}</td>
+                                    <td>{{log.action}}</td>
+                                    <td>{{log.input | json}}</td>
+                                    <td>{{log.output | json}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark active" (click)="openPDF()">Download PDF</button>
+                    <button type="button" class="btn btn-outline-dark active" (click)="closeModal()">Close</button>
+                </div>
+            </div> 
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark active" (click)="openPDF()">Download PDF</button>
-          <button type="button" class="btn btn-outline-dark active" (click)="closeModal()">Close</button>
-        </div>
-      </div> 
     </div>
-  </div>
+
+    <div class="modal modal-change" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPassword}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark d-flex justify-content-center">
+                    Are you sure you want to change {{ selectedPasswordUser }}'s password to {{ newPassword }}?
+                </div>
+                <div class="modal-body justify-content-center d-flex">
+                    <button type="button" class="btn btn-dark mr-1" (click)="closePasswordModal()">Cancel</button>
+                    <button type="button" class="btn btn-dark ml-1" (click)="changePassword()">Yes</button>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="modal modal-change" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDelete}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark d-flex justify-content-center">
+                    Are you sure you want to delete {{ selectedDeleteUser }}?
+                </div>
+                <div class="modal-body justify-content-center d-flex">
+                    <button type="button" class="btn btn-dark mr-1" (click)="closeDeleteModal()">Cancel</button>
+                    <button type="button" class="btn btn-dark ml-1" (click)="deleteUser()">Yes</button>
+                </div>
+            </div> 
+        </div>
+    </div>
 
 </layout-dashboard>
