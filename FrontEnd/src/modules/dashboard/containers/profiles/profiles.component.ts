@@ -51,16 +51,16 @@ export class ProfilesComponent implements OnInit {
   ngOnInit() {
 
     this.formSaveProfile = this.formBuilder.group({
-      internalTank: ['', [Validators.required, Validators.min(60), Validators.max(288), Validators.pattern(/^[0-9]/)]],
-      tipTank: ['', [Validators.required, Validators.min(0), Validators.max(52), Validators.pattern(/^[0-9]/)]],
-      underwingTank: ['', [Validators.required, Validators.min(0), Validators.max(80), Validators.pattern(/^[0-9]/)]],
+      internalTank: [{ value: 60, disabled: false }, [Validators.required, Validators.min(60), Validators.max(288), Validators.pattern(/^[0-9]/)]],
+      tipTank: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0), Validators.max(52), Validators.pattern(/^[0-9]/)]],
+      underwingTank: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0), Validators.max(80), Validators.pattern(/^[0-9]/)]],
       agilePayload: ['', [Validators.required, Validators.min(0), Validators.max(150), Validators.pattern(/^[0-9]/)]],
-      outboardWeight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
+      outboardWeight: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
     });
 
     this.formSavePilot = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-z0-9]/)]],
-      weight: ['', [Validators.required, Validators.min(0), Validators.pattern(/^[0-9]/)]],
+      name: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^[a-z0-9]/)]],
+      weight: [{ value: 0, disabled: false }, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]/)]],
     });
 
     this.apiService.get('constants').subscribe(res => {
@@ -294,6 +294,8 @@ export class ProfilesComponent implements OnInit {
         }
       }
 
+      this.alertService.success('Pilot deleted!')
+
     },
     error => {
       this.alertService.error('Pilot could not be deleted.')
@@ -332,9 +334,23 @@ export class ProfilesComponent implements OnInit {
       res => {
         this.alertService.success('Aircraft profile saved!')
 
-        // Add profile name to delete drop down
+        var alreadyExists = false;
         const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
-        aircraftSelect.add(new Option(profile.name, profile.name), undefined)
+        for(var i = 0; i < aircraftSelect.options.length; i++) {
+          if(aircraftSelect.options.item(i).value == profile.name) {
+            alreadyExists = true
+          }
+        }
+        
+        if(!alreadyExists) {
+          aircraftSelect.add(new Option(profile.name, profile.name), undefined);
+        }
+
+        internalTankVal.value = "60";
+        tipTankVal.value = "0";
+        underwingTankVal.value = "0";
+        (document.getElementById('AgileNoRadio')).click;
+        outboard.value = "0";
       },
       error => {
         this.alertService.error('Profile could not be saved.')
@@ -363,9 +379,20 @@ export class ProfilesComponent implements OnInit {
       res => {
         this.alertService.success('Pilot profile saved!')
 
-        // Add pilot name to delete drop down
+        var alreadyExists = false;
         const pilotSelect = document.getElementById('PilotSelect') as HTMLSelectElement;
-        pilotSelect.add(new Option(currentName, currentName), undefined)
+        for(var i = 0; i < pilotSelect.options.length; i++) {
+          if(pilotSelect.options.item(i).value == currentName) {
+            alreadyExists = true
+          }
+        }
+        
+        if(!alreadyExists) {
+          pilotSelect.add(new Option(currentName, currentName), undefined)
+        }      
+
+        name.value = "";
+        mass.value = "0";
       },
       error => {
         this.alertService.error('Pilot could not be saved.')

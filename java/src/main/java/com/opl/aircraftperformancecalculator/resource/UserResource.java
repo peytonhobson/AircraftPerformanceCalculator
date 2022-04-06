@@ -100,11 +100,11 @@ public class UserResource {
      * @return
      */
     @PostMapping("/delete")
-    public ResponseEntity<Response> deleteUser(@RequestBody String username) {
+    public ResponseEntity<Response> deleteUser(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("user", userService.deleteUser(username)))
+                        .data(of("user", userService.deleteUser(json.get("username"))))
                         .message("User deleted")
                         .statusCode(OK.value())
                         .build()

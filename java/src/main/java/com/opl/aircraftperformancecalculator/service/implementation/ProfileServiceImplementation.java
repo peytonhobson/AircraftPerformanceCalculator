@@ -41,7 +41,8 @@ public class ProfileServiceImplementation implements ProfileService {
     }
 
     @Override
-    public Integer delete(String name, String username) {
+    public Integer delete(String username, String name) {
+        log.info(username + name);
         log.info("Deleting profile");
         return profileRepo.deleteByNameAndUsername(name, username);
     }

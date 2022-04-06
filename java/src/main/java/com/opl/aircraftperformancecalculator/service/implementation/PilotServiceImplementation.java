@@ -50,8 +50,9 @@ public class PilotServiceImplementation implements PilotService {
     }
 
     @Override
-    public Integer delete(String name, String username) {
+    public Integer delete(String username, String name) {
         log.info("Deleting pilot");
+        log.info(username + " " + name);
         return pilotRepo.deleteByNameAndUsername(name, username);
     }
 }

@@ -189,7 +189,7 @@
                                     <div class="row d-flex justify-content-center">
                                         <div *ngIf="submittedSavePilot && fSavePilot['weight'].errors">
                                             <div *ngIf="fSavePilot['weight'].errors['required']" class="form-feedback">Pilot weight is required.</div>
-                                            <div *ngIf="fSavePilot['weight'].errors['min']" class="form-feedback">Pilot weight cannot be less than 0.</div>
+                                            <div *ngIf="fSavePilot['weight'].errors['min']" class="form-feedback">Pilot weight cannot be less than 1.</div>
                                             <div *ngIf="fSavePilot['weight'].errors['pattern'] && !fSavePilot['weight'].errors['min']" class="form-feedback">Pilot weight must be numeric.</div>
                                         </div>
                                     </div>

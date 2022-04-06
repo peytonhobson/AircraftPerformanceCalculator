@@ -595,11 +595,15 @@ export class CalculatorComponent implements OnInit {
             this.restClassifier.post('activity-log/save', activityLog).subscribe(res => {
                 console.log(res.data.activityLog);
             });
-            },
-            error => {
-                this.alertService.error('Conditions could not be calculated.')
-                this.calculateLoading = false;
-                return;
+
+            (document.getElementById("Baggage1") as HTMLInputElement).value = "0";
+            (document.getElementById("Baggage2") as HTMLInputElement).value = "0";
+            (document.getElementById("LandingWeightInput") as HTMLInputElement).value = "0";
+        },
+        error => {
+            this.alertService.error('Conditions could not be calculated.')
+            this.calculateLoading = false;
+            return;
         });
     }
 

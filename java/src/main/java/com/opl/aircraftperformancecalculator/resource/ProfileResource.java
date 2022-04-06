@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
@@ -85,11 +86,11 @@ public class ProfileResource {
      * @return
      */
     @PostMapping(path = "/delete")
-    public ResponseEntity<Response> delete(@RequestBody String username, String name) {
+    public ResponseEntity<Response> delete(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("profile", profileService.delete(username, name)))
+                        .data(of("profile", profileService.delete(json.get("username"), json.get("name"))))
                         .message("Profile deleted")
                         .status(OK)
                         .statusCode(OK.value())

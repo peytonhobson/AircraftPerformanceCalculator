@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static java.time.LocalDateTime.now;
 import static java.util.Map.of;
 import static org.springframework.http.HttpStatus.OK;
@@ -83,18 +85,13 @@ public class PilotResource {
         );
     }
 
-    /**
-     * Deletes pilot from DB
-     * @param username
-     * @param name
-     * @return
-     */
+
     @PostMapping(path = "/delete")
-    public ResponseEntity<Response> delete(@RequestBody String username, String name) {
+    public ResponseEntity<Response> delete(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("pilot", pilotService.delete(username, name)))
+                        .data(of("pilot", pilotService.delete(json.get("username"), json.get("name"))))
                         .message("Pilot deleted")
                         .status(OK)
                         .statusCode(OK.value())

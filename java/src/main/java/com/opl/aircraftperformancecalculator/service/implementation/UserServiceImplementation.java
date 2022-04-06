@@ -71,6 +71,4 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         log.info("Deleting user: {}", username);
         return userRepo.deleteByUsername(username);
     }
-
-
 }

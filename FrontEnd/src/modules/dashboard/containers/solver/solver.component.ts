@@ -580,34 +580,39 @@ export class SolverComponent implements OnInit {
                 document.getElementById('main-container').style.opacity = '40%';
                 this.submittedCalc=false;
 
-            const date=Date.now();
-            let latest_date =this.datePipe.transform(date, 'dd-MM-yyyy');
+                const date=Date.now();
+                let latest_date =this.datePipe.transform(date, 'dd-MM-yyyy');
 
-            // Reformatting input and output to have less decimals to look prettier
-            const newRunwayConditions = new RunwayConditions(this.runwayConditions.airportID, this.runwayConditions.temp.toFixed(1), 
-            this.runwayConditions.pressureAltitude.toFixed(0), this.runwayConditions.precipitation.toFixed(2), this.runwayConditions.headWind.toFixed(1),
-            this.runwayConditions.runwayLength.toFixed(0), this.runwayConditions.runwayType, this.runwayConditions.slope.toFixed(2));
-            const newCalcInput = new CalculatorInput(this.currentProfile, calculatorInput.landingMass, newRunwayConditions, this.pilot1.mass,
-            this.pilot2.mass, this.baggage1, this.baggage2)
-            const newCalcOutput = new CalculatorOutput(Number(this.performanceOutput.groundRunDistance.toFixed(0)), Number(this.performanceOutput.takeoffSpeed.toFixed(0)),
-                Number(this.performanceOutput.takeoffDistance.toFixed(0)), Number(this.performanceOutput.accelStopDistance.toFixed(0)), Number(this.performanceOutput.speedOverObstacle.toFixed(0)), 
-                Number(this.performanceOutput.stallSpeedVS1.toFixed(0)), Number(this.performanceOutput.landingDistance.toFixed(0)), Number(this.performanceOutput.approachSpeed.toFixed(0)), 
-                Number(this.performanceOutput.touchDownSpeed.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GD.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GU.toFixed(0)))
+                // Reformatting input and output to have less decimals to look prettier
+                const newRunwayConditions = new RunwayConditions(this.runwayConditions.airportID, this.runwayConditions.temp.toFixed(1), 
+                this.runwayConditions.pressureAltitude.toFixed(0), this.runwayConditions.precipitation.toFixed(2), this.runwayConditions.headWind.toFixed(1),
+                this.runwayConditions.runwayLength.toFixed(0), this.runwayConditions.runwayType, this.runwayConditions.slope.toFixed(2));
+                const newCalcInput = new CalculatorInput(this.currentProfile, calculatorInput.landingMass, newRunwayConditions, this.pilot1.mass,
+                this.pilot2.mass, this.baggage1, this.baggage2)
+                const newCalcOutput = new CalculatorOutput(Number(this.performanceOutput.groundRunDistance.toFixed(0)), Number(this.performanceOutput.takeoffSpeed.toFixed(0)),
+                    Number(this.performanceOutput.takeoffDistance.toFixed(0)), Number(this.performanceOutput.accelStopDistance.toFixed(0)), Number(this.performanceOutput.speedOverObstacle.toFixed(0)), 
+                    Number(this.performanceOutput.stallSpeedVS1.toFixed(0)), Number(this.performanceOutput.landingDistance.toFixed(0)), Number(this.performanceOutput.approachSpeed.toFixed(0)), 
+                    Number(this.performanceOutput.touchDownSpeed.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GD.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GU.toFixed(0)))
 
 
-            const activityLog = new ActivityLog(localStorage.getItem('username'), latest_date, 'solve',
-            JSON.stringify(newCalcInput).replace(/^[\\]/g, ""), JSON.stringify(newCalcOutput).replace(/^[\\]/g, ""));
+                const activityLog = new ActivityLog(localStorage.getItem('username'), latest_date, 'solve',
+                JSON.stringify(newCalcInput).replace(/^[\\]/g, ""), JSON.stringify(newCalcOutput).replace(/^[\\]/g, ""));
 
-            this.restClassifier.post('activity-log/save', activityLog).subscribe(res => {
-                console.log(res.data.activityLog);
-            });
+                this.restClassifier.post('activity-log/save', activityLog).subscribe(res => {
+                    console.log(res.data.activityLog);
+                });
+
+                (document.getElementById("Baggage1") as HTMLInputElement).value = "0";
+                (document.getElementById("Baggage2") as HTMLInputElement).value = "0";
+                (document.getElementById("LandingWeightInput") as HTMLInputElement).value = "0";
+
             }
-            },
-            error => {
-                this.alertService.error('Conditions could not be calculated.')
-                this.calculateLoading = false;
-                return;
-            }
+        },
+        error => {
+            this.alertService.error('Conditions could not be calculated.')
+            this.calculateLoading = false;
+            return;
+        }
         )
     }
 
