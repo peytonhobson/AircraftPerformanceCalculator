@@ -22,16 +22,26 @@ public class Solver {
      */
     public static SolverOutput solve(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
 
+        input.setProfile(solveTakeoff(input, emptyAircraftKG, agilePodKG));
+
+        boolean error = input.getProfile().getInternalTank() > 288;
+
+        double galLost = solveLandingGallons(input, emptyAircraftKG, agilePodKG);
+
+        return new SolverOutput(input.getProfile(), error, OverallCalculator.calculate(input, emptyAircraftKG, agilePodKG), galLost);
+    }
+
+    public static Profile solveTakeoff(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
+
         Profile profile = input.getProfile();
         RunwayConditions runwayConditions = input.getRunwayConditions();
         double takeoffMass = OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                 input.getPilot2(), input.getBaggage1(), input.getBaggage2());
         double runwayLength = runwayConditions.getRunwayLength()*3.28084;
         String runwayType = runwayConditions.getRunwayType();
-        double brakingFriction = OverallCalculator.getFriction(takeoffMass, runwayType).get(1);
+        double brakingFriction = OverallCalculator.getFriction(runwayConditions.getPrecipitation(), runwayType).get(1);
 
         double totalDist;
-        boolean error = false;
         boolean prevLower = false;
         boolean notFirstLoop = false;
 
@@ -42,8 +52,8 @@ public class Solver {
 
             totalDist = TakeoffDistanceCalculator.getTakeoffDistance(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                     input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayConditions.getRunwayType()) +
-                        AccelStopCalculator.getAccelStop(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
-                                input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayType, brakingFriction);
+                    AccelStopCalculator.getAccelStop(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
+                            input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayType, brakingFriction);
 
             if(totalDist < runwayLength) {
 
@@ -93,7 +103,7 @@ public class Solver {
                     profile.setInternalTank(profile.getInternalTank()-1);
                 }
                 else {
-                    error = true;
+                    profile.setInternalTank(1000);
                     break;
                 }
                 prevLower = false;
@@ -106,9 +116,35 @@ public class Solver {
 
         }
 
-        input.setProfile(profile);
-        log.info(String.valueOf(totalDist));
+        return profile;
+    }
 
-        return new SolverOutput(profile, error, OverallCalculator.calculate(input, emptyAircraftKG, agilePodKG));
+    public static double solveLandingGallons(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
+
+        input.setLandingMass(OverallCalculator.getTakeoffMass(input.getProfile(), emptyAircraftKG, agilePodKG, input.getPilot1(),
+                input.getPilot2(), input.getBaggage1(), input.getBaggage2()));
+        double runwayLength = input.getRunwayConditions().getRunwayLength()*3.28084;
+        double brakingFriction = OverallCalculator.getFriction(input.getRunwayConditions().getPrecipitation(),
+                input.getRunwayConditions().getRunwayType()).get(1);
+        double landingDist;
+        int galLost = 0;
+
+        while(true) {
+
+            landingDist = LandingDistanceCalculator.getLandingDistance(input.getLandingMass(),
+                    brakingFriction);
+
+            log.info(String.valueOf(landingDist));
+
+            if(landingDist <= runwayLength) {
+                log.info("landing less");
+                break;
+            }
+
+            galLost++;
+            input.setLandingMass(input.getLandingMass()-6.815*0.453592);
+        }
+
+        return galLost;
     }
 }

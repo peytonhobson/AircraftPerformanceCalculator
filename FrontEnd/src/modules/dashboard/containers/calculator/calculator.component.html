@@ -685,6 +685,9 @@
                   <img [ngStyle]="{'display':displayPlanes}" src="assets/img/airplane-icon.png" id="landing-plane"/>
                 </div>
               </div>
+              <div class="row d-flex justify-content-center ml-5 mt6-5">
+                <h2 *ngIf="tooHeavy" class="text-danger" id="WeightWarning">Aircraft weight is too heavy! <br> Consider reducing weight before takeoff.</h2>
+              </div>
             </div>
           </div>
           </div>

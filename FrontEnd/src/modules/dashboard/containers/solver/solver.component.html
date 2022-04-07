@@ -82,19 +82,6 @@
           </div>
           <div class="card-body p-2">
             <div class="row d-flex justify-content-center">
-              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
-                <label>Landing Weight:</label>
-                <form [formGroup]="landingWeightForm" class="w-100">
-                  <div class="row d-flex justify-content-center" [formGroup]="landingWeightForm">
-                    <input type="number" formControlName="landingWeight" class="time-item text-right border border-dark" id="LandingWeightInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fLand['landingWeight'].errors }">
-                    <div *ngIf="submittedCalc && fLand['landingWeight'].errors" class="invalid-feedback">
-                      <div *ngIf="fLand['landingWeight'].errors['required']">Landing Weight is required</div>
-                      <div *ngIf="fLand['landingWeight'].errors['min']">Landing Weight cannot be less than minimum aircraft weight.</div>
-                    </div>
-                    <label class="time-label mt-2">&nbsp;lbs</label>
-                  </div>
-                </form>
-              </div>
               <div class="col-md-5 mr-0 ml-0 pl-3">
                 <label class="mb-0">Parachute 2:</label>
                 <div class="row d-flex justify-content-center">
@@ -686,6 +673,10 @@
                   <td><span class="text-primary" *ngIf="this.momentSum && this.weightSum">{{ ((((momentSum/this.weightSum)-this.constants.macrefDatum)*100)/this.constants.macl39).toFixed(1) }}%</span></td>
                 </tr>
               </table>
+
+              <div class="blank-card justify-content-center d-flex ml-5">
+                <div *ngIf="solverOutput" class="text-danger">Number of gallons needed to be lost before landing: {{ solverOutput.galLost }}</div>
+              </div>
             </div>
           </div>
           </div>

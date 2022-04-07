@@ -85,7 +85,6 @@ public class PilotResource {
         );
     }
 
-
     @PostMapping(path = "/delete")
     public ResponseEntity<Response> delete(@RequestBody Map<String, String> json) {
         return ResponseEntity.ok(

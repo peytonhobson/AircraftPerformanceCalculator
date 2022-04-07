@@ -89,6 +89,7 @@ export class CalculatorComponent implements OnInit {
 
     emptyAircraftMAC: number;
     currentProfile: Profile;
+    tooHeavy = false;
 
     constructor(
         private restClassifier: ApiService,
@@ -551,6 +552,13 @@ export class CalculatorComponent implements OnInit {
 
             this.performanceOutput = res.data.calculatorOutput;
 
+            if(this.performanceOutput.accelStopDistance+this.performanceOutput.takeoffDistance > this.runwayConditions.runwayLength) {
+                this.tooHeavy = true;
+            }
+            else {
+                this.tooHeavy = false;
+            }
+
             this.calculateLoading = false;
             this.notCalculated = false;
 
@@ -799,6 +807,7 @@ export class CalculatorComponent implements OnInit {
             }
 
             this.runwaysLoading = false;
+            this.submittedRunways = false;
         },
         error => {
             this.alertService.error('Airport runways could not be found.')
