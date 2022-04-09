@@ -535,6 +535,12 @@ export class CalculatorComponent implements OnInit {
             return;
         }
 
+        if(Number(landingFuel.value) > this.currentProfile.internalTank + this.currentProfile.underwingTank + this.currentProfile.tipTank) {
+            this.alertService.error('Landing fuel cannot be greater than takeoff fuel.')
+            this.calculateLoading = false;
+            return;
+        }
+
         let pilot2 = this.pilot2.mass;
 
         // Remove parachute weight if not present
@@ -542,8 +548,10 @@ export class CalculatorComponent implements OnInit {
             pilot2 -= 36;
         }
 
+        const landingWeight = this.weightSum - (this.currentProfile.internalTank + this.currentProfile.tipTank + this.currentProfile.underwingTank - Number(landingFuel.value))*6.815;
+
         // Create calculator input
-        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingFuel), this.runwayConditions,
+        const calculatorInput = new CalculatorInput(this.currentProfile, landingWeight, this.runwayConditions,
         this.pilot1.mass, pilot2, this.baggage1, this.baggage2);
 
         // Make call to backend for calculation
@@ -552,8 +560,13 @@ export class CalculatorComponent implements OnInit {
 
             this.performanceOutput = res.data.calculatorOutput;
 
-            if(this.performanceOutput.accelStopDistance+this.performanceOutput.takeoffDistance > this.runwayConditions.runwayLength) {
+            console.log(this.performanceOutput.accelStopDistance);
+            console.log(this.performanceOutput.takeoffDistance);
+            console.log(this.runwayConditions.runwayLength)
+
+            if(this.performanceOutput.accelStopDistance+this.performanceOutput.takeoffDistance > this.runwayConditions.runwayLength*3.28084) {
                 this.tooHeavy = true;
+                console.log('here')
             }
             else {
                 this.tooHeavy = false;

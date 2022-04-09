@@ -526,7 +526,7 @@
                         <h2 class="output-label">Takeoff Speed</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="takeoff-speed-output">{{performanceOutput.takeoffSpeed.toFixed(2)}}</h3>
+                        <h3 id="takeoff-speed-output">{{performanceOutput.takeoffSpeed.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark speed-unit-block text-center">
                         <h4 class="output-label" id="takeoff-speed-unit">kts</h4>
@@ -539,7 +539,7 @@
                         <h2 class="output-label">Takeoff Distance</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(2)}}</h3>
+                        <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
                         <h4 class="output-label" id="takeoff-distance-unit">ft</h4>
@@ -552,7 +552,7 @@
                         <h2 class="output-label">Ground-Run Distance</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(2)}}</h3>
+                        <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
                         <h4 class="output-label" id="ground-run-unit">ft</h4>
@@ -565,7 +565,7 @@
                         <h2 class="output-label">Accel-Stop Distance</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(2)}}</h3>
+                        <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
                         <h4 class="output-label" id="accel-stop-unit">ft</h4>
@@ -577,7 +577,7 @@
                         <h2 class="output-label">Speed Over Obstacle</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(2)}}</h3>
+                        <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
                         <h4 class="output-label" id="speed-over-unit">kts</h4>
@@ -594,7 +594,7 @@
                         <h2 class="output-label">Landing Distance</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(2)}}</h3>
+                        <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
                         <h4 class="output-label" id="landing-distance-unit">ft</h4>
@@ -607,7 +607,7 @@
                         <h2 class="output-label">Approach Speed</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(2)}}</h3>
+                        <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
                         <h4 class="output-label" id="approach-speed-unit">kts</h4>
@@ -620,7 +620,7 @@
                         <h2 class="output-label">Touch-Down Speed</h2>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-2">
-                        <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(2)}}</h3>
+                        <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
                         <h4 class="output-label" id="touch-down-unit">kts</h4>
@@ -637,7 +637,7 @@
                         <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-4">
-                        <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(2)}}</h3>
+                        <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                         <h4 class="output-label" id="vs1-unit">kts</h4>
@@ -650,7 +650,7 @@
                         <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-4">
-                        <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(2)}}</h3>
+                        <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                         <h4 class="output-label" id="vs0-gu-unit">kts</h4>
@@ -663,7 +663,7 @@
                         <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
                       </div>
                       <div class="shadow-lg text-center output-block bg-white p-4">
-                        <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(2)}}</h3>
+                        <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(0)}}</h3>
                       </div>
                       <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
                         <h4 class="output-label" id="vs0-gd-unit">kts</h4>
@@ -686,7 +686,7 @@
                 </div>
               </div>
               <div class="row d-flex justify-content-center ml-5 mt6-5">
-                <h2 *ngIf="tooHeavy" class="text-danger" id="WeightWarning">Aircraft weight is too heavy! <br> Consider reducing weight before takeoff.</h2>
+                <h2 *ngIf="this.tooHeavy" class="text-danger" id="WeightWarning">Aircraft weight is too heavy! <br> Consider reducing weight before takeoff.</h2>
               </div>
             </div>
           </div>
@@ -722,7 +722,7 @@
           <h2 class="output-label">Takeoff Distance</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(2)}}</h3>
+          <h3 id="takeoff-distance-output">{{performanceOutput.takeoffDistance.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
           <h4 class="output-label" id="takeoff-distance-unit">ft</h4>
@@ -735,7 +735,7 @@
           <h2 class="output-label">Ground-Run Distance</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(2)}}</h3>
+          <h3 id="ground-distance-output">{{performanceOutput.groundRunDistance.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
           <h4 class="output-label" id="ground-run-unit">ft</h4>
@@ -748,7 +748,7 @@
           <h2 class="output-label">Accel-Stop Distance</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(2)}}</h3>
+          <h3 id="accel-distance-output">{{performanceOutput.accelStopDistance.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
           <h4 class="output-label" id="accel-stop-unit">ft</h4>
@@ -760,7 +760,7 @@
           <h2 class="output-label">Speed Over Obstacle</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(2)}}</h3>
+          <h3 id="speed-over-obstacle-output">{{performanceOutput.speedOverObstacle.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
           <h4 class="output-label" id="speed-over-unit">kts</h4>
@@ -777,7 +777,7 @@
           <h2 class="output-label">Landing Distance</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(2)}}</h3>
+          <h3 id="landing-distance-output">{{performanceOutput.landingDistance.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark p-2 m-0 unit-block text-center">
           <h4 class="output-label" id="landing-distance-unit">ft</h4>
@@ -790,7 +790,7 @@
           <h2 class="output-label">Approach Speed</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(2)}}</h3>
+          <h3 id="approach-speed-output">{{performanceOutput.approachSpeed.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
           <h4 class="output-label" id="approach-speed-unit">kts</h4>
@@ -803,7 +803,7 @@
           <h2 class="output-label">Touch-Down Speed</h2>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-2">
-          <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(2)}}</h3>
+          <h3 id="touch-down-speed-output">{{performanceOutput.touchDownSpeed.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 speed-unit-block text-center">
           <h4 class="output-label" id="touch-down-unit">kts</h4>
@@ -820,7 +820,7 @@
           <h3 class="output-label">VS1, Flaps 25&deg;, Gear Extended</h3>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-4">
-          <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(2)}}</h3>
+          <h3 id="vs1-output">{{performanceOutput.stallSpeedVS1.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
           <h4 class="output-label" id="vs1-unit">kts</h4>
@@ -833,7 +833,7 @@
           <h3 class="output-label">VS0, Gear Down, Ground Proximity</h3>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-4">
-          <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(2)}}</h3>
+          <h3 id="vs0-gu-output">{{performanceOutput.stallSpeedVS0GU.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
           <h4 class="output-label" id="vs0-gu-unit">kts</h4>
@@ -846,7 +846,7 @@
           <h3 class="output-label">VS0, Gear Down, No Ground Proximity</h3>
         </div>
         <div class="shadow-lg text-center output-block bg-white p-4">
-          <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(2)}}</h3>
+          <h3 id="vs0-gd-output">{{performanceOutput.stallSpeedVS0GD.toFixed(0)}}</h3>
         </div>
         <div class="shadow-lg bg-dark m-0 unit-block-big text-center row d-flex justify-content-center">
           <h4 class="output-label" id="vs0-gd-unit">kts</h4>
