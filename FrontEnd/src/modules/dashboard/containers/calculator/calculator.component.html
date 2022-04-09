@@ -193,15 +193,15 @@
           <div class="card-body p-2">
             <div class="row d-flex justify-content-center">
               <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
-                <label>Landing Weight:</label>
-                <form [formGroup]="landingWeightForm" class="w-100">
-                  <div class="row d-flex justify-content-center" [formGroup]="landingWeightForm">
-                    <input type="number" formControlName="landingWeight" class="time-item text-right border border-dark" id="LandingWeightInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fLand['landingWeight'].errors }">
-                    <div *ngIf="submittedCalc && fLand['landingWeight'].errors" class="invalid-feedback">
-                      <div *ngIf="fLand['landingWeight'].errors['required']">Landing Weight is required</div>
-                      <div *ngIf="fLand['landingWeight'].errors['min']">Landing Weight cannot be less than minimum aircraft weight.</div>
+                <label>Fuel Remaining <br> at Landing:</label>
+                <form [formGroup]="landingFuelForm" class="w-100">
+                  <div class="row d-flex justify-content-center" [formGroup]="landingFuelForm">
+                    <input type="number" formControlName="landingFuel" class="time-item text-right border border-dark" id="LandingFuelInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fLand['landingFuel'].errors }">
+                    <div *ngIf="submittedCalc && fLand['landingFuel'].errors" class="invalid-feedback">
+                      <div *ngIf="fLand['landingFuel'].errors['required']">Landing Weight is required</div>
+                      <div *ngIf="fLand['landingFuel'].errors['min']">Landing Weight cannot be less than minimum aircraft weight.</div>
                     </div>
-                    <label class="time-label mt-2">&nbsp;lbs</label>
+                    <label class="time-label mt-2">&nbsp;gal</label>
                   </div>
                 </form>
               </div>

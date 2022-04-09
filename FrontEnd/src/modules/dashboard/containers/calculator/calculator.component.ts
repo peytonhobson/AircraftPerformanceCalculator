@@ -24,7 +24,7 @@ export class CalculatorComponent implements OnInit {
 
     runwaysForm: FormGroup;
     formManualModal: FormGroup;
-    landingWeightForm: FormGroup;
+    landingFuelForm: FormGroup;
     baggageForm: FormGroup;
 
     // Initialized for injection
@@ -120,8 +120,8 @@ export class CalculatorComponent implements OnInit {
             runwayLength: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0)]]
         });
 
-        this.landingWeightForm = this.formBuilder.group({
-            landingWeight: [{ value: 0, disabled: false }, [Validators.required, Validators.min(8186)]]
+        this.landingFuelForm = this.formBuilder.group({
+            landingFuel: [{ value: 0, disabled: false }, [Validators.required, Validators.min(0)]]
         });
 
         this.baggageForm = this.formBuilder.group({
@@ -476,15 +476,15 @@ export class CalculatorComponent implements OnInit {
             grassRadio.checked = false;
         });
 
-        // Removes errors when landing weight input is clicked
-        const landingWeightInput = document.getElementById('LandingWeightInput') as HTMLInputElement;
-        landingWeightInput.addEventListener('click', (e) => {
+        // Removes errors when landing fuel input is clicked
+        const landingFuelInput = document.getElementById('LandingFuelInput') as HTMLInputElement;
+        landingFuelInput.addEventListener('click', (e) => {
             this.submittedCalc = false;
         });
     }
 
     // Ease of access get functions for form controls
-    get fLand() { return this.landingWeightForm.controls};
+    get fLand() { return this.landingFuelForm.controls};
     get fBag() { return this.baggageForm.controls};
     get f() { return this.runwaysForm.controls; }
     get fManual() { return this.formManualModal.controls; }
@@ -499,7 +499,7 @@ export class CalculatorComponent implements OnInit {
         this.submittedCalc = true;
 
         // Return if forms are invalid
-        if(!this.landingWeightForm.valid || !this.baggageForm.valid) {
+        if(!this.landingFuelForm.valid || !this.baggageForm.valid) {
             this.calculateLoading = false;
             return;
         }
@@ -521,10 +521,10 @@ export class CalculatorComponent implements OnInit {
             return;
         }
 
-        const landingWeight = document.getElementById('LandingWeightInput') as HTMLInputElement;
+        const landingFuel = document.getElementById('LandingFuelInput') as HTMLInputElement;
 
-        if(landingWeight.value === '' || !landingWeight.value.match(/^[0-9]/)) {
-            this.alertService.error('Please input landing weight.')
+        if(landingFuel.value === '' || !landingFuel.value.match(/^[0-9]/)) {
+            this.alertService.error('Please input landing fuel.')
             this.calculateLoading = false;
             return;
         }
@@ -543,7 +543,7 @@ export class CalculatorComponent implements OnInit {
         }
 
         // Create calculator input
-        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingWeight), this.runwayConditions,
+        const calculatorInput = new CalculatorInput(this.currentProfile, Number(landingFuel), this.runwayConditions,
         this.pilot1.mass, pilot2, this.baggage1, this.baggage2);
 
         // Make call to backend for calculation
@@ -606,7 +606,7 @@ export class CalculatorComponent implements OnInit {
 
             (document.getElementById("Baggage1") as HTMLInputElement).value = "0";
             (document.getElementById("Baggage2") as HTMLInputElement).value = "0";
-            (document.getElementById("LandingWeightInput") as HTMLInputElement).value = "0";
+            (document.getElementById("LandingFuelInput") as HTMLInputElement).value = "0";
         },
         error => {
             this.alertService.error('Conditions could not be calculated.')
