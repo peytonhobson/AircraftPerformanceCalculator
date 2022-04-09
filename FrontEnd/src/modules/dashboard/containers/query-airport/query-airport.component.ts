@@ -93,6 +93,12 @@ export class QueryAirportComponent implements OnInit {
         this.apiService
             .get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
             .subscribe(res => {
+
+                if(res.data.runwayError) {
+                    this.alertService.error(res.data.runwayError)
+                    return;
+                }
+
                 this.runwayConditions = res.data.runwayCondition
             },
             error => {
@@ -125,6 +131,11 @@ export class QueryAirportComponent implements OnInit {
 
         // Backend call to find runways at airport listed by faa
         this.apiService.get(`airport/runways/${this.f.airportInput.value}`).subscribe(res => {
+
+            if(res.data.runwayError) {
+                this.alertService.error(res.data.runwayError)
+                return;
+            }
 
             // Adds buttons to group for each runway
             if(res.data.airportRunways) {

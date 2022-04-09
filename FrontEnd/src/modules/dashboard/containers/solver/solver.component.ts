@@ -88,11 +88,11 @@ export class SolverComponent implements OnInit {
         stallSpeedVS0GD: 0,
         stallSpeedVS0GU: 0
     };
+    calculatorOutputs: CalculatorOutput[];
     parachute2 = true;
 
     emptyAircraftMAC: number;
     currentProfile: Profile;
-
 
     constructor(
         private restClassifier: ApiService,
@@ -179,8 +179,9 @@ export class SolverComponent implements OnInit {
 
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AgilePodText').innerHTML = 'Agile Pod';
-                            this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
-                            this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+                            this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
+                            this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod
+                            + this.constants.agileRailWeight*this.constants.agileRail;
 
                             this.agilePodARM = (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail
                                 + this.constants.podPayload*this.currentProfile.agileWeight)/(this.constants.emptyAgilePodWeight+this.constants.agileRailWeight+this.currentProfile.agileWeight);
@@ -204,8 +205,9 @@ export class SolverComponent implements OnInit {
             else { // Subtract values and set component variables to undefined for profile.
 
                 if(this.currentProfile.agilePod) {
-                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
-                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
+                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod
+                    + this.constants.agileRailWeight*this.constants.agileRail;;
                 }
 
                 document.getElementById('AgilePodText').innerHTML = '';
@@ -586,14 +588,18 @@ export class SolverComponent implements OnInit {
                 (document.getElementById("Baggage2") as HTMLInputElement).value = "0";
                 (document.getElementById("LandingWeightInput") as HTMLInputElement).value = "0";
 
+            
             }
         },
         error => {
             this.alertService.error('Conditions could not be calculated.')
             this.calculateLoading = false;
             return;
-        }
-        )
+        })
+
+        this.restClassifier.post(`calculate/landing`, calculatorInput).subscribe(res => {
+            this.calculatorOutputs = res.data.calculatorOutputs;
+        });
     }
 
     saveManualModal() {
@@ -669,6 +675,12 @@ export class SolverComponent implements OnInit {
         // Call to backend for runway condtions
         this.restClassifier.get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
         .subscribe(res => {
+
+            if(res.data.runwayError) {
+                this.alertService.error(res.data.runwayError)
+                return;
+            }
+
             this.runwayConditions = res.data.runwayCondition
 
             // Set automatic button to green with check mark
@@ -683,6 +695,7 @@ export class SolverComponent implements OnInit {
         error => {
             this.alertService.error('Runway conditions could not be queried.')
         });
+        
 
     }
 
@@ -772,6 +785,11 @@ export class SolverComponent implements OnInit {
 
         // Backend call to find runways
         this.restClassifier.get(`airport/runways/${this.f.airportInput.value}`).subscribe(res => {
+
+            if(res.data.runwayError) {
+                this.alertService.error(res.data.runwayError)
+                return;
+            }
 
             if(res.data.airportRunways) {
                 res.data.airportRunways.forEach(x=> {

@@ -72,6 +72,7 @@ export class CalculatorComponent implements OnInit {
             stallSpeedVS0GD: 0,
             stallSpeedVS0GU: 0
     };
+    calculatorOutputs: CalculatorOutput[];
 
     // Parameters for backend calc
     pilot1: Pilot;
@@ -86,6 +87,7 @@ export class CalculatorComponent implements OnInit {
     baggage1 = 0;
     baggage2 = 0;
     parachute2 = true;
+    landingFuel = 0;
 
     emptyAircraftMAC: number;
     currentProfile: Profile;
@@ -180,9 +182,10 @@ export class CalculatorComponent implements OnInit {
 
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AgilePodText').innerHTML = 'Agile Pod';
-                            this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
+                            this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
+                            console.log(this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight)
                             this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
-                            this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+                            this.currentProfile.agileWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail;
 
                             this.agilePodARM = (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
                                 this.constants.agileRailWeight*this.constants.agileRail
@@ -210,9 +213,9 @@ export class CalculatorComponent implements OnInit {
             else { // Subtract values and set component variables to undefined for profile.
 
                 if(this.currentProfile.agilePod) {
-                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight;
-                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
-                    this.currentProfile.agileWeight*this.constants.emptyAgilePod;
+                    this.weightSum -=  (this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight);
+                    this.momentSum -= (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
+                    this.currentProfile.agileWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail);
                 }
 
                 document.getElementById('AgilePodText').innerHTML = '';
@@ -522,6 +525,7 @@ export class CalculatorComponent implements OnInit {
         }
 
         const landingFuel = document.getElementById('LandingFuelInput') as HTMLInputElement;
+        this.landingFuel = Number(landingFuel.value);
 
         if(landingFuel.value === '' || !landingFuel.value.match(/^[0-9]/)) {
             this.alertService.error('Please input landing fuel.')
@@ -621,6 +625,10 @@ export class CalculatorComponent implements OnInit {
             this.calculateLoading = false;
             return;
         });
+
+        this.restClassifier.post(`calculate/landing`, calculatorInput).subscribe(res => {
+            this.calculatorOutputs = res.data.calculatorOutputs;
+        });
     }
 
     saveManualModal() {
@@ -698,6 +706,11 @@ export class CalculatorComponent implements OnInit {
         this.restClassifier.get(`airport/runway/${this.airportID}/${runwayReplace}/${runwaySideNumber.innerHTML}`)
         .subscribe(res => {
             this.runwayConditions = res.data.runwayCondition
+            
+            if(res.data.runwayError) {
+                this.alertService.error(res.data.runwayError)
+                return;
+            }
 
             // Set automatic button to green with check mark
             const automaticButton = document.getElementById('AutomaticButton') as HTMLButtonElement;
@@ -799,6 +812,11 @@ export class CalculatorComponent implements OnInit {
 
         // Backend call to find runways
         this.restClassifier.get(`airport/runways/${this.f.airportInput.value}`).subscribe(res => {
+
+            if(res.data.runwayError) {
+                this.alertService.error(res.data.runwayError)
+                return;
+            }
 
             if(res.data.airportRunways) {
                 res.data.airportRunways.forEach(x=> {

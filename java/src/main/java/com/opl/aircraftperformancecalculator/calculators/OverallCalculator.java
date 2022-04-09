@@ -28,6 +28,8 @@ public class OverallCalculator {
         RunwayConditions runwayConditions = input.getRunwayConditions();
 
         double landingMass = input.getLandingMass()*0.453592;
+        log.info("Landing mass:" + input.getLandingMass());
+
         double takeoffMass = OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                 input.getPilot2(), input.getBaggage1(), input.getBaggage2());
         double pressureAltitude = runwayConditions.getPressureAltitude();
@@ -48,7 +50,7 @@ public class OverallCalculator {
                 headwind, slope, rollingFriction);
         double takeoffDistance = TakeoffDistanceCalculator.getTakeoffDistance(takeoffMass, runwayType);
         double accelStopDistance = AccelStopCalculator.getAccelStop(takeoffMass, runwayType, brakingFriction);
-        double landingDistance = LandingDistanceCalculator.getLandingDistance(takeoffMass, brakingFriction);
+        double landingDistance = LandingDistanceCalculator.getLandingDistance(landingMass, brakingFriction);
 
         // Create and return new instance of a calculator output model using the calculated parameters.
         return new CalculatorOutput(groundRunDistance, takeoffSpeedList.get(1), takeoffDistance,
@@ -73,14 +75,16 @@ public class OverallCalculator {
 
         double takeoffMass = emptyAircraftKG; // Empty aircraft in kg
 
+        log.info(String.valueOf(profile.getInternalTank()));
+
         if(profile.isAgilePod()) {
             takeoffMass += agilePodKG;
             takeoffMass += profile.getAgileWeight()*0.453592;
         }
 
-        takeoffMass += profile.getInternalTank()*0.453592;
-        takeoffMass += profile.getTipTank()*0.453592;
-        takeoffMass += profile.getUnderwingTank()*0.453592;
+        takeoffMass += profile.getInternalTank()*6.815*0.453592;
+        takeoffMass += profile.getTipTank()*6.815*0.453592;
+        takeoffMass += profile.getUnderwingTank()*6.815*0.453592;
         takeoffMass += profile.getOutboard()*0.453592;
         takeoffMass += pilot1*0.453592;
         takeoffMass += pilot2*0.453592;

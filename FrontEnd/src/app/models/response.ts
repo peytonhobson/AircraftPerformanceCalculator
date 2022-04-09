@@ -20,7 +20,7 @@ export interface CustomResponse {
 
     // Uses map on backend to identify specific retrieved variables.
     data: {profiles?: Profile[], profile?: Profile, runwayCondition? : RunwayConditions, airportRunways? : string[], 
-        runwayError?: string, pilots: Pilot[], pilot: Pilot, calculatorOutput: CalculatorOutput,
+        runwayError?: string, pilots: Pilot[], pilot: Pilot, calculatorOutput: CalculatorOutput, calculatorOutputs: CalculatorOutput[],
     user: User, users: User[], activityLogs: ActivityLog[], constants: Constants, solverOutput: SolverOutput,
     activityLog: ActivityLog};
 }

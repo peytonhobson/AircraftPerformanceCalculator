@@ -134,10 +134,7 @@ public class Solver {
             landingDist = LandingDistanceCalculator.getLandingDistance(input.getLandingMass(),
                     brakingFriction);
 
-            log.info(String.valueOf(landingDist));
-
             if(landingDist <= runwayLength) {
-                log.info("landing less");
                 break;
             }
 
