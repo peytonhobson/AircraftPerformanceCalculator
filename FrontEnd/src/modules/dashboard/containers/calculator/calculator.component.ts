@@ -560,13 +560,8 @@ export class CalculatorComponent implements OnInit {
 
             this.performanceOutput = res.data.calculatorOutput;
 
-            console.log(this.performanceOutput.accelStopDistance);
-            console.log(this.performanceOutput.takeoffDistance);
-            console.log(this.runwayConditions.runwayLength)
-
             if(this.performanceOutput.accelStopDistance+this.performanceOutput.takeoffDistance > this.runwayConditions.runwayLength*3.28084) {
                 this.tooHeavy = true;
-                console.log('here')
             }
             else {
                 this.tooHeavy = false;
