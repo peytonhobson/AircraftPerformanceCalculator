@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class SolverOutput {
 
     private Profile profile;
-    private boolean error; // Returned if plane is too heavy for runway.
+    private String error; // Returned if plane is too heavy for runway.
     private CalculatorOutput calculatorOutput;
     double galLost; // Gallons needed to be dropped to land
 }

@@ -2,7 +2,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CalculatorInput } from '@app/models/calculator-input';
+import { CalculatorInput, SolverInput } from '@app/models/calculator-input';
 import { CalculatorOutput } from '@app/models/calculator-output';
 import { Constants } from '@app/models/constants';
 import { Pilot } from '@app/models/pilot';
@@ -13,6 +13,7 @@ import { AccountService } from '@app/services/account.service';
 import { AlertService } from '@app/services/alert.service';
 import { ApiService } from '@app/services/api.service';
 import { ActivityLog } from '@modules/dashboard/models/activity-log';
+import { abort } from 'process';
 import { first} from 'rxjs/operators';
 
 
@@ -27,6 +28,7 @@ export class SolverComponent implements OnInit {
     runwaysForm: FormGroup;
     formManualModal: FormGroup;
     baggageForm: FormGroup;
+    abortForm: FormGroup;
 
     // Initialized for injection
     runwayConditions = {
@@ -126,6 +128,10 @@ export class SolverComponent implements OnInit {
         this.baggageForm = this.formBuilder.group({
             baggage1: [{ value: 0, disabled: false }, [Validators.min(0)]],
             baggage2: [{ value: 0, disabled: false }, [Validators.min(0)]],
+        });
+
+        this.abortForm = this.formBuilder.group({
+            abortDistance: [{ value: 0, disabled: false }, [Validators.min(0)]],
         });
 
         // Get constants from backend from config file
@@ -475,6 +481,7 @@ export class SolverComponent implements OnInit {
     get fBag() { return this.baggageForm.controls};
     get f() { return this.runwaysForm.controls; }
     get fManual() { return this.formManualModal.controls; }
+    get fAbort() { return this.abortForm.controls; }
 
     // Main function used for solving of flight parameters with max fuel
     solve() {
@@ -521,12 +528,14 @@ export class SolverComponent implements OnInit {
             pilot2 -= 36;
         }
 
+        const abortDistance = this.fAbort['abortDistance'].value;
+
         // Create calculator input
-        const calculatorInput = new CalculatorInput(this.currentProfile, 0, this.runwayConditions,
-        this.pilot1.mass, pilot2, this.baggage1, this.baggage2);
+        const solverInput = new SolverInput(this.currentProfile, 0, this.runwayConditions,
+        this.pilot1.mass, pilot2, this.baggage1, this.baggage2, abortDistance);
 
         // Make call to backend for calculation
-        this.restClassifier.post(`calculate/solver`, calculatorInput).pipe(first())
+        this.restClassifier.post(`calculate/solver`, solverInput).pipe(first())
         .subscribe(
             res => {
 
@@ -535,7 +544,7 @@ export class SolverComponent implements OnInit {
             this.performanceOutput = this.solverOutput.calculatorOutput;
 
             if(this.solverOutput.error) {
-                this.alertService.error('Runway is too short at minimum fuel load.')
+                this.alertService.error(this.solverOutput.error)
                 this.calculateLoading = false;
             }
             else {
@@ -569,16 +578,15 @@ export class SolverComponent implements OnInit {
                 const newRunwayConditions = new RunwayConditions(this.runwayConditions.airportID, this.runwayConditions.temp.toFixed(1), 
                 this.runwayConditions.pressureAltitude.toFixed(0), this.runwayConditions.precipitation.toFixed(2), this.runwayConditions.headWind.toFixed(1),
                 this.runwayConditions.runwayLength.toFixed(0), this.runwayConditions.runwayType, this.runwayConditions.slope.toFixed(2));
-                const newCalcInput = new CalculatorInput(this.currentProfile, calculatorInput.landingMass, newRunwayConditions, this.pilot1.mass,
-                this.pilot2.mass, this.baggage1, this.baggage2)
+                const newSolverInput = new SolverInput(this.currentProfile, solverInput.landingMass, newRunwayConditions, this.pilot1.mass,
+                this.pilot2.mass, this.baggage1, this.baggage2, abortDistance)
                 const newCalcOutput = new CalculatorOutput(Number(this.performanceOutput.groundRunDistance.toFixed(0)), Number(this.performanceOutput.takeoffSpeed.toFixed(0)),
                     Number(this.performanceOutput.takeoffDistance.toFixed(0)), Number(this.performanceOutput.accelStopDistance.toFixed(0)), Number(this.performanceOutput.speedOverObstacle.toFixed(0)), 
                     Number(this.performanceOutput.stallSpeedVS1.toFixed(0)), Number(this.performanceOutput.landingDistance.toFixed(0)), Number(this.performanceOutput.approachSpeed.toFixed(0)), 
                     Number(this.performanceOutput.touchDownSpeed.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GD.toFixed(0)), Number(this.performanceOutput.stallSpeedVS0GU.toFixed(0)))
 
-
                 const activityLog = new ActivityLog(localStorage.getItem('username'), latest_date, 'solve',
-                JSON.stringify(newCalcInput).replace(/^[\\]/g, ""), JSON.stringify(newCalcOutput).replace(/^[\\]/g, ""));
+                JSON.stringify(newSolverInput).replace(/^[\\]/g, ""), JSON.stringify(newCalcOutput).replace(/^[\\]/g, ""));
 
                 this.restClassifier.post('activity-log/save', activityLog).subscribe(res => {
                     console.log(res.data.activityLog);
@@ -597,7 +605,7 @@ export class SolverComponent implements OnInit {
             return;
         })
 
-        this.restClassifier.post(`calculate/landing`, calculatorInput).subscribe(res => {
+        this.restClassifier.post(`calculate/landing`, solverInput).subscribe(res => {
             this.calculatorOutputs = res.data.calculatorOutputs;
         });
     }

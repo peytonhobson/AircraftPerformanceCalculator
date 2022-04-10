@@ -4,11 +4,11 @@ import { Profile } from "./profile.model";
 export class SolverOutput {
 
     public profile: Profile;
-    public error: boolean;
+    public error: string;
     public calculatorOutput: CalculatorOutput
     public galLost: number;
 
-    constructor(profile: Profile, error: boolean, calculatorOutput: CalculatorOutput, galLost: number) {
+    constructor(profile: Profile, error: string, calculatorOutput: CalculatorOutput, galLost: number) {
         this.profile= profile;
         this.error = error;
         this.calculatorOutput = calculatorOutput;

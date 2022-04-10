@@ -82,6 +82,19 @@
           </div>
           <div class="card-body p-2">
             <div class="row d-flex justify-content-center">
+              <div class="col-md-5 my-auto mr-0 ml-0 pl-3">
+                <label>Abort Distance:</label>
+                <form [formGroup]="abortForm" class="w-100">
+                  <div class="row d-flex justify-content-center" [formGroup]="abortForm">
+                    <input type="number" formControlName="abortDistance" class="time-item text-right border border-dark" id="AbortDistanceInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fAbort['abortDistance'].errors }">
+                    <div *ngIf="submittedCalc && fLand['abortDistance'].errors" class="invalid-feedback">
+                      <div *ngIf="fAbort['abortDistance'].errors['required']">Abort Distance is required</div>
+                      <div *ngIf="fAbort['abortDistance'].errors['min']">Abort Distance cannot be less than 0.</div>
+                    </div>
+                    <label class="time-label mt-2">&nbsp;ft</label>
+                  </div>
+                </form>
+              </div>
               <div class="col-md-5 mr-0 ml-0 pl-3">
                 <label class="mb-0">Parachute 2:</label>
                 <div class="row d-flex justify-content-center">

@@ -2,10 +2,7 @@ package com.opl.aircraftperformancecalculator.resource;
 
 import com.opl.aircraftperformancecalculator.calculators.OverallCalculator;
 import com.opl.aircraftperformancecalculator.calculators.Solver;
-import com.opl.aircraftperformancecalculator.models.CalculatorInput;
-import com.opl.aircraftperformancecalculator.models.CalculatorOutput;
-import com.opl.aircraftperformancecalculator.models.Profile;
-import com.opl.aircraftperformancecalculator.models.Response;
+import com.opl.aircraftperformancecalculator.models.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ArrayReferenceType;
@@ -49,7 +46,6 @@ public class CalculatorResource {
     @PostMapping
     public ResponseEntity<Response> calculate(@RequestBody CalculatorInput input) throws Exception {
 
-        // TODO: This is only temporary. Set actual API values.
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -68,7 +64,7 @@ public class CalculatorResource {
      * @throws Exception
      */
     @PostMapping("/solver")
-    public ResponseEntity<Response> solve(@RequestBody CalculatorInput input) throws Exception {
+    public ResponseEntity<Response> solve(@RequestBody SolverInput input) throws Exception {
 
         // TODO: This is only temporary. Set actual API values.
         return ResponseEntity.ok(
@@ -83,7 +79,7 @@ public class CalculatorResource {
     }
 
     @PostMapping("/landing")
-    public ResponseEntity<Response> landing(@RequestBody CalculatorInput input) throws Exception {
+    public ResponseEntity<Response> landing(@RequestBody SolverInput input) throws Exception {
 
         List<CalculatorOutput> list = new ArrayList<>();
 
@@ -120,7 +116,6 @@ public class CalculatorResource {
                 input.getPilot1(), input.getPilot2(), input.getBaggage1(), input.getBaggage2())*2.20462);
         list.add(OverallCalculator.calculate(input, emptyAircraftKG, agilePodKG));
 
-        // TODO: This is only temporary. Set actual API values.
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())

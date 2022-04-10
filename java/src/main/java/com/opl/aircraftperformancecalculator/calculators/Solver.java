@@ -1,9 +1,6 @@
 package com.opl.aircraftperformancecalculator.calculators;
 
-import com.opl.aircraftperformancecalculator.models.CalculatorInput;
-import com.opl.aircraftperformancecalculator.models.Profile;
-import com.opl.aircraftperformancecalculator.models.RunwayConditions;
-import com.opl.aircraftperformancecalculator.models.SolverOutput;
+import com.opl.aircraftperformancecalculator.models.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
@@ -20,38 +17,54 @@ public class Solver {
      * @return
      * @throws FileNotFoundException
      */
-    public static SolverOutput solve(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
+    public static SolverOutput solve(SolverInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
 
         input.setProfile(solveTakeoff(input, emptyAircraftKG, agilePodKG));
 
-        boolean error = input.getProfile().getInternalTank() > 288;
+        String error = null;
+
+        if(input.getProfile().getInternalTank() == 1000) {
+            error = "Ground run plus accel-stop distance greater than runway at minimum fuel load. <br> " +
+                    "Consider reducing weight before takeoff.";
+        }
+        else if(input.getProfile().getInternalTank() == 900) {
+            error = "Ground run distance greater than abort distance at minimum fuel load. <br> " +
+                    "Consider reducing weight before takeoff.";
+        }
 
         double galLost = solveLandingGallons(input, emptyAircraftKG, agilePodKG);
 
         return new SolverOutput(input.getProfile(), error, OverallCalculator.calculate(input, emptyAircraftKG, agilePodKG), galLost);
     }
 
-    public static Profile solveTakeoff(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
+    public static Profile solveTakeoff(SolverInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
 
         Profile profile = input.getProfile();
         RunwayConditions runwayConditions = input.getRunwayConditions();
-        double takeoffMass = OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
-                input.getPilot2(), input.getBaggage1(), input.getBaggage2());
         double runwayLength = runwayConditions.getRunwayLength()*3.28084;
+        double pressureAltitude = runwayConditions.getPressureAltitude();
+        double temp = runwayConditions.getTemp();
         String runwayType = runwayConditions.getRunwayType();
         double brakingFriction = OverallCalculator.getFriction(runwayConditions.getPrecipitation(), runwayType).get(1);
+        double rollingFriction = OverallCalculator.getFriction(runwayConditions.getPrecipitation(), runwayType).get(0);
+        double headwind = runwayConditions.getHeadWind();
+        double slope = runwayConditions.getSlope();
+        double abortDistance = input.getAbortDistance();
 
         double totalDist;
         boolean prevLower = false;
         boolean notFirstLoop = false;
 
 
-        // Loop that incrementally adds or subtracts fuel. Once combined distance of accel-stop and takeoff distance
+        log.info(String.valueOf(pressureAltitude));
+        log.info(String.valueOf(temp));
+
+        // Loop that incrementally adds or subtracts fuel. Once combined distance of accel-stop and ground run distance
         // either go lower or higher than the runway distance, the loop stops and the current fuel store is returned.
         while(true) {
 
-            totalDist = TakeoffDistanceCalculator.getTakeoffDistance(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
-                    input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayConditions.getRunwayType()) +
+            totalDist = GroundRunCalculator.getGroundRun(pressureAltitude, temp, OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
+                    input.getPilot2(), input.getBaggage1(), input.getBaggage2()), headwind, slope, rollingFriction) +
                     AccelStopCalculator.getAccelStop(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                             input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayType, brakingFriction);
 
@@ -78,8 +91,6 @@ public class Solver {
             else if(totalDist > runwayLength){
 
                 if(Boolean.TRUE.equals(prevLower) && notFirstLoop) {
-
-                    log.info("low to high");
 
                     if(profile.getUnderwingTank() > 0) {
                         profile.setUnderwingTank(profile.getUnderwingTank()-1);
@@ -113,10 +124,37 @@ public class Solver {
             }
 
             notFirstLoop = true;
-
         }
 
-        return profile;
+        double groundRunDist;
+
+        while(true) {
+
+            groundRunDist = GroundRunCalculator.getGroundRun(pressureAltitude, temp, OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
+                    input.getPilot2(), input.getBaggage1(), input.getBaggage2()), headwind, slope, rollingFriction);
+
+            if(groundRunDist <= abortDistance) {
+                break;
+            }
+            else {
+
+                if(profile.getUnderwingTank() > 0) {
+                    profile.setUnderwingTank(profile.getUnderwingTank()-1);
+                }
+                else if(profile.getTipTank() > 0) {
+                    profile.setTipTank(profile.getTipTank()-1);
+                }
+                else if(profile.getInternalTank() > 60) {
+                    profile.setInternalTank(profile.getInternalTank()-1);
+                }
+                else {
+                    input.getProfile().setInternalTank(900);
+                    return input.getProfile();
+                }
+            }
+        }
+
+        return input.getProfile();
     }
 
     public static double solveLandingGallons(CalculatorInput input, double emptyAircraftKG, double agilePodKG) throws FileNotFoundException {
