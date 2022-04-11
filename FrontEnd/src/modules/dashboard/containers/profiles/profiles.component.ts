@@ -59,7 +59,7 @@ export class ProfilesComponent implements OnInit {
     });
 
     this.formSavePilot = this.formBuilder.group({
-      name: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^[a-z0-9]/)]],
+      name: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^[A-Za-z0-9]/)]],
       weight: [{ value: 0, disabled: false }, [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]/)]],
     });
 
@@ -250,6 +250,8 @@ export class ProfilesComponent implements OnInit {
           break;
         }
       }
+
+      this.alertService.success('Aircraft profile deleted.')
 
     },
     error => {
