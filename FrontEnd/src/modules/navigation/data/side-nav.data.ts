@@ -9,6 +9,10 @@ export const sideNavSections: SideNavSection[] = [
         text: 'ADD-ONS',
         items: ['solver', 'queryAirport'],
     },
+    {
+        text: 'Documentation',
+        items: ['instructions'],
+    },
 ];
 
 export const sideNavItems: SideNavItems = {
@@ -24,8 +28,13 @@ export const sideNavItems: SideNavItems = {
     },
     queryAirport: {
         icon: 'plane-departure',
-        text: 'Airport Information',
-        link: '/dashboard/airports',
+        text: 'Runway Query',
+        link: '/dashboard/runway-query',
+    },
+    instructions: {
+        icon: 'file',
+        text: 'Download Instructions',
+        link: '/dashboard/instructions',
     },
     // layouts: {
     //     icon: 'columns',

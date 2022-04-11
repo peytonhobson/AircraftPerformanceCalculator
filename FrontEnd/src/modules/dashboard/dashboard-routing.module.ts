@@ -37,7 +37,7 @@ export const ROUTES: Routes = [
         component: dashboardContainers.ProfilesComponent,
     },
     {
-        path: 'airports',
+        path: 'runway-query',
         canActivate: [AuthGuard],
         component: dashboardContainers.QueryAirportComponent,
     },
@@ -46,7 +46,11 @@ export const ROUTES: Routes = [
         canActivate: [AdminGuard],
         component: dashboardContainers.AdminComponent,
     },
-
+    {
+        path: 'instructions',
+        canActivate: [AuthGuard],
+        component: dashboardContainers.InstructionsComponent,
+    },
 ];
 
 @NgModule({
