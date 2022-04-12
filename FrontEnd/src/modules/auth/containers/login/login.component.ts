@@ -30,6 +30,11 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required],
         });
 
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+
+        console.log(localStorage.getItem('username'))
+
         this.alertService.clear();
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
