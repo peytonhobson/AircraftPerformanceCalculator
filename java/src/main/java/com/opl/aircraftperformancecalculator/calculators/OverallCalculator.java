@@ -27,9 +27,8 @@ public class OverallCalculator {
         Profile profile = input.getProfile();
         RunwayConditions runwayConditions = input.getRunwayConditions();
 
+        // Landing mass must be converted to m from ft
         double landingMass = input.getLandingMass()*0.453592;
-        log.info("Landing mass:" + input.getLandingMass());
-
         double takeoffMass = OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                 input.getPilot2(), input.getBaggage1(), input.getBaggage2());
         double pressureAltitude = runwayConditions.getPressureAltitude();
@@ -106,19 +105,19 @@ public class OverallCalculator {
 
         if(precipitation > 0 && (runwayType.equals("CONC") || runwayType.equals("ASPH"))) {
             rollingFriction = 0.05;
-            brakingFriction = 0.2; //TODO: May need to change based on levels of precipitation
+            brakingFriction = 0.2;
         }
         if(precipitation == 0 && (runwayType.equals("CONC") || runwayType.equals("ASPH"))) {
             rollingFriction = 0.04;
-            brakingFriction = 0.4; //TODO: May need to change based on levels of precipitation
+            brakingFriction = 0.4;
         }
         if(precipitation > 0 && runwayType.equals("TURF")) {
             rollingFriction = 0.08;
-            brakingFriction = 0.2; //TODO: May need to change based on levels of precipitation
+            brakingFriction = 0.2;
         }
         if(precipitation == 0 && runwayType.equals("TURF")) {
             rollingFriction = 0.04;
-            brakingFriction = 0.3; //TODO: May need to change based on levels of precipitation
+            brakingFriction = 0.3;
         }
 
         List<Double> list = new ArrayList<>();

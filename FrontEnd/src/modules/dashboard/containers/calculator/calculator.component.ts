@@ -179,11 +179,11 @@ export class CalculatorComponent implements OnInit {
                 this.restClassifier.get(`profiles/${username}/${aircraftProfileSelect.value}`).subscribe(
                     res => {
                         this.currentProfile = res.data.profile;
+                        console.log(this.currentProfile);
 
                         if(this.currentProfile.agilePod) {
                             document.getElementById('AgilePodText').innerHTML = 'Agile Pod';
                             this.weightSum +=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
-                            console.log(this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight)
                             this.momentSum += this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
                             this.currentProfile.agileWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail;
 
@@ -564,7 +564,7 @@ export class CalculatorComponent implements OnInit {
 
             this.performanceOutput = res.data.calculatorOutput;
 
-            if(this.performanceOutput.accelStopDistance+this.performanceOutput.takeoffDistance > this.runwayConditions.runwayLength*3.28084) {
+            if(this.performanceOutput.accelStopDistance+this.performanceOutput.groundRunDistance > this.runwayConditions.runwayLength*3.28084) {
                 this.tooHeavy = true;
             }
             else {

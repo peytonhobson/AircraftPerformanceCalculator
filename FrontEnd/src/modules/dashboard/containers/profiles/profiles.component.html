@@ -293,9 +293,9 @@
             <tr>
               <td>Centerline Store</td>
               <td></td>
-              <td><span *ngIf="this.agileWeight && this.constants">{{ constants.emptyAgilePodWeight + agileWeight + constants.agileRailWeight }}</span></td>
-              <td><span *ngIf="this.agileWeight && this.constants">{{ agilePodARM.toFixed(0) }}</span></td>
-              <td><span *ngIf="this.agileWeight && this.constants">{{ ((constants.emptyAgilePodWeight + agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
+              <td><span *ngIf="this.agileYes && this.constants">{{ constants.emptyAgilePodWeight + agileWeight + constants.agileRailWeight }}</span></td>
+              <td><span *ngIf="this.agileYes && this.constants">{{ agilePodARM.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.agileYes && this.constants">{{ ((constants.emptyAgilePodWeight + agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
               <td></td>
             </tr>
             <tr>

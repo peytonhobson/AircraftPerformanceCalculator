@@ -92,6 +92,7 @@ public class AirportServiceImplementation implements AirportService {
             }
             if(metarChildren.item(i).getNodeName().equals("elevation_m")) {
                 elevation = Double.parseDouble(metarChildren.item(i).getChildNodes().item(0).getNodeValue());
+                log.info(String.valueOf(elevation));
             }
             if(metarChildren.item(i).getNodeName().equals("altim_in_hg")) {
                 hg = Double.parseDouble(metarChildren.item(i).getChildNodes().item(0).getNodeValue());

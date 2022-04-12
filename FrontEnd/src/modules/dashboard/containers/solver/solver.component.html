@@ -139,7 +139,7 @@
             </div> 
             <div class="row d-flex justify-content-center">
               <div class="shadow-lg airport-output text-center bg-dark rounded p-3">
-                <h4 class="output-label p-0 m-0">Altitude</h4>
+                <h4 class="output-label p-0 m-0">Pressure Altitude</h4>
               </div>
             </div> 
             <div class="row d-flex justify-content-center">
@@ -665,8 +665,8 @@
                   <td>Outboard</td>
                   <td></td>
                   <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
-                  <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
-                  <td><span *ngIf="this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
+                  <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
+                  <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
                   <td></td>
                 </tr>
                 <tr>
@@ -674,7 +674,7 @@
                   <td></td>
                   <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight }}</span></td>
                   <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ agilePodARM.toFixed(0) }}</span></td>
-                  <td><span *ngIf="this.currentProfile && this.constants">{{ ((constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
+                  <td><span *ngIf="this.currentProfile && this.currentProfile.agilePod && this.constants">{{ ((constants.emptyAgilePodWeight + currentProfile.agileWeight + constants.agileRailWeight)*agilePodARM).toFixed(0) }}</span></td>
                   <td></td>
                 </tr>
                 <tr>

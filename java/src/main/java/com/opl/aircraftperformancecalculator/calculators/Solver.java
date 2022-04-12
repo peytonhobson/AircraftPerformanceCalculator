@@ -55,10 +55,6 @@ public class Solver {
         boolean prevLower = false;
         boolean notFirstLoop = false;
 
-
-        log.info(String.valueOf(pressureAltitude));
-        log.info(String.valueOf(temp));
-
         // Loop that incrementally adds or subtracts fuel. Once combined distance of accel-stop and ground run distance
         // either go lower or higher than the runway distance, the loop stops and the current fuel store is returned.
         while(true) {

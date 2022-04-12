@@ -107,7 +107,6 @@ export class ProfilesComponent implements OnInit {
       agileYesRadio.checked = true;
       agileNoRadio.checked = false;
       agileWeightInput.disabled = false;
-      agileWeightInput.value = '0';
       this.submittedSaveProfile = false;
       this.agileYes = true;
     });
@@ -116,11 +115,9 @@ export class ProfilesComponent implements OnInit {
       agileNoRadio.checked = true;
       agileYesRadio.checked = false;
       agileWeightInput.disabled = true;
-      agileWeightInput.value = '0';
       this.submittedSaveProfile = false;
       this.agileYes = false;
     });
-
 
     // Initialize aircraft dropdown for user profiles
     const aircraftSelect = document.getElementById('AircraftSelect') as HTMLSelectElement;
