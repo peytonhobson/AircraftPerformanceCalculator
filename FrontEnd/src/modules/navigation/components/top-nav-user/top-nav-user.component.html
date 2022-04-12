@@ -4,10 +4,7 @@
         <h6 class="dropdown-header">
             <div class="dropdown-user-details"><h3 class="dropdown-user-details-name">{{ user }}</h3></div>
         </h6>
-        <div class="dropdown-divider"></div>
         <a class="dropdown-item" [ngStyle]="{'display':displayAdmin}" routerLink="/dashboard/admin">Admin</a>
-        <a class="dropdown-item" routerLink="/dashboard">Settings</a>
-        <a class="dropdown-item" routerLink="/dashboard">Activity Log</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (click)="logout()" routerLink="/auth/login">Logout</a>
     </div>
