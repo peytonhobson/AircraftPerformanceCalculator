@@ -172,19 +172,19 @@ export class CalculatorComponent implements OnInit {
         // Event listener for profile drop down
         aircraftProfileSelect.addEventListener('change', (e) => {
 
-            if(this.currentProfile.agilePod) {
-                this.weightSum -=  (this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight);
-                this.momentSum -= (this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod +
-                this.currentProfile.agileWeight*this.constants.emptyAgilePod + this.constants.agileRailWeight*this.constants.agileRail);
+            if(this.currentProfile) {
+                if(this.currentProfile.agilePod) {
+                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
+                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod
+                    + this.constants.agileRailWeight*this.constants.agileRail;;
+                }
+
+                this.weightSum -= this.currentProfile.outboard;
+                this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
+
+                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815;
+                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
             }
-
-            this.weightSum -= this.currentProfile.outboard;
-            this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
-
-            this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 +
-             this.currentProfile.underwingTank*6.815;
-            this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 +
-                this.currentProfile.underwingTank*6.815)*this.constants.tanks;
 
             if(aircraftProfileSelect.value !== 'Choose Profile') {
 

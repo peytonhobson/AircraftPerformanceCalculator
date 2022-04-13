@@ -174,6 +174,21 @@ export class SolverComponent implements OnInit {
 
         // Event listener for profile drop down
         aircraftProfileSelect.addEventListener('change', (e) => {
+
+            if(this.currentProfile) {
+                if(this.currentProfile.agilePod) {
+                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
+                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod
+                    + this.constants.agileRailWeight*this.constants.agileRail;;
+                }
+
+                this.weightSum -= this.currentProfile.outboard;
+                this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
+
+                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815;
+                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
+            }
+
             if(aircraftProfileSelect.value !== 'Choose Profile') {
 
                 const username = localStorage.getItem('username');
@@ -210,19 +225,7 @@ export class SolverComponent implements OnInit {
             }
             else { // Subtract values and set component variables to undefined for profile.
 
-                if(this.currentProfile.agilePod) {
-                    this.weightSum -=  this.constants.emptyAgilePodWeight + this.currentProfile.agileWeight + this.constants.agileRailWeight;
-                    this.momentSum -= this.constants.emptyAgilePodWeight*this.constants.emptyAgilePod + this.currentProfile.agileWeight*this.constants.emptyAgilePod
-                    + this.constants.agileRailWeight*this.constants.agileRail;;
-                }
-
                 document.getElementById('AgilePodText').innerHTML = '';
-
-                this.weightSum -= this.currentProfile.outboard;
-                this.momentSum -= this.currentProfile.outboard*this.constants.tanks;
-
-                this.weightSum -= this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815;
-                this.momentSum -= (this.currentProfile.internalTank*6.815 + this.currentProfile.tipTank*6.815 + this.currentProfile.underwingTank*6.815)*this.constants.tanks;
 
                 this.currentProfile = undefined;
                 this.outboard = undefined;
@@ -289,6 +292,11 @@ export class SolverComponent implements OnInit {
         // Event listener for pilot1 drop down
         pilot1ProfileSelect.addEventListener('change', (e) => {
 
+            this.weightSum -=  this.pilot1.mass;
+            this.momentSum -= this.pilot1.mass*this.constants.pilot1;
+            this.zeroWeightSum -= this.pilot1.mass;
+            this.zeroMomentSum -= this.pilot1.mass*this.constants.pilot1;
+
             // Remove all pilot options from second pilot drop down
             while(pilot2ProfileSelect.options.length > 2) {
                 pilot2ProfileSelect.options.remove(2);
@@ -323,16 +331,17 @@ export class SolverComponent implements OnInit {
                 document.getElementById('PilotBox1Text').innerHTML = '';
                 document.getElementById('PilotBox2Text').innerHTML = '';
 
-                this.weightSum -=  this.pilot1.mass;
-                this.momentSum -= this.pilot1.mass*this.constants.pilot1;
-                this.zeroWeightSum -= this.pilot1.mass;
-                this.zeroMomentSum -= this.pilot1.mass*this.constants.pilot1;
                 this.pilot1 = new Pilot(null, null, 0)
             }
         });
 
         // Event listener for second pilot drop down
         pilot2ProfileSelect.addEventListener('change', (e) => {
+
+            this.weightSum -=  this.pilot2.mass;
+            this.momentSum -= this.pilot2.mass*this.constants.pilot2;
+            this.zeroWeightSum -= this.pilot2.mass;
+            this.zeroMomentSum -= this.pilot2.mass*this.constants.pilot2;
 
             if(pilot2ProfileSelect.value !== 'Pilot 2' && pilot2ProfileSelect.value !== 'None') {
                 document.getElementById('PilotBox2Text').innerHTML = pilot2ProfileSelect.value;
@@ -367,10 +376,6 @@ export class SolverComponent implements OnInit {
             else {
                 document.getElementById('PilotBox2Text').innerHTML = '';
 
-                this.weightSum -=  this.pilot2.mass;
-                this.momentSum -= this.pilot2.mass*this.constants.pilot2;
-                this.zeroWeightSum -= this.pilot2.mass;
-                this.zeroMomentSum -= this.pilot2.mass*this.constants.pilot2;
                 this.pilot2 = new Pilot(null, null, 0);
 
                 const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
@@ -389,6 +394,12 @@ export class SolverComponent implements OnInit {
         // Event listener to add baggage 1 weight and moment
         const baggage1 = document.getElementById('Baggage1') as HTMLInputElement;
         baggage1.addEventListener('change', (e) => {
+
+            this.weightSum -= this.baggage1;
+            this.momentSum -= this.baggage1*this.constants.baggage1;
+            this.zeroWeightSum -= this.baggage1;
+            this.zeroMomentSum -= this.baggage1*this.constants.baggage1;
+
             if(baggage1.value.match(/^[0-9]/g)) {
                 this.baggage1 = Number(baggage1.value);
                 this.weightSum += this.baggage1;
@@ -397,10 +408,6 @@ export class SolverComponent implements OnInit {
                 this.zeroMomentSum += this.baggage1*this.constants.baggage1;
             }
             else {
-                this.weightSum -= this.baggage1;
-                this.momentSum -= this.baggage1*this.constants.baggage1;
-                this.zeroWeightSum -= this.baggage1;
-                this.zeroMomentSum -= this.baggage1*this.constants.baggage1;
                 this.baggage1 = undefined;
             }
 
@@ -410,6 +417,12 @@ export class SolverComponent implements OnInit {
         // Event listener to add baggage 2 weight and moment
         const baggage2 = document.getElementById('Baggage2') as HTMLInputElement;
         baggage2.addEventListener('change', (e) => {
+
+            this.weightSum -= this.baggage2;
+            this.momentSum -= this.baggage2*this.constants.baggage2;
+            this.zeroWeightSum -= this.baggage2;
+            this.zeroMomentSum -= this.baggage2*this.constants.baggage2;
+
             if(baggage2.value.match(/^[0-9]/g)) {
                 this.baggage2 = Number(baggage2.value);
                 this.weightSum += this.baggage2;
@@ -418,10 +431,6 @@ export class SolverComponent implements OnInit {
                 this.zeroMomentSum += this.baggage2*this.constants.baggage2;
             }
             else {
-                this.weightSum -= this.baggage2;
-                this.momentSum -= this.baggage2*this.constants.baggage2;
-                this.zeroWeightSum -= this.baggage2;
-                this.zeroMomentSum -= this.baggage2*this.constants.baggage2;
                 this.baggage2 = undefined;
             }
 
