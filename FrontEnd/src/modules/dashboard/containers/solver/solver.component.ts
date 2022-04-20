@@ -631,7 +631,9 @@ export class SolverComponent implements OnInit {
             const runwayLength = this.fManual.runwayLength.value
             let precipitation = 0;
 
-            if(this.fManual.precipitationYes) {
+            const precipitationYes = document.getElementById('PrecipitationYes') as HTMLInputElement;
+
+            if(precipitationYes.checked) {
                 precipitation = 1;
             }
 

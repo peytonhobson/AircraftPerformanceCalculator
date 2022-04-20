@@ -650,7 +650,11 @@ export class CalculatorComponent implements OnInit {
             const runwayLength = this.fManual.runwayLength.value
             let precipitation = 0;
 
-            if(this.fManual.precipitationYes) {
+            const precipitationYes = document.getElementById('PrecipitationYes') as HTMLInputElement;
+
+            console.log(precipitation)
+
+            if(precipitationYes.checked) {
                 precipitation = 1;
             }
 
