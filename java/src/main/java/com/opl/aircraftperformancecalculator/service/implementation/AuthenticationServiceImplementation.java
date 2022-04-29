@@ -1,7 +1,6 @@
 package com.opl.aircraftperformancecalculator.service.implementation;
 
 import com.opl.aircraftperformancecalculator.models.AuthenticationCode;
-import com.opl.aircraftperformancecalculator.models.User;
 import com.opl.aircraftperformancecalculator.repo.AuthenticationRepo;
 import com.opl.aircraftperformancecalculator.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-import static java.lang.Boolean.TRUE;
 
 /**
  * Service for saving and deleting authentication codes from DB
