@@ -2,9 +2,9 @@ server:
   port: 7777
 spring:
   datasource:
-    password: 5150
+    password: !!!web2022
     url: jdbc:mysql:10.0.3.252:3306/apc
-    username: root
+    username: peyton
   jpa:
     hibernate:
       ddl-auto: create
