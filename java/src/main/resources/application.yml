@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     password: webaccess.4me
-    url: jdbc:mysql:@10.0.3.252:3306/apc
+    url: jdbc:mysql://10.0.3.252:3306/apc
     username: peyton
   jpa:
     hibernate:
