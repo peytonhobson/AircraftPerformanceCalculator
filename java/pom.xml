@@ -12,6 +12,7 @@
 	<artifactId>aircraftperformancecalculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>aircraftperformancecalculator</name>
+	<packaging>jar</packaging>
 	<description>Aircraft Performance Calculator</description>
 	<properties>
 		<java.version>11</java.version>
@@ -83,6 +84,39 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								./libs
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>libs/</classpathPrefix>
+							<mainClass>
+								com.opl.aircraftperformancecalculator.AircraftPerformanceCalculatorApplication
+							</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
