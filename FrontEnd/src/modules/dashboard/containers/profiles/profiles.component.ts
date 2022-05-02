@@ -269,7 +269,7 @@ export class ProfilesComponent implements OnInit {
     this.displayDeletePilot = 'flex';
   }
 
-  closePilotDeleteModal(save: boolean) {
+  closePilotDeleteModal() {
     this.displayDeletePilot = 'none';
 
     document.getElementById('main-container').style.opacity = '100%';
