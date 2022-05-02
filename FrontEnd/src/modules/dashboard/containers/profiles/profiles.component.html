@@ -287,7 +287,7 @@
               <td></td>
               <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
               <td><span *ngIf="this.outboard && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
-              <td><span *ngIf="this.outboard && this.constants">{{ constants.tanks*outboard.toFixed(0) }}</span></td>
+              <td><span *ngIf="this.outboard && this.constants">{{ (constants.tanks*outboard).toFixed(0) }}</span></td>
               <td></td>
             </tr>
             <tr>

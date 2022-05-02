@@ -87,7 +87,7 @@
                 <form [formGroup]="abortForm" class="w-100">
                   <div class="row d-flex justify-content-center" [formGroup]="abortForm">
                     <input type="number" formControlName="abortDistance" class="time-item text-right border border-dark" id="AbortDistanceInput" value="0" [ngClass]="{ 'is-invalid': submittedCalc && fAbort['abortDistance'].errors }">
-                    <div *ngIf="submittedCalc && fLand['abortDistance'].errors" class="invalid-feedback">
+                    <div *ngIf="submittedCalc && fAbort['abortDistance'].errors" class="invalid-feedback">
                       <div *ngIf="fAbort['abortDistance'].errors['required']">Abort Distance is required</div>
                       <div *ngIf="fAbort['abortDistance'].errors['min']">Abort Distance cannot be less than 0.</div>
                     </div>
@@ -293,7 +293,7 @@
         </div>
         <div class="modal-body">
           <div class="row d-flex justify-content-center">
-            <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
+            <form [formGroup]="formManualModal" (ngSubmit)="saveManualModal()">
               <div class="form-group" class="mb-0 mt-0" [formGroup]="formManualModal">
                   <label for="temperature">Temperature</label>
                   <div class="row">
@@ -594,7 +594,7 @@
                   <td></td>
                   <td><span *ngIf="!this.parachute2">{{ -constants.parachuteWeight }}</span></td>
                   <td><span *ngIf="this.constants && !this.parachute2">{{ constants.pilot2 }}</span></td>
-                  <td><span *ngIf="!this.parachute2 > 0 && this.constants">{{ (constants.pilot2*constants.parachuteWeight).toFixed(0) }}</span></td>
+                  <td><span *ngIf="!this.parachute2 && this.constants">{{ (constants.pilot2*constants.parachuteWeight).toFixed(0) }}</span></td>
                   <td></td>
                 </tr>
                 <tr>
@@ -666,7 +666,7 @@
                   <td></td>
                   <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
                   <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
-                  <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
+                  <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.outboard).toFixed(0) }}</span></td>
                   <td></td>
                 </tr>
                 <tr>

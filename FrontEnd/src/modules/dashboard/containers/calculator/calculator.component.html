@@ -46,7 +46,7 @@
             <td></td>
             <td><span *ngIf="!this.parachute2">{{ -constants.parachuteWeight }}</span></td>
             <td><span *ngIf="this.constants && !this.parachute2">{{ constants.pilot2 }}</span></td>
-            <td><span *ngIf="!this.parachute2 > 0 && this.constants">{{ (constants.pilot2*constants.parachuteWeight).toFixed(0) }}</span></td>
+            <td><span *ngIf="!this.parachute2 && this.constants">{{ (constants.pilot2*constants.parachuteWeight).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
@@ -118,7 +118,7 @@
             <td></td>
             <td><span *ngIf="this.outboard">{{ outboard }}</span></td>
             <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks.toFixed(0) }}</span></td>
-            <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ constants.tanks*currentProfile.outboard.toFixed(0) }}</span></td>
+            <td><span *ngIf="this.outboard && this.currentProfile && this.constants">{{ (constants.tanks*currentProfile.outboard).toFixed(0) }}</span></td>
             <td></td>
           </tr>
           <tr>
@@ -421,7 +421,7 @@
         </div>
         <div class="modal-body">
           <div class="row d-flex justify-content-center">
-            <form [formGroup]="formManualModal" (ngSubmit)="saveManual()">
+            <form [formGroup]="formManualModal" (ngSubmit)="saveManualModal()">
               <div class="form-group" class="mb-0 mt-0" [formGroup]="formManualModal">
                   <label for="temperature">Temperature</label>
                   <div class="row">
