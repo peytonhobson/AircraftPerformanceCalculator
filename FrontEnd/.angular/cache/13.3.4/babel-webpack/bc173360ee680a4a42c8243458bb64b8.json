@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { AdminGuard } from './admin.guard';\nexport const guards = [AdminGuard];\nexport * from './admin.guard';","map":null,"metadata":{},"sourceType":"module"}

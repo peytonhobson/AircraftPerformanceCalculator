@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { NavigationService } from './navigation.service';\nimport { SideNavService } from './side-nav.service';\nexport const services = [NavigationService, SideNavService];\nexport * from './navigation.service';\nexport * from './side-nav.service';","map":null,"metadata":{},"sourceType":"module"}

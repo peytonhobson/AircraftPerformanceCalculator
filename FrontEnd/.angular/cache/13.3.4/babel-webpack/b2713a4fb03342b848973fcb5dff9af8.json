@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { ErrorGuard } from './error.guard';\nexport const guards = [ErrorGuard];\nexport * from './error.guard';","map":null,"metadata":{},"sourceType":"module"}

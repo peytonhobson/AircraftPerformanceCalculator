@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class ActivityLog {\n  constructor(username, time, action, input, output) {\n    this.username = username;\n    this.time = time;\n    this.action = action;\n    this.input = input;\n    this.output = output;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}
