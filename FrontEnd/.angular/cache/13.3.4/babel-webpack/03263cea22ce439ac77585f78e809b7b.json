@@ -1,0 +1,1 @@
+{"ast":null,"code":"/* All free solid fontawesome icons -> https://fontawesome.com/icons?d=gallery&s=regular&m=free */\nimport { faBell } from '@fortawesome/free-regular-svg-icons';\nexport const fontAwesomeRegularIcons = {\n  faBell\n};","map":null,"metadata":{},"sourceType":"module"}

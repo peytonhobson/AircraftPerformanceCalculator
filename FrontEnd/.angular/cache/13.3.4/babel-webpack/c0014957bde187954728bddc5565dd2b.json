@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class Pilot {\n  constructor(name, username, mass) {\n    this.id = username + \"_\" + name;\n    this.name = name;\n    this.username = username;\n    this.mass = mass;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

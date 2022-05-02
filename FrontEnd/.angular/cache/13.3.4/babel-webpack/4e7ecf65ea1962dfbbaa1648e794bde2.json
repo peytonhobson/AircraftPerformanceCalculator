@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class AuthenticationCode {\n  constructor(code) {\n    this.code = code;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}
