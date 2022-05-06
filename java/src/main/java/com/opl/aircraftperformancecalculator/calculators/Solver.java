@@ -59,9 +59,7 @@ public class Solver {
         // either go lower or higher than the runway distance, the loop stops and the current fuel store is returned.
         while(true) {
 
-            totalDist = GroundRunCalculator.getGroundRun(pressureAltitude, temp, OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
-                    input.getPilot2(), input.getBaggage1(), input.getBaggage2()), headwind, slope, rollingFriction) +
-                    AccelStopCalculator.getAccelStop(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
+            totalDist = AccelStopCalculator.getAccelStop(OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
                             input.getPilot2(), input.getBaggage1(), input.getBaggage2()), runwayType, brakingFriction);
 
             if(totalDist < runwayLength) {
@@ -120,34 +118,6 @@ public class Solver {
             }
 
             notFirstLoop = true;
-        }
-
-        double groundRunDist;
-
-        while(true) {
-
-            groundRunDist = GroundRunCalculator.getGroundRun(pressureAltitude, temp, OverallCalculator.getTakeoffMass(profile, emptyAircraftKG, agilePodKG, input.getPilot1(),
-                    input.getPilot2(), input.getBaggage1(), input.getBaggage2()), headwind, slope, rollingFriction);
-
-            if(groundRunDist <= abortDistance) {
-                break;
-            }
-            else {
-
-                if(profile.getUnderwingTank() > 0) {
-                    profile.setUnderwingTank(profile.getUnderwingTank()-1);
-                }
-                else if(profile.getTipTank() > 0) {
-                    profile.setTipTank(profile.getTipTank()-1);
-                }
-                else if(profile.getInternalTank() > 60) {
-                    profile.setInternalTank(profile.getInternalTank()-1);
-                }
-                else {
-                    input.getProfile().setInternalTank(900);
-                    return input.getProfile();
-                }
-            }
         }
 
         return input.getProfile();

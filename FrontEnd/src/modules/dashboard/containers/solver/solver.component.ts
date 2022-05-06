@@ -604,8 +604,6 @@ export class SolverComponent implements OnInit {
                 (document.getElementById("Baggage1") as HTMLInputElement).value = "0";
                 (document.getElementById("Baggage2") as HTMLInputElement).value = "0";
                 (document.getElementById("LandingWeightInput") as HTMLInputElement).value = "0";
-
-            
             }
         },
         error => {

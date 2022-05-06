@@ -1,10 +1,10 @@
 server:
-  port: 7777
+  port: 8080
 spring:
   datasource:
-    password: webaccess.4me
-    url: jdbc:mysql://10.0.3.252:3306/apc
-    username: peyton
+    password: 5150
+    url: jdbc:mysql://localhost:3306/apc
+    username: root
   jpa:
     hibernate:
       ddl-auto: create

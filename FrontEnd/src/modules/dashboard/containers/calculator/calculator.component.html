@@ -688,7 +688,7 @@
                 </div>
               </div>
               <div class="row d-flex justify-content-center ml-5 mt6-5">
-                <h2 *ngIf="this.tooHeavy" class="text-danger" id="WeightWarning">Accel-stop + ground run distance  ({{ (performanceOutput.accelStopDistance+performanceOutput.groundRunDistance).toFixed(0) }} ft) is longer than runway ({{ (runwayConditions.runwayLength*3.28084).toFixed(0) }} ft). <br> Consider reducing weight before takeoff.</h2>
+                <h2 *ngIf="this.tooHeavy" class="text-danger" id="WeightWarning">Accel-stop ({{ performanceOutput.accelStopDistance.toFixed(0) }} ft) is longer than runway ({{ (runwayConditions.runwayLength*3.28084).toFixed(0) }} ft). <br> Consider reducing weight before takeoff.</h2>
               </div>
             </div>
           </div>

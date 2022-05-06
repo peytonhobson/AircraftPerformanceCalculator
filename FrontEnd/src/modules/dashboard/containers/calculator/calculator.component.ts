@@ -571,7 +571,7 @@ export class CalculatorComponent implements OnInit {
 
             this.performanceOutput = res.data.calculatorOutput;
 
-            if(this.performanceOutput.accelStopDistance+this.performanceOutput.groundRunDistance > this.runwayConditions.runwayLength*3.28084) {
+            if(this.performanceOutput.accelStopDistance > this.runwayConditions.runwayLength*3.28084) {
                 this.tooHeavy = true;
             }
             else {
