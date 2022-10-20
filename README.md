@@ -15,6 +15,6 @@ In the `Java` directory you can run `mvn spring-boot:run` which will start the a
 Note: In order for Spring Boot to interface with the MySQL server, the `application.yml` configuration file located in 
 `AircraftPerformanceCalculator/java/src/main/resources/` will need to be updated to match your MySQL server credentials.
 
-To start the front-end, you can go to the `Front-End` directory and run `npm run serve`.
+To start the front-end, you can go to the `Front-End` directory and run `npm install` to install the packages and then `npm run serve` to start the server.
 
 The full application should now be running and the UI can be accessed from `http://localhost:4200`.
